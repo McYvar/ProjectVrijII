@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : BattleBaseState {
+public class IdleState : PlayerBaseState {
 
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
