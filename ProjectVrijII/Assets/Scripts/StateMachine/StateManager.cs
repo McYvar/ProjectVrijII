@@ -1,20 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateManager : MonoBehaviour
-{
+public class StateManager : MonoBehaviour {
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
     /// Updates all attached the states trough the final state machine
     /// </summary>
 
+    [SerializeField] private bool dontDestroyOnLoad = false;
+    public bool isEnabled = true;
+
     private FiniteStateMachine fsm;
-    [SerializeField] private PlayerBaseState startState;
+    [SerializeField] private BaseState startState;
 
     private void Awake() {
+        if (dontDestroyOnLoad) DontDestroyOnLoad(this);
+
         // on start we search for all attached BattleBaseState classes to this game object
-        PlayerBaseState[] states = GetComponents<PlayerBaseState>();
+        BaseState[] states = GetComponents<BaseState>();
 
         // then we couple all those states to the state machine ready for running
         fsm = new FiniteStateMachine(states);
@@ -26,18 +28,18 @@ public class PlayerStateManager : MonoBehaviour
     }
 
     private void Update() {
-        fsm?.OnUpdate();
+        if (isEnabled) fsm?.OnUpdate();
     }
 
     private void FixedUpdate() {
-        fsm?.OnFixedUpdate();
+        if (isEnabled) fsm?.OnFixedUpdate();
     }
 
     private void LateUpdate() {
-        fsm?.OnLateUpdate();
+        if (isEnabled) fsm?.OnLateUpdate();
     }
 
     public void SwitchState(System.Type state) {
-        fsm?.SwitchState(state);
+        if (isEnabled) fsm?.SwitchState(state);
     }
 }

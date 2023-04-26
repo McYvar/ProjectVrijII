@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class PlayerBaseState : BaseState {
+public class CharacterBaseState : BaseState {
 
     /// Date: 4/24/2023, by: Yvar
     /// <summary>

@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     public Vector2 leftJoyDirection;
+
     public Vector2 rightJoyDirection;
     public Vector2 leftDPadDirection;
     public Vector2 leftDirection;
@@ -51,32 +52,7 @@ public class PlayerInput : MonoBehaviour
     public Action optionsFirst;
     public Action optionsLast;
 
-    private void Start() {
-        leftShoulderFirst += () => { };
-        leftShoulderLast += () => { };
-        rightShoulderFirst += () => { };
-        rightShoulderLast += () => { };
-
-        northFirst += () => { };
-        northLast += () => { };
-        eastFirst += () => { };
-        eastLast += () => { };
-        southFirst += () => { };
-        southLast += () => { };
-        westFirst += () => { };
-        westLast += () => { };
-
-        leftPressFirst += () => { };
-        leftPressLast += () => { };
-        rightPressFirst += () => { };
-        rightPressLast += () => { };
-
-        optionsFirst += () => { };
-        optionsLast += () => { };
-    }
-
     private void Update() {
-        
     }
 
     public void LeftJoy(InputAction.CallbackContext cc) {
@@ -104,90 +80,90 @@ public class PlayerInput : MonoBehaviour
     public void LeftShoulder(InputAction.CallbackContext cc) {
         if (cc.started) {
             leftShoulder = true;
-            leftShoulderFirst.Invoke();
+            leftShoulderFirst?.Invoke();
         } else if (cc.canceled) {
             leftShoulder = false;
-            leftShoulderLast.Invoke();
+            leftShoulderLast?.Invoke();
         }
     }
 
     public void RightShoulder(InputAction.CallbackContext cc) {
         if (cc.started) {
             rightShoulder = true;
-            rightShoulderFirst.Invoke();
+            rightShoulderFirst?.Invoke();
         } else if (cc.canceled) {
             rightShoulder = false;
-            rightShoulderLast.Invoke();
+            rightShoulderLast?.Invoke();
         }
     }
 
     public void North(InputAction.CallbackContext cc) {
         if (cc.started) {
             north = true;
-            northFirst.Invoke();
+            northFirst?.Invoke();
         } else if (cc.canceled) {
             north = false;
-            northLast.Invoke();
+            northLast?.Invoke();
         }
     }
 
     public void East(InputAction.CallbackContext cc) {
         if (cc.started) {
             east = true;
-            eastFirst.Invoke();
+            eastFirst?.Invoke();
         } else if (cc.canceled) {
             east = false;
-            eastLast.Invoke();
+            eastLast?.Invoke();
         }
     }
 
     public void South(InputAction.CallbackContext cc) {
         if (cc.started) {
             south = true;
-            southFirst.Invoke();
+            southFirst?.Invoke();
         } else if (cc.canceled) {
             south = false;
-            southLast.Invoke();
+            southLast?.Invoke();
         }
     }
 
     public void West(InputAction.CallbackContext cc) {
         if (cc.started) {
             west = true;
-            westFirst.Invoke();
+            westFirst?.Invoke();
         } else if (cc.canceled) {
             west = false;
-            westLast.Invoke();
+            westLast?.Invoke();
         }
     }
 
     public void LeftPress(InputAction.CallbackContext cc) {
         if (cc.started) {
             leftPress = true;
-            leftPressFirst.Invoke();
+            leftPressFirst?.Invoke();
         } else if (cc.canceled) {
             leftPress = false;
-            leftPressLast.Invoke();
+            leftPressLast?.Invoke();
         }
     }
 
     public void RightPress(InputAction.CallbackContext cc) {
         if (cc.started) {
             rightPress = true;
-            rightPressFirst.Invoke();
+            rightPressFirst?.Invoke();
         } else if (cc.canceled) {
             rightPress = false;
-            rightPressLast.Invoke();
+            rightPressLast?.Invoke();
         }
     }
 
     public void Options(InputAction.CallbackContext cc) {
         if (cc.started) {
             options = true;
-            optionsFirst.Invoke();
+            optionsFirst?.Invoke();
         } else if (cc.canceled) {
             options = false;
-            optionsLast.Invoke();
+            optionsLast?.Invoke();
         }
     }
 }

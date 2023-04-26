@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6925311306518157114}
   - component: {fileID: 6925311306518157112}
   - component: {fileID: 6925311306518157117}
-  - component: {fileID: 6925311306518157116}
+  - component: {fileID: 1143269890}
+  - component: {fileID: 1143269891}
   - component: {fileID: 6925311306518157119}
   - component: {fileID: 6925311306518157118}
   - component: {fileID: 6925311306518157057}
@@ -82,8 +83,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c243f66c0b41a04d805a6cfc43d15a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startState: {fileID: 6925311306518157116}
---- !u!114 &6925311306518157116
+  dontDestroyOnLoad: 0
+  isEnabled: 0
+  startState: {fileID: 1143269890}
+--- !u!114 &1143269890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,7 +95,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6925311306518157059}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1517bef705bded441b65abaff877c5fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 48dc7a1b719bcb549bb6947d68071639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentCharacter: {fileID: 11400000, guid: 6ece037c05030e64ba80a7c667725e38, type: 2}
@@ -100,59 +103,102 @@ MonoBehaviour:
   groundCheckLayers:
     serializedVersion: 2
     m_Bits: 1024
-  maxInputRememberTime: 0.3
   maxInputRememberAmount: 5
   inputOrders:
-  - name: Standing left
-    attackType: 0
-    characterFacingDirection: 0
-    allowAir: 0
-    numpadOrder: 0500
-  - name: Standing right
-    attackType: 0
-    characterFacingDirection: 1
-    allowAir: 0
-    numpadOrder: 0500
-  - name: crouching left
-    attackType: 1
-    characterFacingDirection: 0
-    allowAir: 0
-    numpadOrder: 0200
-  - name: crouching right
-    attackType: 1
-    characterFacingDirection: 1
-    allowAir: 0
-    numpadOrder: 0200
-  - name: dragonpunch left
-    attackType: 3
-    characterFacingDirection: 0
-    allowAir: 0
-    numpadOrder: 040002000100
-  - name: dragonpunch right
-    attackType: 3
-    characterFacingDirection: 1
-    allowAir: 0
-    numpadOrder: 060002000300
-  - name: quarter circle left
-    attackType: 4
-    characterFacingDirection: 0
-    allowAir: 1
-    numpadOrder: 020001000400
-  - name: quarter circle right
-    attackType: 4
-    characterFacingDirection: 1
-    allowAir: 1
-    numpadOrder: 020003000600
   - name: half circle left
     attackType: 5
     characterFacingDirection: 0
-    allowAir: 1
     numpadOrder: 06000300020001000400
   - name: half circle right
     attackType: 5
     characterFacingDirection: 1
-    allowAir: 1
     numpadOrder: 04000100020003000600
+  - name: dragon punch right
+    attackType: 3
+    characterFacingDirection: 1
+    numpadOrder: 060002000300
+  - name: quarter circle left
+    attackType: 4
+    characterFacingDirection: 0
+    numpadOrder: 020001000400
+  - name: quarter circle right
+    attackType: 4
+    characterFacingDirection: 1
+    numpadOrder: 020003000600
+  - name: Standing left
+    attackType: 0
+    characterFacingDirection: 0
+    numpadOrder: 0500
+  - name: Standing right
+    attackType: 0
+    characterFacingDirection: 1
+    numpadOrder: 0500
+  - name: crouching left
+    attackType: 1
+    characterFacingDirection: 0
+    numpadOrder: 0200
+  - name: crouching right
+    attackType: 1
+    characterFacingDirection: 1
+    numpadOrder: 0200
+  - name: dragon punch left
+    attackType: 3
+    characterFacingDirection: 0
+    numpadOrder: 040002000100
+  groundMovementSpeed: 20
+  jumpForce: 15
+--- !u!114 &1143269891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6925311306518157059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f295a05ac39ee054dab09799830496ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCharacter: {fileID: 11400000, guid: 6ece037c05030e64ba80a7c667725e38, type: 2}
+  comboMaxTime: 0.6
+  groundCheckLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  maxInputRememberAmount: 5
+  inputOrders:
+  - name: half circle left
+    attackType: 5
+    characterFacingDirection: 0
+    numpadOrder: 06000300020001000400
+  - name: half circle right
+    attackType: 5
+    characterFacingDirection: 1
+    numpadOrder: 04000100020003000600
+  - name: quarter circle left
+    attackType: 4
+    characterFacingDirection: 0
+    numpadOrder: 020001000400
+  - name: quarter circle right
+    attackType: 4
+    characterFacingDirection: 1
+    numpadOrder: 020003000600
+  - name: Standing left
+    attackType: 0
+    characterFacingDirection: 0
+    numpadOrder: 0500
+  - name: Standing right
+    attackType: 0
+    characterFacingDirection: 1
+    numpadOrder: 0500
+  - name: crouching left
+    attackType: 1
+    characterFacingDirection: 0
+    numpadOrder: 0200
+  - name: crouching right
+    attackType: 1
+    characterFacingDirection: 1
+    numpadOrder: 0200
+  airMovementSpeed: 1
 --- !u!114 &6925311306518157119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,5 +580,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 112
+  m_CollisionDetection: 1
