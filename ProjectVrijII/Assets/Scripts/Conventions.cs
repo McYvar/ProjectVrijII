@@ -58,6 +58,7 @@ namespace conventions {
             for (int i = 0; i < something; i++) {
                 for (int j = 0; j < something; j++) {
                     // Use i and j for normal for loops.
+                    transform.position += Vector3.forward * thisInt;
                 }
             }
         }
