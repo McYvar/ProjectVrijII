@@ -73,7 +73,7 @@ public class AttackState : CharacterBaseState {
             // if the player does an attack...
             didFirstAttack = true;
             attackDelay = currentAttack.duration;
-            attackStrength = currentAttack.strength[0]; // later follow up attacks
+            //attackStrength = currentAttack.strength[0]; // later follow up attacks
 
             // then do the actual attack...
             Debug.Log(currentAttack);

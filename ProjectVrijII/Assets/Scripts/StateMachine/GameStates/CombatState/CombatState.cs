@@ -1,25 +1,38 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatState : GameStatesBase {
-    /// Date: 4/26/2023, by: Yvar
-    /// <summary>
-    /// Combat state manages all combat related states and actions
-    /// </summary>
+public class CombatState : BaseState {
 
-    public static List<CombatPlayerStateManager> managers = new List<CombatPlayerStateManager>();
+    public static List<CombatBase> combatClasses = new List<CombatBase>();
+
+    public override void OnAwake() {
+    }
+
+    public override void OnStart() {
+    }
 
     public override void OnEnter() {
-        base.OnEnter();
-        foreach (var manager in managers) {
-            manager.isEnabled = true;
-        }
     }
 
     public override void OnExit() {
-        base.OnExit();
-        foreach (var manager in managers) {
-            manager.isEnabled = false;
+    }
+
+    public override void OnUpdate() {
+        foreach (var combatClass in combatClasses) {
+            combatClass.OnUpdate();
+        }
+    }
+
+    public override void OnFixedUpdate() {
+        foreach(var combatClass in combatClasses) {
+            combatClass.OnFixedUpdate();
+        }
+    }
+
+    public override void OnLateUpdate() {
+        foreach (var combatClass in combatClasses) {
+            combatClass.OnLateUpdate();
         }
     }
 }

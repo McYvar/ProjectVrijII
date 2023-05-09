@@ -1,16 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class StateManager : MonoBehaviour {
-    /// Date: 4/24/2023, by: Yvar
+public class CharacterStateManager : CombatBase {
+
     /// <summary>
-    /// Updates all attached the states trough the final state machine
+    /// Seperate state manager that is run by the combat system instead of monobehaviour updates
     /// </summary>
 
     protected FiniteStateMachine fsm;
     [SerializeField] protected BaseState startState;
 
     private void Awake() {
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
 
         // on start we search for all attached BattleBaseState classes to this game object
         BaseState[] states = GetComponents<BaseState>();
@@ -24,15 +26,15 @@ public class StateManager : MonoBehaviour {
         fsm.InitState(startState.GetType());
     }
 
-    private void Update() {
+    public override void OnUpdate() {
         fsm?.OnUpdate();
     }
 
-    private void FixedUpdate() {
+    public override void OnFixedUpdate() {
         fsm?.OnFixedUpdate();
     }
 
-    private void LateUpdate() {
+    public override void OnLateUpdate() {
         fsm?.OnLateUpdate();
     }
 
