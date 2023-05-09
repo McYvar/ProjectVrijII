@@ -73,10 +73,11 @@ public class AttackState : CharacterBaseState {
             // if the player does an attack...
             didFirstAttack = true;
             attackDelay = currentAttack.duration;
-            attackStrength = currentAttack.strength;
+            attackStrength = currentAttack.strength[0]; // later follow up attacks
 
             // then do the actual attack...
             Debug.Log(currentAttack);
+            // enemy -> Idamagable interface --> GetDamaged2(strength[0])
 
             // then reset the attack
             lastAttack = currentAttack;

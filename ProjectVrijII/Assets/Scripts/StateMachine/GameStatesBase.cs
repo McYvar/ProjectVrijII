@@ -7,8 +7,6 @@ public class GameStatesBase : BaseState {
     /// <summary>
     /// Seperates the game flow into states
     /// </summary>
-    
-    [SerializeField] protected List<StateManager> managers = new List<StateManager>();
 
     public override void OnAwake() {
     }
@@ -17,15 +15,9 @@ public class GameStatesBase : BaseState {
     }
 
     public override void OnEnter() {
-        foreach (var manager in managers) {
-            manager.isEnabled = true;
-        }
     }
 
     public override void OnExit() {
-        foreach (var manager in managers) {
-            manager.isEnabled = false;
-        }
     }
 
     public override void OnUpdate() {

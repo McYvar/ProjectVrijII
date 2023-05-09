@@ -6,14 +6,11 @@ public class StateManager : MonoBehaviour {
     /// Updates all attached the states trough the final state machine
     /// </summary>
 
-    [SerializeField] private bool dontDestroyOnLoad = false;
-    public bool isEnabled = true;
-
-    private FiniteStateMachine fsm;
-    [SerializeField] private BaseState startState;
+    protected FiniteStateMachine fsm;
+    [SerializeField] protected BaseState startState;
 
     private void Awake() {
-        if (dontDestroyOnLoad) DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);
 
         // on start we search for all attached BattleBaseState classes to this game object
         BaseState[] states = GetComponents<BaseState>();
@@ -25,21 +22,22 @@ public class StateManager : MonoBehaviour {
     private void Start() {
         fsm?.OnStart();
         fsm.InitState(startState.GetType());
+        Debug.Log(gameObject);
     }
 
-    private void Update() {
-        if (isEnabled) fsm?.OnUpdate();
+    protected virtual void Update() {
+        fsm?.OnUpdate();
     }
 
-    private void FixedUpdate() {
-        if (isEnabled) fsm?.OnFixedUpdate();
+    protected virtual void FixedUpdate() {
+        fsm?.OnFixedUpdate();
     }
 
-    private void LateUpdate() {
-        if (isEnabled) fsm?.OnLateUpdate();
+    protected virtual void LateUpdate() {
+        fsm?.OnLateUpdate();
     }
 
-    public void SwitchState(System.Type state) {
-        if (isEnabled) fsm?.SwitchState(state);
+    protected void SwitchState(System.Type state) {
+        fsm?.SwitchState(state);
     }
 }

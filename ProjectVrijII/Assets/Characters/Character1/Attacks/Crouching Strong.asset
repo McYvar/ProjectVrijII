@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Crouching Strong
   m_EditorClassIdentifier: 
   duration: 0.9
-  strength: 12
+  strength: []

@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Crouching Kick
   m_EditorClassIdentifier: 
   duration: 0.3
-  strength: 2
+  strength:
+  - 2
+  - 4
+  - 8

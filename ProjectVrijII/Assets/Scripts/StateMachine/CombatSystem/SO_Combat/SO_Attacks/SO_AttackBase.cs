@@ -8,5 +8,5 @@ public class SO_Attack : ScriptableObject {
     /// </summary>
 
     public float duration;
-    public float strength; // should we make this randomized a bit?
+    public float[] strength; // should we make this randomized a bit?
 }
