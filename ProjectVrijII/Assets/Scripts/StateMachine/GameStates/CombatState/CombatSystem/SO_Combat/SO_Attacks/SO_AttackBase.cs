@@ -7,6 +7,8 @@ public class SO_Attack : ScriptableObject {
     /// All of this should be character specific
     /// </summary>
 
-    public float duration;
     public float[] strength; // should we make this randomized a bit?
+    [Range(0f, 1f)] public float movementReduction;
+    public bool isSpecial;
+    public bool canceledByJump;
 }

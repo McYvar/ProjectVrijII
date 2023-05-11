@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class AttackState : CharacterBaseState {
@@ -8,12 +10,9 @@ public class AttackState : CharacterBaseState {
     /// A state that starting signature attack and ends when attack combo is finished
     /// </summary>
 
-    [SerializeField] protected SO_Character currentCharacter; // later input by player selection maybe?
+    [SerializeField] protected SO_Character character; // later input by player selection maybe?
 
     [SerializeField] private float comboMaxTime;
-    private float comboTimer;
-
-    private bool didFirstAttack;
 
     [SerializeField] private LayerMask groundCheckLayers;
 
@@ -21,99 +20,131 @@ public class AttackState : CharacterBaseState {
     protected SO_Attack currentAttack;
     protected SO_Attack lastAttack;
 
-    public LinkedList<int> numpadInputOrder = new LinkedList<int>();
-    [SerializeField] private ushort maxInputRememberAmount;
     [SerializeField] protected InputOrder[] inputOrders;
-
-    protected LeftInputDirection lastInputDirection = LeftInputDirection.centre;
 
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
 
-    private float attackStrength;
-
     private float joyThreshold = 0.3f;
 
-    protected Rigidbody rb;
+    protected Rigidbody2D rb;
+    protected Collider2D myCollider;
+
+    private bool canDoublePress;
+    private float maxDoublePressTime = 0.5f;
+    protected Action OnDoublePress;
 
     public override void OnAwake() {
         base.OnAwake();
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
+        myCollider = GetComponent<Collider2D>();
     }
 
     public override void OnEnter() {
         base.OnEnter();
-        comboTimer = 0; // comboTimer should reset on a hit
-        didFirstAttack = false;
         attackDelay = 0;
-        numpadInputOrder.Clear();
-        lastInputDirection = LeftInputDirection.centre;
+        //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
+        OnDoublePress = null;
+        character.attackPhase = AttackPhase.ready;
+        lastAttack = null;
     }
 
     public override void OnUpdate() {
-        base.OnUpdate();
         LeftInputComboHandler(playerInput.leftDirection);
 
-        // if combo over, switch to enemy turns
-        if (comboTimer > comboMaxTime) {
-            //stateManager.SwitchState(typeof(IdleState));
-        } else if (didFirstAttack) comboTimer += Time.deltaTime;
+        // if combo over, switch to enemy turns, combo is over when enemy is no longer hitstun
+        if (character.attackPhase == AttackPhase.ready) {
+            character.attackMovementReductionScalar = 1;
+        }
+    }
 
-        if (attackDelay > 0) attackDelay -= Time.deltaTime;
+    public override void OnFixedUpdate() {
+        Movement();
     }
 
     #region attacks
     public void OnAttack() {
         string input = "";
-        foreach (int i in numpadInputOrder) {
+        foreach (int i in character.numpadInputOrder) {
             input += i + ", ";
         }
         Debug.Log(input);
 
         if (currentAttack != null) {
-            // if the player does an attack...
-            didFirstAttack = true;
-            attackDelay = currentAttack.duration;
-            //attackStrength = currentAttack.strength[0]; // later follow up attacks
+            if (CanAttack()) {
+                // if the player does an attack...
+                //character.characterAnimator.SetBool(character.currentAttackName, true);
+                Debug.Log(character.currentAttackName);
+                // enemy -> Idamagable interface --> GetDamaged2(strength[0])
+                character.attackMovementReductionScalar = currentAttack.movementReduction;
+                character.attackPhase = AttackPhase.startup;
 
-            // then do the actual attack...
-            Debug.Log(currentAttack);
-            // enemy -> Idamagable interface --> GetDamaged2(strength[0])
-
-            // then reset the attack
-            lastAttack = currentAttack;
-            currentAttack = null;
-            numpadInputOrder.Clear();
+                // then reset the attack
+                lastAttack = currentAttack;
+                currentAttack = null;
+                character.numpadInputOrder.Clear();
+            }
         }
     }
 
+    private bool CanAttack() {
+        if (lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
+        if (!lastAttack.isSpecial && currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
+        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) return false; // these phases can only be canceled by specials
+        if (lastAttack.isSpecial) return false; // specials can't be canceld
+        // then this is recovery phase
+        if (lastAttack as SO_Punch && (currentAttack as SO_Kick || currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
+        if (lastAttack as SO_Kick && currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
+        return false;
+    }
+
+    public void SetAttackPhase(AttackPhase attackPhase) {
+        character.attackPhase = attackPhase;
+    }
+
     public void LeftInputComboHandler(Vector2 direction) {
+        LeftInputDirection currentInputDirection = character.lastInputDirection;
         if (direction.magnitude < joyThreshold) {
-            return;
+            currentInputDirection = LeftInputDirection.centre;
+        } else {
+            // if the max amount of combo buttons is pressed, remove the one at the bottom
+            if (character.numpadInputOrder.Count > 10) {
+                character.numpadInputOrder.RemoveFirst();
+            }
+
+            float angle = Vector2.Angle(Vector2.right, direction);
+            if (direction.y < 0) angle = 360 - angle;
+
+            if ((angle >= 337.5f && angle < 360) || (angle >= 0 && angle < 22.5f)) currentInputDirection = LeftInputDirection.right;
+            else if (angle >= 22.5f && angle < 67.5f) currentInputDirection = LeftInputDirection.topRight;
+            else if (angle >= 67.5f && angle < 112.5f) currentInputDirection = LeftInputDirection.top;
+            else if (angle >= 112.5f && angle < 157.5f) currentInputDirection = LeftInputDirection.topLeft;
+            else if (angle >= 157.5f && angle < 202.5f) currentInputDirection = LeftInputDirection.left;
+            else if (angle >= 202.5f && angle < 247.5f) currentInputDirection = LeftInputDirection.bottomLeft;
+            else if (angle >= 247.5f && angle < 292.5f) currentInputDirection = LeftInputDirection.bottom;
+            else if (angle >= 292.5f && angle < 337.5f) currentInputDirection = LeftInputDirection.bottomRight;
         }
 
-        // if the max amount of combo buttons is pressed, remove the one at the bottom
-        if (numpadInputOrder.Count > maxInputRememberAmount) {
-            numpadInputOrder.RemoveFirst();
+        if (character.lastInputDirection != currentInputDirection) {
+            character.lastInputDirection = currentInputDirection;
+
+            character.numpadInputOrder.AddLast(DirectionKeyValue(currentInputDirection));
+            //Debug.Log(character.lastInputDirection.ToString());
+            if (character.numpadInputOrder.Count > 2 && character.numpadInputOrder.Last.Previous.Value == 5) // system to check if a button was pressed twice in fast succesion
+                if (character.numpadInputOrder.Last.Previous.Previous.Value == character.numpadInputOrder.Last.Value &&
+                    canDoublePress) {
+                    OnDoublePress?.Invoke();
+                    OnDoublePress = null;
+                    canDoublePress = false;
+                } else {
+                    canDoublePress = true;
+                    CancelInvoke("CancelDoublePress");
+                    Invoke("CancelDoublePress", maxDoublePressTime);
+                }
         }
+    }
 
-        LeftInputDirection currentInputDirection = lastInputDirection;
-        float angle = Vector2.Angle(Vector2.right, direction);
-        if (direction.y < 0) angle = 360 - angle;
-
-        if ((angle >= 337.5f && angle < 360) || (angle >= 0 && angle < 22.5f)) currentInputDirection = LeftInputDirection.right;
-        if (angle >= 22.5f && angle < 67.5f) currentInputDirection = LeftInputDirection.topRight;
-        if (angle >= 67.5f && angle < 112.5f) currentInputDirection = LeftInputDirection.top;
-        if (angle >= 112.5f && angle < 157.5f) currentInputDirection = LeftInputDirection.topLeft;
-        if (angle >= 157.5f && angle < 202.5f) currentInputDirection = LeftInputDirection.left;
-        if (angle >= 202.5f && angle < 247.5f) currentInputDirection = LeftInputDirection.bottomLeft;
-        if (angle >= 247.5f && angle < 292.5f) currentInputDirection = LeftInputDirection.bottom;
-        if (angle >= 292.5f && angle < 337.5f) currentInputDirection = LeftInputDirection.bottomRight;
-
-        if (lastInputDirection != currentInputDirection) {
-            lastInputDirection = currentInputDirection;
-
-            numpadInputOrder.AddLast(DirectionKeyValue(currentInputDirection));
-        }
+    private void CancelDoublePress() {
+        canDoublePress = false;
     }
 
     public int DirectionKeyValue(LeftInputDirection inputDirection) {
@@ -138,13 +169,49 @@ public class AttackState : CharacterBaseState {
                 return 5;
         }
     }
+
+    protected virtual AttackTypes InputCompare() {
+        foreach (InputOrder requiredOrder in inputOrders) {
+            // first we seek for the right combination
+            if (character.numpadInputOrder.Count < 3 || character.numpadInputOrder.Count < requiredOrder.numpadOrder.Length) continue; // go to next combination if not right lenght
+            if (requiredOrder.characterFacingDirection != characterFacingDirection) continue; // or if combination is not facing the same direction
+
+            int[] inputOrder = new int[character.numpadInputOrder.Count];
+            int getLastValues = inputOrder.Length - requiredOrder.numpadOrder.Length;
+            character.numpadInputOrder.CopyTo(inputOrder, 0);
+            bool doBreak = false;
+            for (int i = 0; i < requiredOrder.numpadOrder.Length; i++) {
+                if (inputOrder[i + getLastValues] != requiredOrder.numpadOrder[i]) { doBreak = true; break; }
+            }
+
+            if (doBreak) continue;
+
+            // if we found the right combination
+            return requiredOrder.attackType;
+        }
+
+        return AttackTypes.UNASSIGNED;
+    }
     #endregion
 
-    public bool GroundCheck() {
-        Ray ray = new Ray(transform.position, Vector3.down);
-        float maxRayDistance = transform.localScale.y; // check actual cast dist sometime in future
-        if (Physics.Raycast(ray, maxRayDistance, groundCheckLayers)) return true;
+    protected bool GroundCheck() {
+        float maxRayDistance = (myCollider.bounds.size.y / 2) + 0.1f; // check actual cast dist sometime in future
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, maxRayDistance, groundCheckLayers);
+        
+        if (hit.collider != null) {
+            return true;
+        }
+
         return false;
+    }
+
+    protected virtual void Movement() { }
+
+    protected virtual void Jump(float jumpStrength) {
+        float nearVectorLenght = rb.velocity.magnitude *
+            Mathf.Cos(Vector2.Angle(Vector2.down, rb.velocity) * Mathf.Deg2Rad);
+        rb.velocity += Vector2.up * nearVectorLenght;
+        rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
     }
 }
 
@@ -162,6 +229,7 @@ public struct InputOrder {
 }
 
 public enum AttackTypes {
+    UNASSIGNED = -1,
     STANDING = 0,
     CROUCHING = 1,
     JUMPING = 2,
@@ -180,5 +248,11 @@ public enum LeftInputDirection {
     topLeft = 7,
     top = 8,
     topRight = 9
+}
 
+public enum AttackPhase {
+    ready = 0,
+    startup = 1,
+    active = 2,
+    recovery = 3
 }
