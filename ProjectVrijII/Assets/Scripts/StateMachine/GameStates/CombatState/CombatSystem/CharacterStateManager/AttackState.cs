@@ -16,9 +16,9 @@ public class AttackState : CharacterBaseState {
 
     [SerializeField] private LayerMask groundCheckLayers;
 
-    protected float attackDelay;
-
     [SerializeField] protected InputOrder[] inputOrders;
+
+    protected float attackDelay;
 
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
 
@@ -31,10 +31,17 @@ public class AttackState : CharacterBaseState {
     private float maxDoublePressTime = 0.5f;
     protected Action OnDoublePress;
 
+    [SerializeField] protected Animator animator;
+    protected RuntimeAnimatorController controller;
+
+    int test;
+
     public override void OnAwake() {
         base.OnAwake();
         rb = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
+
+        animator.runtimeAnimatorController = character.overrideController;
     }
 
     public override void OnEnter() {
@@ -62,16 +69,18 @@ public class AttackState : CharacterBaseState {
 
     #region attacks
     public void OnAttack() {
+        /*
         string input = "";
         foreach (int i in character.numpadInputOrder) {
             input += i + ", ";
         }
         Debug.Log(input);
+        */
 
         if (character.currentAttack != null) {
             if (CanAttack()) {
                 // if the player does an attack...
-                //character.characterAnimator.SetBool(character.currentAttackName, true);
+                animator.SetTrigger(character.currentAttackName);
                 Debug.Log(character.currentAttackName);
                 // enemy -> Idamagable interface --> GetDamaged2(strength[0])
                 character.attackMovementReductionScalar = character.currentAttack.movementReduction;
@@ -98,6 +107,10 @@ public class AttackState : CharacterBaseState {
 
     public void SetAttackPhase(AttackPhase attackPhase) {
         character.attackPhase = attackPhase;
+    }
+
+    public void MSG(string msg) {
+        Debug.Log(msg + test);
     }
 
     public void LeftInputComboHandler(Vector2 direction) {
