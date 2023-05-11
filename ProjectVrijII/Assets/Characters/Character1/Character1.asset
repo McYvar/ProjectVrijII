@@ -15,7 +15,15 @@ MonoBehaviour:
   characterName: Mac
   character: {fileID: 6925311306518157059, guid: 450dc025f632f0041a2f8d76ae7b5465,
     type: 3}
-  movementSpeed: 9001
+  characterAnimator: {fileID: 0}
+  groundMovementSpeed: 7
+  runningMovementSpeed: 7
+  crouchMovementSpeed: 4
+  groundJumpStrength: 30
+  airMovementSpeed: 7
+  airDashStrength: 30
+  doubleJumpStrength: 25
+  airDashLength: 2
   standingKick: {fileID: 11400000, guid: c0466575a200fb54fa0c5b8b1edb6c02, type: 2}
   standingPunch: {fileID: 11400000, guid: 3562bb10794c3594eb5d20cbf0b042b8, type: 2}
   standingStrong: {fileID: 11400000, guid: 5286e04b6ff79874fa3b3110dedaa799, type: 2}
@@ -34,3 +42,7 @@ MonoBehaviour:
   halfCircleKick: {fileID: 11400000, guid: dc4ac5239ff7e474cb538a12642b7fa9, type: 2}
   halfCirclePunch: {fileID: 11400000, guid: 5843a0092add5a94faa979475ddc89a6, type: 2}
   halfCircleStrong: {fileID: 11400000, guid: 5cf703e6c6dd59149a0aeee2f25e54db, type: 2}
+  lastInputDirection: 5
+  variableMovementSpeed: 0
+  attackMovementReductionScalar: 1
+  currentAttackName: jK

@@ -7,10 +7,16 @@ public class InAirMovement : AttackState {
     /// <summary>
     /// In air movement handler
     /// </summary>
-    [SerializeField] float airMovementSpeed;
 
     private float minInAirTime = 0.1f;
     private float inAirTimer;
+    private bool didDoubleJump;
+    private bool canDoubleJump;
+
+    private bool doDash;
+    private bool didDash;
+
+    private Vector2 dashStartingPoint;
 
     public override void OnEnter() {
         base.OnEnter();
@@ -18,6 +24,11 @@ public class InAirMovement : AttackState {
         playerInput.southFirst += InAirKick;
         playerInput.westFirst += InAirPunch;
         inAirTimer = 0;
+        didDoubleJump = false;
+        canDoubleJump = false;
+
+        doDash = false;
+        didDash = false;
     }
 
     public override void OnExit() {
@@ -35,93 +46,123 @@ public class InAirMovement : AttackState {
         } else {
             inAirTimer += Time.deltaTime;
         }
+
+        if (!didDoubleJump) {
+            if (character.lastInputDirection == LeftInputDirection.left ||
+                  character.lastInputDirection == LeftInputDirection.centre ||
+                  character.lastInputDirection == LeftInputDirection.right) canDoubleJump = true;
+
+            if (canDoubleJump) {
+                if (character.lastInputDirection == LeftInputDirection.top ||
+                    character.lastInputDirection == LeftInputDirection.topLeft ||
+                    character.lastInputDirection == LeftInputDirection.topRight) {
+                    Jump(character.doubleJumpStrength);
+                    didDoubleJump = true;
+                }
+            }
+        }
     }
 
-    #region ground attacks
-    private void InAirPunch() {
-        if (attackDelay <= 0) {
-            switch (InAirInputCompare()) {
-                case AttackTypes.JUMPING:
-                    currentAttack = currentCharacter.jumpingPunch;
-                    break;
-                case AttackTypes.DRAGON_PUNCH:
-                    currentAttack = currentCharacter.dragonpunchPunch;
-                    break;
-                case AttackTypes.QUARTER_CIRCLE:
-                    currentAttack = currentCharacter.quaterCirclePunch;
-                    break;
-                case AttackTypes.HALF_CIRCLE:
-                    currentAttack = currentCharacter.halfCirclePunch;
-                    break;
+    protected override void Movement() {
+        if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
+        else OnDoublePress = () => { Dash(); };
+
+        if (doDash && !didDash) {
+            if (Mathf.Abs(rb.velocity.x) < 1) {
+                doDash = false;
+                didDash = true;
             }
+            if (Vector2.Distance(transform.position, dashStartingPoint) >= character.airDashLength) {
+                doDash = false;
+                didDash = true;
+            }
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            return;
+        }
+        Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
+        float resultMovementSpeed =
+            (character.airMovementSpeed + character.variableMovementSpeed)
+            * character.attackMovementReductionScalar;
+        rb.velocity = new Vector2(
+            horizonal.normalized.x * resultMovementSpeed,
+            rb.velocity.y);
+    }
+
+    private void Dash() {
+        if (didDash) return;
+        int direction = 0;
+        if (character.lastInputDirection == LeftInputDirection.left) direction = -1;
+        else if (character.lastInputDirection == LeftInputDirection.right) direction = 1;
+        else return;
+
+        rb.velocity = new Vector2(direction * character.airDashStrength, 0);
+
+        doDash = true;
+        dashStartingPoint = transform.position;
+    }
+
+    #region air attacks
+    private void InAirPunch() {
+        switch (InputCompare()) {
+            case AttackTypes.JUMPING:
+                currentAttack = character.jumpingPunch;
+                character.currentAttackName = "jP";
+                break;
+            case AttackTypes.QUARTER_CIRCLE:
+                currentAttack = character.quaterCirclePunch;
+                character.currentAttackName = "j236P";
+                break;
+            case AttackTypes.HALF_CIRCLE:
+                currentAttack = character.halfCirclePunch;
+                character.currentAttackName = "j41236P";
+                break;
         }
 
         OnAttack();
     }
 
     private void InAirKick() {
-        if (attackDelay <= 0 || lastAttack as SO_Punch) {
-            switch (InAirInputCompare()) {
-                case AttackTypes.JUMPING:
-                    currentAttack = currentCharacter.jumpingKick;
-                    break;
-                case AttackTypes.DRAGON_PUNCH:
-                    currentAttack = currentCharacter.dragonpunchKick;
-                    break;
-                case AttackTypes.QUARTER_CIRCLE:
-                    currentAttack = currentCharacter.quaterCircleKick;
-                    break;
-                case AttackTypes.HALF_CIRCLE:
-                    currentAttack = currentCharacter.halfCircleKick;
-                    break;
-            }
+        switch (InputCompare()) {
+            case AttackTypes.JUMPING:
+                currentAttack = character.jumpingKick;
+                character.currentAttackName = "jK";
+                break;
+            case AttackTypes.QUARTER_CIRCLE:
+                currentAttack = character.quaterCircleKick;
+                character.currentAttackName = "j236K";
+                break;
+            case AttackTypes.HALF_CIRCLE:
+                currentAttack = character.halfCircleKick;
+                character.currentAttackName = "j41236K";
+                break;
         }
 
         OnAttack();
     }
 
     private void InAirStrong() {
-        if (attackDelay <= 0 || lastAttack as SO_Punch || lastAttack as SO_Kick) {
-            switch (InAirInputCompare()) {
-                case AttackTypes.JUMPING:
-                    currentAttack = currentCharacter.jumpingStrong;
-                    break;
-                case AttackTypes.DRAGON_PUNCH:
-                    currentAttack = currentCharacter.dragonpunchStrong;
-                    break;
-                case AttackTypes.QUARTER_CIRCLE:
-                    currentAttack = currentCharacter.quaterCircleStrong;
-                    break;
-                case AttackTypes.HALF_CIRCLE:
-                    currentAttack = currentCharacter.halfCircleStrong;
-                    break;
-            }
+        switch (InputCompare()) {
+            case AttackTypes.JUMPING:
+                currentAttack = character.jumpingStrong;
+                character.currentAttackName = "jS";
+                break;
+            case AttackTypes.QUARTER_CIRCLE:
+                currentAttack = character.quaterCircleStrong;
+                character.currentAttackName = "j236S";
+                break;
+            case AttackTypes.HALF_CIRCLE:
+                currentAttack = character.halfCircleStrong;
+                character.currentAttackName = "j41236S";
+                break;   
         }
 
         OnAttack();
     }
 
     // on attack with special move the input from the dpad has to be compared
-    private AttackTypes InAirInputCompare() {
-        foreach (InputOrder requiredOrder in inputOrders) {
-            // first we seek for the right combination
-            if (numpadInputOrder.Count < 3 || numpadInputOrder.Count < requiredOrder.numpadOrder.Length) continue; // go to next combination if not right lenght
-            if (requiredOrder.characterFacingDirection != characterFacingDirection) continue; // or if combination is not facing the same direction
-
-            int[] inputOrder = new int[numpadInputOrder.Count];
-            int getLastValues = inputOrder.Length - requiredOrder.numpadOrder.Length;
-            Debug.Log(getLastValues);
-            numpadInputOrder.CopyTo(inputOrder, 0);
-            bool doBreak = false;
-            for (int i = 0; i < requiredOrder.numpadOrder.Length; i++) {
-                if (inputOrder[i + getLastValues] != requiredOrder.numpadOrder[i]) { doBreak = true; break; }
-            }
-
-            if (doBreak) { continue; }
-
-            // if we found the right combination
-            return requiredOrder.attackType;
-        }
+    protected override AttackTypes InputCompare() {
+        AttackTypes result = base.InputCompare();
+        if (result != AttackTypes.UNASSIGNED) return result;
 
         // otherwise we assign one
         return AttackTypes.JUMPING;

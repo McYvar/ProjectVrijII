@@ -7,14 +7,15 @@ public class OnGroundMovement : AttackState {
     /// <summary>
     /// On ground movement handler
     /// </summary>
-    [SerializeField] float groundMovementSpeed;
     [SerializeField] float jumpForce;
+    private bool canJump;
 
     public override void OnEnter() {
         base.OnEnter();
         playerInput.eastFirst += OnGroundStrong;
         playerInput.southFirst += OnGroundKick;
         playerInput.westFirst += OnGroundPunch;
+        canJump = false;
     }
 
     public override void OnExit() {
@@ -28,125 +29,137 @@ public class OnGroundMovement : AttackState {
         base.OnUpdate();
         if (!GroundCheck()) stateManager.SwitchState(typeof(InAirMovement));
 
-        if (lastInputDirection == LeftInputDirection.top) Jump();
+        if (character.lastInputDirection == LeftInputDirection.left ||
+                character.lastInputDirection == LeftInputDirection.centre ||
+                character.lastInputDirection == LeftInputDirection.right) canJump = true;
+
+        if (lastAttack != null)
+            if (!lastAttack.canceledByJump) return;
+
+        if (canJump) {
+            if (character.lastInputDirection == LeftInputDirection.top ||
+                character.lastInputDirection == LeftInputDirection.topLeft ||
+                character.lastInputDirection == LeftInputDirection.topRight) {
+                Jump(character.groundJumpStrength);
+                stateManager.SwitchState(typeof(InAirMovement));
+            }
+        }
     }
 
-    public override void OnFixedUpdate() {
-        base.OnFixedUpdate();
-        GroundMovement();
-    }
+    protected override void Movement() {
+        if (character.lastInputDirection == LeftInputDirection.bottomLeft || // crouching movement
+            character.lastInputDirection == LeftInputDirection.bottom ||
+            character.lastInputDirection == LeftInputDirection.bottomRight) {
 
-    public void GroundMovement() {
-        rb.AddForce(playerInput.leftDirection * groundMovementSpeed);
-    }
+            Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
+            rb.velocity = new Vector2(horizonal.normalized.x * character.crouchMovementSpeed *
+                character.attackMovementReductionScalar, rb.velocity.y);
 
-    public void Jump() {
-        float nearVectorLenght = rb.velocity.magnitude *
-            Mathf.Cos(Vector3.Angle(-transform.up, rb.velocity) * Mathf.Deg2Rad);
-        rb.velocity += transform.up * nearVectorLenght;
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-        stateManager.SwitchState(typeof(InAirMovement));
+        } else {
+            if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
+            else OnDoublePress = () => character.variableMovementSpeed = character.runningMovementSpeed;
+
+            Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
+            float resultMovementSpeed =
+                (character.groundMovementSpeed + character.variableMovementSpeed) *
+                character.attackMovementReductionScalar;
+            rb.velocity = new Vector2(
+                horizonal.normalized.x * resultMovementSpeed,
+                rb.velocity.y);
+        }
     }
 
     #region ground attacks
     private void OnGroundPunch() {
-        if (attackDelay <= 0) {
-            switch (GroundInputCompare()) {
-                case AttackTypes.STANDING:
-                    currentAttack = currentCharacter.standingPunch;
-                    break;
-                case AttackTypes.CROUCHING:
-                    currentAttack = currentCharacter.crouchingPunch;
-                    break;
-                case AttackTypes.DRAGON_PUNCH:
-                    currentAttack = currentCharacter.dragonpunchPunch;
-                    break;
-                case AttackTypes.QUARTER_CIRCLE:
-                    currentAttack = currentCharacter.quaterCirclePunch;
-                    break;
-                case AttackTypes.HALF_CIRCLE:
-                    currentAttack = currentCharacter.halfCirclePunch;
-                    break;
-            }
+        switch (InputCompare()) {
+            case AttackTypes.STANDING:
+                currentAttack = character.standingPunch;
+                character.currentAttackName = "5P";
+                break;
+            case AttackTypes.CROUCHING:
+                currentAttack = character.crouchingPunch;
+                character.currentAttackName = "2P";
+                break;
+            case AttackTypes.DRAGON_PUNCH:
+                currentAttack = character.dragonpunchPunch;
+                character.currentAttackName = "623P";
+                break;
+            case AttackTypes.QUARTER_CIRCLE:
+                currentAttack = character.quaterCirclePunch;
+                character.currentAttackName = "236P";
+                break;
+            case AttackTypes.HALF_CIRCLE:
+                currentAttack = character.halfCirclePunch;
+                character.currentAttackName = "41236P";
+                break;
         }
 
         OnAttack();
     }
 
     private void OnGroundKick() {
-        if (attackDelay <= 0 || lastAttack as SO_Punch) {
-            switch (GroundInputCompare()) {
-                case AttackTypes.STANDING:
-                    currentAttack = currentCharacter.standingKick;
-                    break;
-                case AttackTypes.CROUCHING:
-                    currentAttack = currentCharacter.crouchingKick;
-                    break;
-                case AttackTypes.DRAGON_PUNCH:
-                    currentAttack = currentCharacter.dragonpunchKick;
-                    break;
-                case AttackTypes.QUARTER_CIRCLE:
-                    currentAttack = currentCharacter.quaterCircleKick;
-                    break;
-                case AttackTypes.HALF_CIRCLE:
-                    currentAttack = currentCharacter.halfCircleKick;
-                    break;
-            }
+        switch (InputCompare()) {
+            case AttackTypes.STANDING:
+                currentAttack = character.standingKick;
+                character.currentAttackName = "5K";
+                break;
+            case AttackTypes.CROUCHING:
+                currentAttack = character.crouchingKick;
+                character.currentAttackName = "2K";
+                break;
+            case AttackTypes.DRAGON_PUNCH:
+                currentAttack = character.dragonpunchKick;
+                character.currentAttackName = "623K";
+                break;
+            case AttackTypes.QUARTER_CIRCLE:
+                currentAttack = character.quaterCircleKick;
+                character.currentAttackName = "236K";
+                break;
+            case AttackTypes.HALF_CIRCLE:
+                currentAttack = character.halfCircleKick;
+                character.currentAttackName = "41236K";
+                break;
         }
 
         OnAttack();
     }
 
     private void OnGroundStrong() {
-        if (attackDelay <= 0 || lastAttack as SO_Punch || lastAttack as SO_Kick) {
-            switch (GroundInputCompare()) {
-                case AttackTypes.STANDING:
-                    currentAttack = currentCharacter.standingStrong;
-                    break;
-                case AttackTypes.CROUCHING:
-                    currentAttack = currentCharacter.crouchingStrong;
-                    break;
-                case AttackTypes.DRAGON_PUNCH:
-                    currentAttack = currentCharacter.dragonpunchStrong;
-                    break;
-                case AttackTypes.QUARTER_CIRCLE:
-                    currentAttack = currentCharacter.quaterCircleStrong;
-                    break;
-                case AttackTypes.HALF_CIRCLE:
-                    currentAttack = currentCharacter.halfCircleStrong;
-                    break;
-            }
+        switch (InputCompare()) {
+            case AttackTypes.STANDING:
+                currentAttack = character.standingStrong;
+                character.currentAttackName = "5S";
+                break;
+            case AttackTypes.CROUCHING:
+                currentAttack = character.crouchingStrong;
+                character.currentAttackName = "2S";
+                break;
+            case AttackTypes.DRAGON_PUNCH:
+                currentAttack = character.dragonpunchStrong;
+                character.currentAttackName = "623S";
+                break;
+            case AttackTypes.QUARTER_CIRCLE:
+                currentAttack = character.quaterCircleStrong;
+                character.currentAttackName = "236S";
+                break;
+            case AttackTypes.HALF_CIRCLE:
+                currentAttack = character.halfCircleStrong;
+                character.currentAttackName = "41236S";
+                break;
         }
 
         OnAttack();
     }
 
     // on attack with special move the input from the dpad has to be compared
-    private AttackTypes GroundInputCompare() {
-        foreach (InputOrder requiredOrder in inputOrders) {
-            // first we seek for the right combination
-            if (numpadInputOrder.Count < 3 || numpadInputOrder.Count < requiredOrder.numpadOrder.Length) continue; // go to next combination if not right lenght
-            if (requiredOrder.characterFacingDirection != characterFacingDirection) continue; // or if combination is not facing the same direction
-
-            int[] inputOrder = new int[numpadInputOrder.Count];
-            int getLastValues = inputOrder.Length - requiredOrder.numpadOrder.Length;
-            Debug.Log(getLastValues);
-            numpadInputOrder.CopyTo(inputOrder, 0);
-            bool doBreak = false;
-            for (int i = 0; i < requiredOrder.numpadOrder.Length; i++) {
-                if (inputOrder[i + getLastValues] != requiredOrder.numpadOrder[i]) { doBreak = true; break; }
-            }
-
-            if (doBreak) { continue; }
-
-            // if we found the right combination
-            return requiredOrder.attackType;
-        }
-
-        // otherwise we assign one
-        if (lastInputDirection == LeftInputDirection.bottomLeft ||
-            lastInputDirection == LeftInputDirection.bottom ||
-            lastInputDirection == LeftInputDirection.bottomRight)
+    protected override AttackTypes InputCompare() {
+        AttackTypes result = base.InputCompare();
+        if (result != AttackTypes.UNASSIGNED) return result;
+        
+        // unassigned, so we assign one, standing / crouching
+        if (character.lastInputDirection == LeftInputDirection.bottomLeft ||
+            character.lastInputDirection == LeftInputDirection.bottom ||
+            character.lastInputDirection == LeftInputDirection.bottomRight)
             return AttackTypes.CROUCHING;
 
         return AttackTypes.STANDING;
