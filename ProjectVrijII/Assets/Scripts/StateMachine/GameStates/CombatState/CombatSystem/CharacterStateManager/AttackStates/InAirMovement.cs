@@ -105,15 +105,15 @@ public class InAirMovement : AttackState {
     private void InAirPunch() {
         switch (InputCompare()) {
             case AttackTypes.JUMPING:
-                currentAttack = character.jumpingPunch;
+                character.currentAttack = character.jumpingPunch;
                 character.currentAttackName = "jP";
                 break;
             case AttackTypes.QUARTER_CIRCLE:
-                currentAttack = character.quaterCirclePunch;
+                character.currentAttack = character.quaterCirclePunch;
                 character.currentAttackName = "j236P";
                 break;
             case AttackTypes.HALF_CIRCLE:
-                currentAttack = character.halfCirclePunch;
+                character.currentAttack = character.halfCirclePunch;
                 character.currentAttackName = "j41236P";
                 break;
         }
@@ -124,15 +124,15 @@ public class InAirMovement : AttackState {
     private void InAirKick() {
         switch (InputCompare()) {
             case AttackTypes.JUMPING:
-                currentAttack = character.jumpingKick;
+                character.currentAttack = character.jumpingKick;
                 character.currentAttackName = "jK";
                 break;
             case AttackTypes.QUARTER_CIRCLE:
-                currentAttack = character.quaterCircleKick;
+                character.currentAttack = character.quaterCircleKick;
                 character.currentAttackName = "j236K";
                 break;
             case AttackTypes.HALF_CIRCLE:
-                currentAttack = character.halfCircleKick;
+                character.currentAttack = character.halfCircleKick;
                 character.currentAttackName = "j41236K";
                 break;
         }
@@ -143,15 +143,15 @@ public class InAirMovement : AttackState {
     private void InAirStrong() {
         switch (InputCompare()) {
             case AttackTypes.JUMPING:
-                currentAttack = character.jumpingStrong;
+                character.currentAttack = character.jumpingStrong;
                 character.currentAttackName = "jS";
                 break;
             case AttackTypes.QUARTER_CIRCLE:
-                currentAttack = character.quaterCircleStrong;
+                character.currentAttack = character.quaterCircleStrong;
                 character.currentAttackName = "j236S";
                 break;
             case AttackTypes.HALF_CIRCLE:
-                currentAttack = character.halfCircleStrong;
+                character.currentAttack = character.halfCircleStrong;
                 character.currentAttackName = "j41236S";
                 break;   
         }

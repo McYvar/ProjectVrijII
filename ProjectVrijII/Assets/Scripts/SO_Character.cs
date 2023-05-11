@@ -52,4 +52,6 @@ public class SO_Character : ScriptableObject
     [HideInInspector] public float attackMovementReductionScalar = 1;
     [HideInInspector] public string currentAttackName = "";
     [HideInInspector] public AttackPhase attackPhase = AttackPhase.ready;
+    [HideInInspector] public SO_Attack currentAttack = null;
+    [HideInInspector] public SO_Attack lastAttack = null;
 }

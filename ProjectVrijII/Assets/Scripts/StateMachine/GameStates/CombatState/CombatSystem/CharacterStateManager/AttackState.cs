@@ -17,8 +17,6 @@ public class AttackState : CharacterBaseState {
     [SerializeField] private LayerMask groundCheckLayers;
 
     protected float attackDelay;
-    protected SO_Attack currentAttack;
-    protected SO_Attack lastAttack;
 
     [SerializeField] protected InputOrder[] inputOrders;
 
@@ -45,7 +43,8 @@ public class AttackState : CharacterBaseState {
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
         character.attackPhase = AttackPhase.ready;
-        lastAttack = null;
+        character.lastAttack = null;
+        character.currentAttack = null;
     }
 
     public override void OnUpdate() {
@@ -69,31 +68,31 @@ public class AttackState : CharacterBaseState {
         }
         Debug.Log(input);
 
-        if (currentAttack != null) {
+        if (character.currentAttack != null) {
             if (CanAttack()) {
                 // if the player does an attack...
                 //character.characterAnimator.SetBool(character.currentAttackName, true);
                 Debug.Log(character.currentAttackName);
                 // enemy -> Idamagable interface --> GetDamaged2(strength[0])
-                character.attackMovementReductionScalar = currentAttack.movementReduction;
+                character.attackMovementReductionScalar = character.currentAttack.movementReduction;
                 character.attackPhase = AttackPhase.startup;
 
                 // then reset the attack
-                lastAttack = currentAttack;
-                currentAttack = null;
+                character.lastAttack = character.currentAttack;
+                character.currentAttack = null;
                 character.numpadInputOrder.Clear();
             }
         }
     }
 
     private bool CanAttack() {
-        if (lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
-        if (!lastAttack.isSpecial && currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
+        if (character.lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
+        if (!character.lastAttack.isSpecial && character.currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
         if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) return false; // these phases can only be canceled by specials
-        if (lastAttack.isSpecial) return false; // specials can't be canceld
+        if (character.lastAttack.isSpecial) return false; // specials can't be canceld
         // then this is recovery phase
-        if (lastAttack as SO_Punch && (currentAttack as SO_Kick || currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
-        if (lastAttack as SO_Kick && currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
+        if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
+        if (character.lastAttack as SO_Kick && character.currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
         return false;
     }
 

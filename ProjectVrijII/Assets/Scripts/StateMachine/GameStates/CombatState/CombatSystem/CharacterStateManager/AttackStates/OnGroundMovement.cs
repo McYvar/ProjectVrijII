@@ -33,8 +33,8 @@ public class OnGroundMovement : AttackState {
                 character.lastInputDirection == LeftInputDirection.centre ||
                 character.lastInputDirection == LeftInputDirection.right) canJump = true;
 
-        if (lastAttack != null)
-            if (!lastAttack.canceledByJump) return;
+        if (character.lastAttack != null)
+            if (!character.lastAttack.canceledByJump) return;
 
         if (canJump) {
             if (character.lastInputDirection == LeftInputDirection.top ||
@@ -73,23 +73,23 @@ public class OnGroundMovement : AttackState {
     private void OnGroundPunch() {
         switch (InputCompare()) {
             case AttackTypes.STANDING:
-                currentAttack = character.standingPunch;
+                character.currentAttack = character.standingPunch;
                 character.currentAttackName = "5P";
                 break;
             case AttackTypes.CROUCHING:
-                currentAttack = character.crouchingPunch;
+                character.currentAttack = character.crouchingPunch;
                 character.currentAttackName = "2P";
                 break;
             case AttackTypes.DRAGON_PUNCH:
-                currentAttack = character.dragonpunchPunch;
+                character.currentAttack = character.dragonpunchPunch;
                 character.currentAttackName = "623P";
                 break;
             case AttackTypes.QUARTER_CIRCLE:
-                currentAttack = character.quaterCirclePunch;
+                character.currentAttack = character.quaterCirclePunch;
                 character.currentAttackName = "236P";
                 break;
             case AttackTypes.HALF_CIRCLE:
-                currentAttack = character.halfCirclePunch;
+                character.currentAttack = character.halfCirclePunch;
                 character.currentAttackName = "41236P";
                 break;
         }
@@ -100,23 +100,23 @@ public class OnGroundMovement : AttackState {
     private void OnGroundKick() {
         switch (InputCompare()) {
             case AttackTypes.STANDING:
-                currentAttack = character.standingKick;
+                character.currentAttack = character.standingKick;
                 character.currentAttackName = "5K";
                 break;
             case AttackTypes.CROUCHING:
-                currentAttack = character.crouchingKick;
+                character.currentAttack = character.crouchingKick;
                 character.currentAttackName = "2K";
                 break;
             case AttackTypes.DRAGON_PUNCH:
-                currentAttack = character.dragonpunchKick;
+                character.currentAttack = character.dragonpunchKick;
                 character.currentAttackName = "623K";
                 break;
             case AttackTypes.QUARTER_CIRCLE:
-                currentAttack = character.quaterCircleKick;
+                character.currentAttack = character.quaterCircleKick;
                 character.currentAttackName = "236K";
                 break;
             case AttackTypes.HALF_CIRCLE:
-                currentAttack = character.halfCircleKick;
+                character.currentAttack = character.halfCircleKick;
                 character.currentAttackName = "41236K";
                 break;
         }
@@ -127,23 +127,23 @@ public class OnGroundMovement : AttackState {
     private void OnGroundStrong() {
         switch (InputCompare()) {
             case AttackTypes.STANDING:
-                currentAttack = character.standingStrong;
+                character.currentAttack = character.standingStrong;
                 character.currentAttackName = "5S";
                 break;
             case AttackTypes.CROUCHING:
-                currentAttack = character.crouchingStrong;
+                character.currentAttack = character.crouchingStrong;
                 character.currentAttackName = "2S";
                 break;
             case AttackTypes.DRAGON_PUNCH:
-                currentAttack = character.dragonpunchStrong;
+                character.currentAttack = character.dragonpunchStrong;
                 character.currentAttackName = "623S";
                 break;
             case AttackTypes.QUARTER_CIRCLE:
-                currentAttack = character.quaterCircleStrong;
+                character.currentAttack = character.quaterCircleStrong;
                 character.currentAttackName = "236S";
                 break;
             case AttackTypes.HALF_CIRCLE:
-                currentAttack = character.halfCircleStrong;
+                character.currentAttack = character.halfCircleStrong;
                 character.currentAttackName = "41236S";
                 break;
         }
