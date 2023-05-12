@@ -1037,15 +1037,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 2
     messageOptions: 0
-  - time: 0.083333336
-    functionName: 
+  - time: 0.125
+    functionName: TriggerHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.125
-    functionName: TriggerHit
+    functionName: StartRecoveryInputBuffer
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -1064,6 +1064,13 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 3
+    messageOptions: 0
+  - time: 0.375
+    functionName: StartReadyInputBuffer
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
     messageOptions: 0
   - time: 0.5833333
     functionName: SetAttackPhase

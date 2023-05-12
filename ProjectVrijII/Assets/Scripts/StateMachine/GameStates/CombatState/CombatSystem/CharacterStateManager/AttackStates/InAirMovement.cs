@@ -18,6 +18,8 @@ public class InAirMovement : AttackState {
 
     private Vector2 dashStartingPoint;
 
+    private float originalGravityScale;
+
     public override void OnEnter() {
         base.OnEnter();
         playerInput.eastFirst += InAirStrong;
@@ -49,12 +51,14 @@ public class InAirMovement : AttackState {
             inAirTimer += Time.deltaTime;
         }
 
-        if (!didDoubleJump) {
+        if (!didDoubleJump && !canDoubleJump) {
             if (character.lastInputDirection == LeftInputDirection.left ||
                   character.lastInputDirection == LeftInputDirection.centre ||
                   character.lastInputDirection == LeftInputDirection.right) canDoubleJump = true;
-
-            if (canDoubleJump) {
+        }
+        
+        if (character.attackPhase == AttackPhase.ready) {
+            if (canDoubleJump && !didDoubleJump) {
                 if (character.lastInputDirection == LeftInputDirection.top ||
                     character.lastInputDirection == LeftInputDirection.topLeft ||
                     character.lastInputDirection == LeftInputDirection.topRight) {
@@ -62,32 +66,51 @@ public class InAirMovement : AttackState {
                     didDoubleJump = true;
                 }
             }
+        } else {
+            if (canDoubleJump && !didDoubleJump) {
+                if (character.lastInputDirection == LeftInputDirection.top ||
+                character.lastInputDirection == LeftInputDirection.topLeft ||
+                character.lastInputDirection == LeftInputDirection.topRight) {
+                    if (character.lastAttack.canceledByJump) {
+                        RecoveryInputBuffer = () => {
+                            Jump(character.doubleJumpStrength);
+                            didDoubleJump = true;
+                        };
+                    } else {
+                        ReadyInputBuffer = () => {
+                            Jump(character.doubleJumpStrength);
+                            didDoubleJump = true;
+                        };
+                    }
+                }
+            }
         }
     }
 
     protected override void Movement() {
         if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
-        else OnDoublePress = () => { Dash(); };
+        else OnDoublePress = Dash; // air dash can interup all recovery types
 
-        if (doDash && !didDash) {
-            if (Mathf.Abs(rb.velocity.x) < 1) {
-                doDash = false;
-                didDash = true;
+        if (character.attackPhase == AttackPhase.ready || character.attackPhase == AttackPhase.recovery) {
+            if (doDash && !didDash) {
+                if (Mathf.Abs(rb.velocity.x) < 1) {
+                    doDash = false;
+                    didDash = true;
+                    rb.gravityScale = originalGravityScale;
+                }
+                if (Vector2.Distance(transform.position, dashStartingPoint) >= character.airDashLength) {
+                    doDash = false;
+                    didDash = true;
+                }
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                return;
             }
-            if (Vector2.Distance(transform.position, dashStartingPoint) >= character.airDashLength) {
-                doDash = false;
-                didDash = true;
-            }
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            return;
         }
+
         Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
-        float resultMovementSpeed =
-            (character.airMovementSpeed + character.variableMovementSpeed)
-            * character.attackMovementReductionScalar;
-        rb.velocity = new Vector2(
-            horizonal.normalized.x * resultMovementSpeed,
-            rb.velocity.y);
+        float resultMovementSpeed = (character.airMovementSpeed + character.variableMovementSpeed) *
+            character.attackMovementReductionScalar;
+        rb.velocity = new Vector2(horizonal.normalized.x * resultMovementSpeed, rb.velocity.y);
     }
 
     private void Dash() {
@@ -97,10 +120,13 @@ public class InAirMovement : AttackState {
         else if (character.lastInputDirection == LeftInputDirection.right) direction = 1;
         else return;
 
+        originalGravityScale = rb.gravityScale;
+        rb.gravityScale = 0;
         rb.velocity = new Vector2(direction * character.airDashStrength, 0);
 
         doDash = true;
         dashStartingPoint = transform.position;
+        SetAttackPhase(AttackPhase.ready); // meaning an air dash can be interupted
     }
 
     #region air attacks

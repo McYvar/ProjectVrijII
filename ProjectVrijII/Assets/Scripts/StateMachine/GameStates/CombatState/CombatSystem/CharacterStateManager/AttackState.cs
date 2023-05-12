@@ -42,6 +42,9 @@ public class AttackState : CharacterBaseState {
     [SerializeField] LayerMask hitLayer;
     [SerializeField] Transform currentEnemy; // temporaily for facing
 
+    protected Action RecoveryInputBuffer;
+    protected Action ReadyInputBuffer;
+
     public override void OnAwake() {
         base.OnAwake();
         rb = GetComponent<Rigidbody2D>();
@@ -55,18 +58,14 @@ public class AttackState : CharacterBaseState {
         attackDelay = 0;
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
-        character.attackPhase = AttackPhase.ready;
-        character.lastAttack = null;
+        SetAttackPhase(AttackPhase.ready);
         character.currentAttack = null;
+        ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
+        RecoveryInputBuffer = null;
     }
 
     public override void OnUpdate() {
         LeftInputComboHandler(playerInput.leftDirection);
-
-        // if combo over, switch to enemy turns, combo is over when enemy is no longer hitstun
-        if (character.attackPhase == AttackPhase.ready) {
-            character.attackMovementReductionScalar = 1;
-        }
 
         // character always faces the current enemy, as should the enemy also face our character, but thats for later
         if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
@@ -94,35 +93,88 @@ public class AttackState : CharacterBaseState {
         */
 
         if (character.currentAttack != null) {
-            if (CanAttack()) {
-                // if the player does an attack...
-                animator.SetTrigger(character.currentAttackName);
-                Debug.Log(character.currentAttackName);
-                // enemy -> Idamagable interface --> GetDamaged2(strength[0])
-                character.attackMovementReductionScalar = character.currentAttack.movementReduction;
-                character.attackPhase = AttackPhase.startup;
-
-                // then reset the attack
-                character.lastAttack = character.currentAttack;
-                character.currentAttack = null;
-                character.numpadInputOrder.Clear();
-            }
+            if (CanAttackInstant()) DoAttack(character.currentAttack);
+            else if (CanBufferRecovery()) RecoveryInputBuffer = () => { DoAttack(character.currentAttack); }; // can now be buffered before recovery
+            else if (CanAttackInRecovery()) DoAttack(character.currentAttack);
+            else ReadyInputBuffer = () => { DoAttack(character.currentAttack); };
         }
     }
 
-    private bool CanAttack() {
+    private void DoAttack(SO_Attack newAttack) {
+        // if the player does an attack...
+        animator.SetTrigger(character.currentAttackName);
+        character.attackMovementReductionScalar = newAttack.movementReduction;
+        character.fallReductionScalar = newAttack.fallReduction;
+        if (newAttack.attackBounce.y != 0) rb.velocity = new Vector2(rb.velocity.x, newAttack.attackBounce.y);
+        if (newAttack.attackBounce.x != 0) {
+            if (characterFacingDirection == CharacterFacingDirection.RIGHT) rb.velocity = new Vector2(newAttack.attackBounce.x, rb.velocity.y);
+            else rb.velocity = new Vector2(-newAttack.attackBounce.x, rb.velocity.y);
+        }
+        SetAttackPhase(AttackPhase.startup);
+
+        // then reset the attack
+        character.lastAttack = character.currentAttack;
+        character.currentAttack = null;
+        character.numpadInputOrder.Clear();
+    }
+
+    private bool CanAttackInstant() {
         if (character.lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
         if (!character.lastAttack.isSpecial && character.currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
-        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) return false; // these phases can only be canceled by specials
-        if (character.lastAttack.isSpecial) return false; // specials can't be canceld
-        // then this is recovery phase
-        if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
-        if (character.lastAttack as SO_Kick && character.currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
+        return false;
+    }
+
+    private bool CanBufferRecovery() {
+        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) { // these phases can only be canceled by specials
+            if (character.lastAttack.isSpecial) return false; // specials can't be canceld
+            if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
+            if (character.lastAttack as SO_Kick && character.currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
+        }
+        return false;
+    }
+
+    private bool CanAttackInRecovery() {
+        if (character.attackPhase == AttackPhase.recovery) {
+            if (character.lastAttack.isSpecial) return false; // specials can't be canceld
+            if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
+            if (character.lastAttack as SO_Kick && character.currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
+        }
         return false;
     }
 
     public void SetAttackPhase(AttackPhase attackPhase) {
-        character.attackPhase = attackPhase;
+        character.SetAttackPhase(attackPhase);
+
+        // reset values here
+        switch (attackPhase) {
+            case AttackPhase.ready:
+                character.attackMovementReductionScalar = 1;
+                if (ReadyInputBuffer != null) {
+                    ReadyInputBuffer.Invoke();
+                    ReadyInputBuffer = null;
+                    RecoveryInputBuffer = null;
+                }
+                break;
+            case AttackPhase.startup:
+                break;
+            case AttackPhase.active:
+                break;
+            case AttackPhase.recovery:
+                if (RecoveryInputBuffer != null) {
+                    RecoveryInputBuffer.Invoke();
+                    RecoveryInputBuffer = null;
+                    ReadyInputBuffer = null;
+                }
+                break;
+        }
+    }
+
+    public void StartRecoveryInputBuffer() {
+        RecoveryInputBuffer = null;
+    }
+
+    public void StartReadyInputBuffer() {
+        ReadyInputBuffer = null;
     }
 
     public void LeftInputComboHandler(Vector2 direction) {

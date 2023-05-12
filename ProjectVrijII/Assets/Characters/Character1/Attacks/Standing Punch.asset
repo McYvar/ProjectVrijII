@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength: []
   movementReduction: 0
+  fallReduction: 0
+  attackBounce: {x: 0, y: 0}
   isSpecial: 0
   canceledByJump: 0

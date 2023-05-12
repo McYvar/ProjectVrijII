@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03a89eb74034cc4fa6e7bfae269cbe4, type: 3}
   m_Name: Jumping Strong
   m_EditorClassIdentifier: 
-  duration: 0.7
-  strength: 8
+  strength: []
+  movementReduction: 1
+  fallReduction: 0
+  attackBounce: {x: 10, y: 20}
+  isSpecial: 0
+  canceledByJump: 0
