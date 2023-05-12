@@ -29,6 +29,8 @@ public class InAirMovement : AttackState {
 
         doDash = false;
         didDash = false;
+
+        //animator.SetTrigger("air ofzo");
     }
 
     public override void OnExit() {

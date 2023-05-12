@@ -1,6 +1,8 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackState : CharacterBaseState {
@@ -34,7 +36,11 @@ public class AttackState : CharacterBaseState {
     [SerializeField] protected Animator animator;
     protected RuntimeAnimatorController controller;
 
-    int test;
+    [SerializeField] Collider2D hitbox0;
+    [SerializeField] Collider2D hitbox1;
+    [SerializeField] Collider2D hitbox2;
+    [SerializeField] LayerMask hitLayer;
+    [SerializeField] Transform currentEnemy; // temporaily for facing
 
     public override void OnAwake() {
         base.OnAwake();
@@ -60,6 +66,16 @@ public class AttackState : CharacterBaseState {
         // if combo over, switch to enemy turns, combo is over when enemy is no longer hitstun
         if (character.attackPhase == AttackPhase.ready) {
             character.attackMovementReductionScalar = 1;
+        }
+
+        // character always faces the current enemy, as should the enemy also face our character, but thats for later
+        if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
+            characterFacingDirection = CharacterFacingDirection.RIGHT;
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
+        else {
+            characterFacingDirection = CharacterFacingDirection.LEFT;
+            transform.localEulerAngles = new Vector3(0, 180, 0);
         }
     }
 
@@ -107,10 +123,6 @@ public class AttackState : CharacterBaseState {
 
     public void SetAttackPhase(AttackPhase attackPhase) {
         character.attackPhase = attackPhase;
-    }
-
-    public void MSG(string msg) {
-        Debug.Log(msg + test);
     }
 
     public void LeftInputComboHandler(Vector2 direction) {
@@ -203,6 +215,52 @@ public class AttackState : CharacterBaseState {
         }
 
         return AttackTypes.UNASSIGNED;
+    }
+
+    public void TriggerHit(int hitNumber) {
+        Collider2D[] box0Collisions = Physics2D.OverlapBoxAll(hitbox0.bounds.center, hitbox0.bounds.size, 0, hitLayer);
+        Collider2D[] box1Collisions = Physics2D.OverlapBoxAll(hitbox1.bounds.center, hitbox1.bounds.size, 0, hitLayer);
+        Collider2D[] box2Collisions = Physics2D.OverlapBoxAll(hitbox2.bounds.center, hitbox2.bounds.size, 0, hitLayer);
+
+        List<Transform> hitableEntities = new List<Transform>();
+
+        // first we check for each hitbox if there are hitable entities in there and add them to a list
+        foreach (var hit in box0Collisions) {
+            if (hit.transform == transform) continue;
+            if (hit.GetComponent<IHitable>() != null) {
+                Debug.Log(hit + " was hit in collision zone 0");
+                hitableEntities.Add(hit.transform);
+            }
+        }
+
+        foreach (var hit in box1Collisions) {
+            if (hit.transform == transform) continue;
+            if (hit.GetComponent<IHitable>() != null) {
+                Debug.Log(hit + " was hit in collision zone 1");
+                if (!hitableEntities.Contains(hit.transform)) hitableEntities.Add(hit.transform);
+            }
+        }
+
+        foreach (var hit in box2Collisions) {
+            if (hit.transform == transform) continue;
+            if (hit.GetComponent<IHitable>() != null) {
+                Debug.Log(hit + " was hit in collision zone 2");
+                if (!hitableEntities.Contains(hit.transform)) hitableEntities.Add(hit.transform);
+            }
+        }
+
+        // then foreach hitable entity we call upon their function
+        foreach (var entity in hitableEntities) {
+            try {
+                Vector2 hitDirection = (entity.transform.position - transform.position).normalized;
+                entity.GetComponent<IHitable>().OnHit(hitDirection * character.lastAttack.strength[hitNumber]);
+            }
+            catch {
+                Debug.Log(character.lastAttack + " gave an error, please check if the amount of attacks in this " +
+                    "attack(" + character.lastAttack.strength.Length +  ") is lower or equal to the amount in the animation(" +
+                    hitNumber + ").");
+            }
+        }
     }
     #endregion
 

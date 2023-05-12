@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Crouching Kick
   m_EditorClassIdentifier: 
-  duration: 0.3
   strength:
   - 2
   - 4
   - 8
+  movementReduction: 0
+  isSpecial: 0
+  canceledByJump: 1

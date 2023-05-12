@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf65454ca7454ad458bb27b44f7b94ff, type: 3}
   m_Name: Standing Punch
   m_EditorClassIdentifier: 
-  duration: 0.2
-  strength: 2
+  strength: []
+  movementReduction: 0
+  isSpecial: 0
+  canceledByJump: 0

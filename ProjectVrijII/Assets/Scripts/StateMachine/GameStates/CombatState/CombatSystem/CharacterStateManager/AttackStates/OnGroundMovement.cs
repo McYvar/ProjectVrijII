@@ -16,6 +16,8 @@ public class OnGroundMovement : AttackState {
         playerInput.southFirst += OnGroundKick;
         playerInput.westFirst += OnGroundPunch;
         canJump = false;
+
+        //animator.SetTrigger("ground ofzo");
     }
 
     public override void OnExit() {
@@ -33,8 +35,15 @@ public class OnGroundMovement : AttackState {
                 character.lastInputDirection == LeftInputDirection.centre ||
                 character.lastInputDirection == LeftInputDirection.right) canJump = true;
 
-        if (character.lastAttack != null)
-            if (!character.lastAttack.canceledByJump) return;
+        if (character.attackPhase == AttackPhase.ready) {
+            if (character.lastInputDirection == LeftInputDirection.bottom)
+                animator.SetInteger("Stance", 1);
+            else if (character.lastInputDirection == LeftInputDirection.centre)
+                animator.SetInteger("Stance", 0);
+        } else {
+            if (character.lastAttack != null)
+                if (!character.lastAttack.canceledByJump) return;
+        }
 
         if (canJump) {
             if (character.lastInputDirection == LeftInputDirection.top ||
@@ -55,7 +64,9 @@ public class OnGroundMovement : AttackState {
             rb.velocity = new Vector2(horizonal.normalized.x * character.crouchMovementSpeed *
                 character.attackMovementReductionScalar, rb.velocity.y);
 
-        } else {
+            //animator.SetInteger("walking", 1);
+
+        } else { // walking/running movement
             if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
             else OnDoublePress = () => character.variableMovementSpeed = character.runningMovementSpeed;
 
@@ -66,6 +77,13 @@ public class OnGroundMovement : AttackState {
             rb.velocity = new Vector2(
                 horizonal.normalized.x * resultMovementSpeed,
                 rb.velocity.y);
+
+            if (character.variableMovementSpeed == 0) { // means walking
+                //animator.SetInteger("walking", 1);
+            }
+            else { // means running
+                //animator.SetInteger("walking", 1);
+            }
         }
     }
 
