@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Standing Kick
   m_EditorClassIdentifier: 
   strength:
-  - 1
-  - 4
-  - 7
+  - 2
+  - 15
   movementReduction: 0
   isSpecial: 0
   canceledByJump: 0
