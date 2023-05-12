@@ -16,5 +16,7 @@ MonoBehaviour:
   - 2
   - 15
   movementReduction: 0
+  fallReduction: 0
+  attackBounce: 0
   isSpecial: 0
   canceledByJump: 0

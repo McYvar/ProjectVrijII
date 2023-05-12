@@ -40,19 +40,35 @@ public class OnGroundMovement : AttackState {
                 animator.SetInteger("Stance", 1);
             else if (character.lastInputDirection == LeftInputDirection.centre)
                 animator.SetInteger("Stance", 0);
-        } else {
-            if (character.lastAttack != null)
-                if (!character.lastAttack.canceledByJump) return;
-        }
 
-        if (canJump) {
-            if (character.lastInputDirection == LeftInputDirection.top ||
-                character.lastInputDirection == LeftInputDirection.topLeft ||
-                character.lastInputDirection == LeftInputDirection.topRight) {
-                Jump(character.groundJumpStrength);
-                stateManager.SwitchState(typeof(InAirMovement));
+            if (canJump) {
+                if (character.lastInputDirection == LeftInputDirection.top ||
+                               character.lastInputDirection == LeftInputDirection.topLeft ||
+                               character.lastInputDirection == LeftInputDirection.topRight) {
+                    Jump(character.groundJumpStrength);
+                    stateManager.SwitchState(typeof(InAirMovement));
+                }
+            }
+        } else {
+            if (canJump) {
+                if (character.lastInputDirection == LeftInputDirection.top ||
+                    character.lastInputDirection == LeftInputDirection.topLeft ||
+                    character.lastInputDirection == LeftInputDirection.topRight) {
+                    if (character.lastAttack.canceledByJump) {
+                        RecoveryInputBuffer = () => {
+                            Jump(character.groundJumpStrength);
+                            stateManager.SwitchState(typeof(InAirMovement));
+                        };
+                    } else {
+                        ReadyInputBuffer = () => {
+                            Jump(character.groundJumpStrength);
+                            stateManager.SwitchState(typeof(InAirMovement));
+                        };
+                    }
+                }
             }
         }
+
     }
 
     protected override void Movement() {

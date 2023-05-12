@@ -48,11 +48,29 @@ public class SO_Character : ScriptableObject
     [HideInInspector] public LeftInputDirection lastInputDirection = LeftInputDirection.centre;
     [HideInInspector] public float variableMovementSpeed = 1;
     [HideInInspector] public float attackMovementReductionScalar = 1;
+    [HideInInspector] public float fallReductionScalar = 1;
     [HideInInspector] public string currentAttackName = "";
-    [HideInInspector] public AttackPhase attackPhase = AttackPhase.ready;
     [HideInInspector] public SO_Attack currentAttack = null;
     [HideInInspector] public SO_Attack lastAttack = null;
 
     [Header("Animation clips for this character")]
     public AnimatorOverrideController overrideController;
+
+    [HideInInspector] public AttackPhase attackPhase { get; private set; } = AttackPhase.ready;
+    public void SetAttackPhase(AttackPhase attackPhase) {
+        this.attackPhase = attackPhase;
+
+        // reset values here
+        switch (attackPhase) {
+            case AttackPhase.ready:
+                break;
+            case AttackPhase.startup:
+                break;
+            case AttackPhase.active:
+                break;
+            case AttackPhase.recovery:
+                fallReductionScalar = 1;
+                break;
+        }
+    }
 }
