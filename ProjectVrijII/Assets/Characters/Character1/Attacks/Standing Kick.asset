@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Standing Kick
   m_EditorClassIdentifier: 
-  duration: 0.3
-  strength: 3
+  strength:
+  - 1
+  - 4
+  - 7
+  movementReduction: 0
+  isSpecial: 0
+  canceledByJump: 0

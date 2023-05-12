@@ -1,6 +1,8 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackState : CharacterBaseState {
@@ -16,11 +18,9 @@ public class AttackState : CharacterBaseState {
 
     [SerializeField] private LayerMask groundCheckLayers;
 
-    protected float attackDelay;
-    protected SO_Attack currentAttack;
-    protected SO_Attack lastAttack;
-
     [SerializeField] protected InputOrder[] inputOrders;
+
+    protected float attackDelay;
 
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
 
@@ -33,10 +33,21 @@ public class AttackState : CharacterBaseState {
     private float maxDoublePressTime = 0.5f;
     protected Action OnDoublePress;
 
+    [SerializeField] protected Animator animator;
+    protected RuntimeAnimatorController controller;
+
+    [SerializeField] Collider2D hitbox0;
+    [SerializeField] Collider2D hitbox1;
+    [SerializeField] Collider2D hitbox2;
+    [SerializeField] LayerMask hitLayer;
+    [SerializeField] Transform currentEnemy; // temporaily for facing
+
     public override void OnAwake() {
         base.OnAwake();
         rb = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
+
+        animator.runtimeAnimatorController = character.overrideController;
     }
 
     public override void OnEnter() {
@@ -45,7 +56,8 @@ public class AttackState : CharacterBaseState {
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
         character.attackPhase = AttackPhase.ready;
-        lastAttack = null;
+        character.lastAttack = null;
+        character.currentAttack = null;
     }
 
     public override void OnUpdate() {
@@ -55,6 +67,16 @@ public class AttackState : CharacterBaseState {
         if (character.attackPhase == AttackPhase.ready) {
             character.attackMovementReductionScalar = 1;
         }
+
+        // character always faces the current enemy, as should the enemy also face our character, but thats for later
+        if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
+            characterFacingDirection = CharacterFacingDirection.RIGHT;
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
+        else {
+            characterFacingDirection = CharacterFacingDirection.LEFT;
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
     }
 
     public override void OnFixedUpdate() {
@@ -63,37 +85,39 @@ public class AttackState : CharacterBaseState {
 
     #region attacks
     public void OnAttack() {
+        /*
         string input = "";
         foreach (int i in character.numpadInputOrder) {
             input += i + ", ";
         }
         Debug.Log(input);
+        */
 
-        if (currentAttack != null) {
+        if (character.currentAttack != null) {
             if (CanAttack()) {
                 // if the player does an attack...
-                //character.characterAnimator.SetBool(character.currentAttackName, true);
+                animator.SetTrigger(character.currentAttackName);
                 Debug.Log(character.currentAttackName);
                 // enemy -> Idamagable interface --> GetDamaged2(strength[0])
-                character.attackMovementReductionScalar = currentAttack.movementReduction;
+                character.attackMovementReductionScalar = character.currentAttack.movementReduction;
                 character.attackPhase = AttackPhase.startup;
 
                 // then reset the attack
-                lastAttack = currentAttack;
-                currentAttack = null;
+                character.lastAttack = character.currentAttack;
+                character.currentAttack = null;
                 character.numpadInputOrder.Clear();
             }
         }
     }
 
     private bool CanAttack() {
-        if (lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
-        if (!lastAttack.isSpecial && currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
+        if (character.lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
+        if (!character.lastAttack.isSpecial && character.currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
         if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) return false; // these phases can only be canceled by specials
-        if (lastAttack.isSpecial) return false; // specials can't be canceld
+        if (character.lastAttack.isSpecial) return false; // specials can't be canceld
         // then this is recovery phase
-        if (lastAttack as SO_Punch && (currentAttack as SO_Kick || currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
-        if (lastAttack as SO_Kick && currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
+        if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
+        if (character.lastAttack as SO_Kick && character.currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
         return false;
     }
 
@@ -191,6 +215,52 @@ public class AttackState : CharacterBaseState {
         }
 
         return AttackTypes.UNASSIGNED;
+    }
+
+    public void TriggerHit(int hitNumber) {
+        Collider2D[] box0Collisions = Physics2D.OverlapBoxAll(hitbox0.bounds.center, hitbox0.bounds.size, 0, hitLayer);
+        Collider2D[] box1Collisions = Physics2D.OverlapBoxAll(hitbox1.bounds.center, hitbox1.bounds.size, 0, hitLayer);
+        Collider2D[] box2Collisions = Physics2D.OverlapBoxAll(hitbox2.bounds.center, hitbox2.bounds.size, 0, hitLayer);
+
+        List<Transform> hitableEntities = new List<Transform>();
+
+        // first we check for each hitbox if there are hitable entities in there and add them to a list
+        foreach (var hit in box0Collisions) {
+            if (hit.transform == transform) continue;
+            if (hit.GetComponent<IHitable>() != null) {
+                Debug.Log(hit + " was hit in collision zone 0");
+                hitableEntities.Add(hit.transform);
+            }
+        }
+
+        foreach (var hit in box1Collisions) {
+            if (hit.transform == transform) continue;
+            if (hit.GetComponent<IHitable>() != null) {
+                Debug.Log(hit + " was hit in collision zone 1");
+                if (!hitableEntities.Contains(hit.transform)) hitableEntities.Add(hit.transform);
+            }
+        }
+
+        foreach (var hit in box2Collisions) {
+            if (hit.transform == transform) continue;
+            if (hit.GetComponent<IHitable>() != null) {
+                Debug.Log(hit + " was hit in collision zone 2");
+                if (!hitableEntities.Contains(hit.transform)) hitableEntities.Add(hit.transform);
+            }
+        }
+
+        // then foreach hitable entity we call upon their function
+        foreach (var entity in hitableEntities) {
+            try {
+                Vector2 hitDirection = (entity.transform.position - transform.position).normalized;
+                entity.GetComponent<IHitable>().OnHit(hitDirection * character.lastAttack.strength[hitNumber]);
+            }
+            catch {
+                Debug.Log(character.lastAttack + " gave an error, please check if the amount of attacks in this " +
+                    "attack(" + character.lastAttack.strength.Length +  ") is lower or equal to the amount in the animation(" +
+                    hitNumber + ").");
+            }
+        }
     }
     #endregion
 

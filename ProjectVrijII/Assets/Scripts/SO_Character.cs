@@ -7,8 +7,6 @@ using UnityEngine;
 public class SO_Character : ScriptableObject
 {
     public string characterName;
-    public GameObject character;
-    public Animator characterAnimator;
     public float groundMovementSpeed;
     [Header("Adds up to the ground movement speed")]
     public float runningMovementSpeed;
@@ -52,4 +50,9 @@ public class SO_Character : ScriptableObject
     [HideInInspector] public float attackMovementReductionScalar = 1;
     [HideInInspector] public string currentAttackName = "";
     [HideInInspector] public AttackPhase attackPhase = AttackPhase.ready;
+    [HideInInspector] public SO_Attack currentAttack = null;
+    [HideInInspector] public SO_Attack lastAttack = null;
+
+    [Header("Animation clips for this character")]
+    public AnimatorOverrideController overrideController;
 }
