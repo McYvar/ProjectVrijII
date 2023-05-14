@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Jumping Kick
   m_EditorClassIdentifier: 
-  duration: 0.3
-  strength: 3
+  strength:
+  - 0
+  - 0
+  - 0
+  movementReduction: 0
+  fallReduction: 0
+  attackBounce: {x: 10, y: 20}
+  isSpecial: 0
+  canceledByJump: 0

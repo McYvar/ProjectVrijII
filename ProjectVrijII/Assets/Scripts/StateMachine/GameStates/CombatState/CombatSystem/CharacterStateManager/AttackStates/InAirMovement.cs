@@ -32,7 +32,7 @@ public class InAirMovement : AttackState {
         doDash = false;
         didDash = false;
 
-        //animator.SetTrigger("air ofzo");
+        //animator.SetTrigger("jump animation?");
     }
 
     public override void OnExit() {
@@ -89,28 +89,33 @@ public class InAirMovement : AttackState {
 
     protected override void Movement() {
         if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
-        else OnDoublePress = Dash; // air dash can interup all recovery types
+        else {
+            OnDoublePress -= Dash; // air dash can interup all recovery types
+            OnDoublePress += Dash; // air dash can interup all recovery types
+        }
 
         if (character.attackPhase == AttackPhase.ready || character.attackPhase == AttackPhase.recovery) {
             if (doDash && !didDash) {
                 if (Mathf.Abs(rb.velocity.x) < 1) {
                     doDash = false;
                     didDash = true;
-                    rb.gravityScale = originalGravityScale;
                 }
                 if (Vector2.Distance(transform.position, dashStartingPoint) >= character.airDashLength) {
                     doDash = false;
                     didDash = true;
+                    rb.gravityScale = originalGravityScale;
                 }
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 return;
             }
         }
 
-        Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
-        float resultMovementSpeed = (character.airMovementSpeed + character.variableMovementSpeed) *
-            character.attackMovementReductionScalar;
-        rb.velocity = new Vector2(horizonal.normalized.x * resultMovementSpeed, rb.velocity.y);
+        if (!character.verticalDashAttack) {
+            Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
+            float resultMovementSpeed = (character.airMovementSpeed + character.variableMovementSpeed) *
+                character.attackMovementReductionScalar;
+            rb.velocity = new Vector2(horizonal.normalized.x * resultMovementSpeed, rb.velocity.y);
+        }
     }
 
     private void Dash() {
