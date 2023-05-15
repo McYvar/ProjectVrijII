@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Character1
   m_EditorClassIdentifier: 
   characterName: Mac
-  groundMovementSpeed: 7
-  runningMovementSpeed: 7
-  crouchMovementSpeed: 4
-  groundJumpStrength: 30
-  airMovementSpeed: 7
-  airDashStrength: 30
-  doubleJumpStrength: 25
-  airDashLength: 2
+  groundMovementSpeed: 14
+  runningMovementSpeed: 14
+  crouchMovementSpeed: 0
+  groundJumpStrength: 60
+  airMovementSpeed: 14
+  airDashStrength: 60
+  airDashStopScalar: 0.28
+  doubleJumpStrength: 50
+  airDashLength: 5
   standingKick: {fileID: 11400000, guid: c0466575a200fb54fa0c5b8b1edb6c02, type: 2}
   standingPunch: {fileID: 11400000, guid: 3562bb10794c3594eb5d20cbf0b042b8, type: 2}
   standingStrong: {fileID: 11400000, guid: 5286e04b6ff79874fa3b3110dedaa799, type: 2}
@@ -42,36 +43,8 @@ MonoBehaviour:
   lastInputDirection: 5
   variableMovementSpeed: 0
   attackMovementReductionScalar: 1
-  currentAttackName: 5K
-  attackPhase: 0
+  fallReductionScalar: 1
+  currentAttackName: jK
   currentAttack: {fileID: 0}
-  lastAttack: {fileID: 11400000, guid: c0466575a200fb54fa0c5b8b1edb6c02, type: 2}
-  standingKickAnimation: {fileID: 7400000, guid: a01405e7129d0b94fab0830215a3af5a,
-    type: 2}
-  standingPunchAnimation: {fileID: 7400000, guid: 3c15651a46ea6b248a34614fea013a68,
-    type: 2}
-  standingStrongAnimation: {fileID: 0}
-  crouchingKickAnimation: {fileID: 7400000, guid: 7f052283453891742aa890ed0b84436b,
-    type: 2}
-  crouchingPunchAnimation: {fileID: 7400000, guid: 9b12b4a80c79e194a99b12db80945fa1,
-    type: 2}
-  crouchingStrongAnimation: {fileID: 0}
-  jumpingKickAnimation: {fileID: 0}
-  jumpingPunchAnimation: {fileID: 0}
-  jumpingStrongAnimation: {fileID: 0}
-  dragonpunchKickAnimation: {fileID: 0}
-  dragonpunchPunchAnimation: {fileID: 0}
-  dragonpunchStrongAnimation: {fileID: 0}
-  quaterCircleKickAnimation: {fileID: 0}
-  quaterCirclePunchAnimation: {fileID: 0}
-  quaterCircleStrongAnimation: {fileID: 0}
-  halfCircleKickAnimation: {fileID: 0}
-  halfCirclePunchAnimation: {fileID: 0}
-  halfCircleStrongAnimation: {fileID: 0}
-  crouchIdleAnimation: {fileID: 7400000, guid: 0639a051da195cc4dbe3ccc61ab53de0, type: 2}
-  standIdleAnimation: {fileID: 7400000, guid: 4ce877eca88ad0045ab1a44c12d40cd8, type: 2}
-  crouchToStandAnimation: {fileID: 7400000, guid: 9f799f415696afa43b3d4acd5dd174aa,
-    type: 2}
-  standToCrouchAnimation: {fileID: 7400000, guid: daa530e4178dcd245b0e78d33bc9a065,
-    type: 2}
+  lastAttack: {fileID: 11400000, guid: 4683e015428de684786783f9e11976f3, type: 2}
   overrideController: {fileID: 22100000, guid: 573de15c8d8687749ad236ceaeb10552, type: 2}

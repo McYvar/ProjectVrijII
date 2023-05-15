@@ -17,6 +17,7 @@ public class OnGroundMovement : AttackState {
         playerInput.westFirst += OnGroundPunch;
         canJump = false;
 
+        animator.SetBool("isGrounded", true);
         //animator.SetTrigger("landing animaiton?");
     }
 

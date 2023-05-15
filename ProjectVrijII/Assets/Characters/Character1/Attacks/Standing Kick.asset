@@ -16,8 +16,8 @@ MonoBehaviour:
   - 2
   - 15
   lauchStrenght:
-  - {x: 0, y: 5}
-  - {x: 10, y: 10}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
