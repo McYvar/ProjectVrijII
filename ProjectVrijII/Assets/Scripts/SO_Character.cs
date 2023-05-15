@@ -16,6 +16,7 @@ public class SO_Character : ScriptableObject
 
     public float airMovementSpeed;
     public float airDashStrength;
+    [Range(0f, 1f)] public float airDashStopScalar;
     public float doubleJumpStrength;
     public float airDashLength;
 
@@ -52,7 +53,6 @@ public class SO_Character : ScriptableObject
     [HideInInspector] public string currentAttackName = "";
     [HideInInspector] public SO_Attack currentAttack = null;
     [HideInInspector] public SO_Attack lastAttack = null;
-    [HideInInspector] public bool verticalDashAttack = false;
 
     [Header("Animation clips for this character")]
     public AnimatorOverrideController overrideController;
@@ -70,7 +70,6 @@ public class SO_Character : ScriptableObject
             case AttackPhase.active:
                 break;
             case AttackPhase.recovery:
-                verticalDashAttack = false;
                 fallReductionScalar = 1;
                 break;
         }

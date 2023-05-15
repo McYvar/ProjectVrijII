@@ -15,9 +15,11 @@ MonoBehaviour:
   strength:
   - 0
   - 0
-  - 0
+  lauchStrenght:
+  - {x: 0, y: 5}
+  - {x: 10, y: 20}
   movementReduction: 0
   fallReduction: 0
-  attackBounce: {x: 10, y: 20}
   isSpecial: 0
   canceledByJump: 0
+  attackBounce: {x: 0, y: 0}

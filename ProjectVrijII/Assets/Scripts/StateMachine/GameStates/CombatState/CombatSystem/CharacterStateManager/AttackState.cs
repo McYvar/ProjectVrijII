@@ -70,6 +70,7 @@ public class AttackState : CharacterBaseState {
     }
 
     public override void OnUpdate() {
+        if (Input.GetKeyDown(KeyCode.Space)) stateManager.SwitchState(typeof(OnGroundMovement));
         LeftInputComboHandler(playerInput.leftDirection);
 
         // character always faces the current enemy, as should the enemy also face our character, but thats for later
@@ -114,7 +115,6 @@ public class AttackState : CharacterBaseState {
         if (newAttack.attackBounce.x != 0) {
             if (characterFacingDirection == CharacterFacingDirection.RIGHT) rb.velocity = new Vector2(newAttack.attackBounce.x, rb.velocity.y);
             else rb.velocity = new Vector2(-newAttack.attackBounce.x, rb.velocity.y);
-            character.verticalDashAttack = true;
         }
         SetAttackPhase(AttackPhase.startup);
 

@@ -32,6 +32,7 @@ public class InAirMovement : AttackState {
         doDash = false;
         didDash = false;
 
+        animator.SetBool("isGrounded", false);
         //animator.SetTrigger("jump animation?");
     }
 
@@ -104,17 +105,11 @@ public class InAirMovement : AttackState {
                     doDash = false;
                     didDash = true;
                     rb.gravityScale = originalGravityScale;
+                    rb.velocity = new Vector2(rb.velocity.x * character.airDashStopScalar, rb.velocity.y);
                 }
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 return;
             }
-        }
-
-        if (!character.verticalDashAttack) {
-            Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
-            float resultMovementSpeed = (character.airMovementSpeed + character.variableMovementSpeed) *
-                character.attackMovementReductionScalar;
-            rb.velocity = new Vector2(horizonal.normalized.x * resultMovementSpeed, rb.velocity.y);
         }
     }
 
