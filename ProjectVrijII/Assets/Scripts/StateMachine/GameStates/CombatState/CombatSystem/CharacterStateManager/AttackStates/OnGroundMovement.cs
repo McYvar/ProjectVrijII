@@ -17,7 +17,7 @@ public class OnGroundMovement : AttackState {
         playerInput.westFirst += OnGroundPunch;
         canJump = false;
 
-        //animator.SetTrigger("ground ofzo");
+        //animator.SetTrigger("landing animaiton?");
     }
 
     public override void OnExit() {
@@ -84,7 +84,10 @@ public class OnGroundMovement : AttackState {
 
         } else { // walking/running movement
             if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
-            else OnDoublePress = () => character.variableMovementSpeed = character.runningMovementSpeed;
+            else {
+                OnDoublePress -= SetVariableSpeedToRunning;
+                OnDoublePress += SetVariableSpeedToRunning;
+            }
 
             Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
             float resultMovementSpeed =
@@ -101,6 +104,10 @@ public class OnGroundMovement : AttackState {
                 //animator.SetInteger("walking", 1);
             }
         }
+    }
+
+    private void SetVariableSpeedToRunning() {
+        character.variableMovementSpeed = character.runningMovementSpeed;
     }
 
     #region ground attacks
