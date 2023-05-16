@@ -26,7 +26,7 @@ public class Character : CombatBase {
         animator.SetTrigger("stunned");
 
         // hit freeze
-        Time.timeScale = 0;
+        Time.timeScale = 0; // maybe later use a variable timescale ...
         StartCoroutine(ResumeTime());
 
         // take damage...
