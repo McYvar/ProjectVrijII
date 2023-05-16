@@ -24,7 +24,17 @@ public class Character : CombatBase {
         if (force.x > 0) transform.localEulerAngles = new Vector3(0, 0, 0);
         else if (force.x < 0) transform.localEulerAngles = new Vector3(0, 180, 0);
         animator.SetTrigger("stunned");
+
+        // hit freeze
+        Time.timeScale = 0;
+        StartCoroutine(ResumeTime());
+
         // take damage...
+    }
+
+    private IEnumerator ResumeTime() {
+        yield return new WaitForSecondsRealtime(0.1f);
+        Time.timeScale = 1;
     }
 
     public override void OnFixedUpdate() {

@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Quarter Circle Kick
   m_EditorClassIdentifier: 
-  duration: 0.6
-  strength: 8
+  strength:
+  - 20
+  lauchStrenght:
+  - {x: 0, y: 60}
+  movementReduction: 0
+  fallReduction: 0
+  isSpecial: 0
+  canceledByJump: 1
+  attackBounce: {x: 0, y: 0}

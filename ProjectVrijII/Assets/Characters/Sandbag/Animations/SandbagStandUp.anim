@@ -807,8 +807,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 1
-    functionName: NoLongerStunner
+  - time: 0.083333336
+    functionName: NoLongerStunned
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

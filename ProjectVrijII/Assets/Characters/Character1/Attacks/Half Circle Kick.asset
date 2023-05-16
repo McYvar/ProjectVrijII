@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Half Circle Kick
   m_EditorClassIdentifier: 
-  duration: 0.6
-  strength: 10
+  strength:
+  - 30
+  lauchStrenght:
+  - {x: 40, y: 10}
+  movementReduction: 0
+  fallReduction: 0
+  isSpecial: 0
+  canceledByJump: 0
+  attackBounce: {x: 0, y: 0}

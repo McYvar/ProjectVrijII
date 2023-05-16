@@ -11,6 +11,7 @@ public class CharacterBaseState : BaseState {
     [HideInInspector] protected PlayerInput playerInput;
     [SerializeField] private LayerMask groundCheckLayers;
     [SerializeField] protected Transform currentEnemy; // temporaily for facing
+    [SerializeField] private ComboCounter comboCounter;
     protected Collider2D myCollider;
     protected Animator animator;
     protected bool isGrounded;
@@ -83,5 +84,10 @@ public class CharacterBaseState : BaseState {
     public void NoLongerStunned() {
         if (!activeState) return;
         character.isStunned = false;
+        comboCounter.ResetCombo();
+    }
+
+    protected void OnHitEnemy() {
+        comboCounter.IncreaseCombo();
     }
 }

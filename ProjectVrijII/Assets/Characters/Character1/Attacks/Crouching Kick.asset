@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Crouching Kick
   m_EditorClassIdentifier: 
   strength:
+  - 5
   - 20
   lauchStrenght:
-  - {x: 50, y: 50}
+  - {x: 0, y: 15}
+  - {x: 4, y: 30}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

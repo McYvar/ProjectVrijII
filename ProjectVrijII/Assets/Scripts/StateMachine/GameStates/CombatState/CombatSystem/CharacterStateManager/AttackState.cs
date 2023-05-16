@@ -248,7 +248,6 @@ public class AttackState : CharacterBaseState {
 
     public void TriggerHit(int hitNumber) {
         if (!activeState) return;
-
         List<Transform> hitableEntities = new List<Transform>();
 
         for (int i = 0; i < hitboxes.Length; i++) {
@@ -271,6 +270,7 @@ public class AttackState : CharacterBaseState {
                 if (characterFacingDirection == CharacterFacingDirection.RIGHT)
                     entity.GetComponent<Character>().OnHit(character.lastAttack.lauchStrenght[hitNumber]);
                 else entity.GetComponent<Character>().OnHit(character.lastAttack.lauchStrenght[hitNumber] * new Vector2(-1, 1));
+                OnHitEnemy();
                 // enymy take damage with strength
             }
             catch {

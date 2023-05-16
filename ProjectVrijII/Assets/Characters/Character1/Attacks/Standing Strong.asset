@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03a89eb74034cc4fa6e7bfae269cbe4, type: 3}
   m_Name: Standing Strong
   m_EditorClassIdentifier: 
-  duration: 0.8
-  strength: 9
+  strength:
+  - 25
+  lauchStrenght:
+  - {x: 25, y: 20}
+  movementReduction: 0
+  fallReduction: 0
+  isSpecial: 0
+  canceledByJump: 0
+  attackBounce: {x: 0, y: 0}
