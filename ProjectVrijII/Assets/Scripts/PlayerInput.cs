@@ -8,8 +8,8 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     public Vector2 leftJoyDirection;
-
     public Vector2 rightJoyDirection;
+
     public Vector2 leftDPadDirection;
     public Vector2 leftDirection;
 

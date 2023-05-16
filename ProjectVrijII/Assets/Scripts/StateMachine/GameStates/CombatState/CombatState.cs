@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class CombatState : BaseState {
 
+    public static Queue<CombatBase> combatAddQueue = new Queue<CombatBase>();
+    public static Queue<CombatBase> combatRemoveQueue = new Queue<CombatBase>();
     public static List<CombatBase> combatClasses = new List<CombatBase>();
-
-    public override void OnAwake() {
-    }
-
-    public override void OnStart() {
-    }
 
     public override void OnEnter() {
     }
@@ -21,6 +17,16 @@ public class CombatState : BaseState {
     public override void OnUpdate() {
         foreach (var combatClass in combatClasses) {
             combatClass.OnUpdate();
+        }
+
+        while (combatAddQueue.Count > 0)
+        {
+            combatClasses.Add(combatAddQueue.Dequeue());
+        }
+
+        while (combatRemoveQueue.Count > 0)
+        {
+            combatClasses.Remove(combatRemoveQueue.Dequeue());
         }
     }
 

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SandbagOverideController
+  m_Controller: {fileID: 9100000, guid: 7569daec4e5a092488abf904ad700e34, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: f313182d1215f98448203204095656ac, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 67ba88efaa8d6f94ba7cb5f8e5fcbe6a, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4ce877eca88ad0045ab1a44c12d40cd8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e8bb722d0061cd44f9ae096e0a1c7d4d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 71cca6eda43d0ea4eb9b698ee967d58c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d109b098b6b38d64797458ef6d77182f, type: 2}

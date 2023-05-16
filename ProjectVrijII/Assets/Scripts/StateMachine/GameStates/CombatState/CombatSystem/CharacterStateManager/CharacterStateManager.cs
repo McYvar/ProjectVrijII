@@ -18,12 +18,7 @@ public class CharacterStateManager : CombatBase {
         BaseState[] states = GetComponents<BaseState>();
 
         // then we couple all those states to the state machine ready for running
-        fsm = new FiniteStateMachine(states);
-    }
-
-    private void Start() {
-        fsm?.OnStart();
-        fsm.InitState(startState.GetType());
+        fsm = new FiniteStateMachine(states, startState.GetType());
     }
 
     public override void OnUpdate() {

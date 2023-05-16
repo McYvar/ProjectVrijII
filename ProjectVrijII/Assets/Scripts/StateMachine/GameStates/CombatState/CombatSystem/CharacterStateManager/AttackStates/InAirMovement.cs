@@ -47,7 +47,7 @@ public class InAirMovement : AttackState {
         base.OnUpdate();
 
         if (inAirTimer > minInAirTime) {
-            if (GroundCheck()) stateManager.SwitchState(typeof(OnGroundMovement));
+            if (isGrounded) stateManager.SwitchState(typeof(OnGroundMovement));
         } else {
             inAirTimer += Time.deltaTime;
         }

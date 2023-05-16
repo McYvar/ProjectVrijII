@@ -8,12 +8,6 @@ public class GameStatesBase : BaseState {
     /// Seperates the game flow into states
     /// </summary>
 
-    public override void OnAwake() {
-    }
-
-    public override void OnStart() {
-    }
-
     public override void OnEnter() {
     }
 

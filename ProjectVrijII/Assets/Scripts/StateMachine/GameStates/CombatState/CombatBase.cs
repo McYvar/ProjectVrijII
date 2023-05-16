@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class CombatBase : BaseState {
 
-    private void OnEnable() => CombatState.combatClasses.Add(this);
-    private void OnDisable() => CombatState.combatClasses.Remove(this);
-
-    public override void OnAwake() {
-    }
-
-    public override void OnStart() {
-    }
+    private void OnEnable() => CombatState.combatAddQueue.Enqueue(this);
+    private void OnDisable() => CombatState.combatRemoveQueue.Enqueue(this);
 
     public override void OnEnter() {
     }

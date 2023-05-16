@@ -8,5 +8,6 @@ public class IdleState : CharacterBaseState {
     /// <summary>
     /// Idle state while the enemy turn is processed
     /// </summary>
+    /// 
 
 }

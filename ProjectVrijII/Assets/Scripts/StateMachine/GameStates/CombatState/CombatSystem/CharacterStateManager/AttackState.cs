@@ -1,8 +1,5 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackState : CharacterBaseState {
@@ -12,50 +9,32 @@ public class AttackState : CharacterBaseState {
     /// A state that starting signature attack and ends when attack combo is finished
     /// </summary>
 
-    [SerializeField] protected SO_Character character; // later input by player selection maybe?
-
-    [SerializeField] private float comboMaxTime;
-
-    [SerializeField] private LayerMask groundCheckLayers;
-
     [SerializeField] protected InputOrder[] inputOrders;
 
     protected float attackDelay;
 
-    protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
-
     private float joyThreshold = 0.3f;
 
     protected Rigidbody2D rb;
-    protected Collider2D myCollider;
 
     private bool canDoublePress;
     private float maxDoublePressTime = 0.5f;
     protected Action OnDoublePress;
 
-    [SerializeField] protected Animator animator;
-    protected RuntimeAnimatorController controller;
-
     [SerializeField] Collider2D[] hitboxes;
     [SerializeField] LayerMask hitLayer;
-    [SerializeField] Transform currentEnemy; // temporaily for facing
 
     protected Action RecoveryInputBuffer;
     protected Action ReadyInputBuffer;
 
-    private bool activeState = false; // this is needed to not fire all animation events multiple times in all states
 
-    public override void OnAwake() {
-        base.OnAwake();
+    protected override void Awake() {
+        base.Awake();
         rb = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
-
-        animator.runtimeAnimatorController = character.overrideController;
     }
 
     public override void OnEnter() {
         base.OnEnter();
-        activeState = true;
         attackDelay = 0;
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
@@ -65,24 +44,10 @@ public class AttackState : CharacterBaseState {
         RecoveryInputBuffer = null;
     }
 
-    public override void OnExit() {
-        activeState = false;
-    }
-
     public override void OnUpdate() {
+        base.OnUpdate();
         if (Input.GetKeyDown(KeyCode.Space)) stateManager.SwitchState(typeof(OnGroundMovement));
         LeftInputComboHandler(playerInput.leftDirection);
-
-        // character always faces the current enemy, as should the enemy also face our character, but thats for later
-        if (character.attackPhase == AttackPhase.ready) {
-            if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
-                characterFacingDirection = CharacterFacingDirection.RIGHT;
-                transform.localEulerAngles = new Vector3(0, 0, 0);
-            } else {
-                characterFacingDirection = CharacterFacingDirection.LEFT;
-                transform.localEulerAngles = new Vector3(0, 180, 0);
-            }
-        }
     }
 
     public override void OnFixedUpdate() {
@@ -287,11 +252,11 @@ public class AttackState : CharacterBaseState {
 
         for (int i = 0; i < hitboxes.Length; i++) {
             Collider2D[] collisions = Physics2D.OverlapBoxAll(hitboxes[i].bounds.center, hitboxes[i].bounds.size, 0, hitLayer);
-            
+
             // first we check for each hitbox if there are hitable entities in there and add them to a list
             foreach (var hit in collisions) {
                 if (hit.transform == transform) continue;
-                if (hit.GetComponent<IHitable>() != null) {
+                if (hit.GetComponent<Character>() != null) {
                     Debug.Log(hit + " was hit in collision zone " + i);
                     if (!hitableEntities.Contains(hit.transform))
                         hitableEntities.Add(hit.transform);
@@ -303,29 +268,18 @@ public class AttackState : CharacterBaseState {
         foreach (var entity in hitableEntities) {
             try {
                 if (characterFacingDirection == CharacterFacingDirection.RIGHT)
-                    entity.GetComponent<IHitable>().OnHit(character.lastAttack.lauchStrenght[hitNumber]);
-                else entity.GetComponent<IHitable>().OnHit(character.lastAttack.lauchStrenght[hitNumber] * new Vector2(-1, 1));
+                    entity.GetComponent<Character>().OnHit(character.lastAttack.lauchStrenght[hitNumber]);
+                else entity.GetComponent<Character>().OnHit(character.lastAttack.lauchStrenght[hitNumber] * new Vector2(-1, 1));
                 // enymy take damage with strength
             }
             catch {
                 Debug.Log(character.lastAttack + " gave an error, please check if the amount of attacks in this " +
-                    "attack(" + character.lastAttack.strength.Length +  ") is lower or equal to the amount in the animation(" +
+                    "attack(" + character.lastAttack.strength.Length + ") is lower or equal to the amount in the animation(" +
                     hitNumber + ").");
             }
         }
     }
     #endregion
-
-    protected bool GroundCheck() {
-        float maxRayDistance = (myCollider.bounds.size.y / 2) + 0.1f; // check actual cast dist sometime in future
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, maxRayDistance, groundCheckLayers);
-        
-        if (hit.collider != null) {
-            return true;
-        }
-
-        return false;
-    }
 
     protected virtual void Movement() { }
 

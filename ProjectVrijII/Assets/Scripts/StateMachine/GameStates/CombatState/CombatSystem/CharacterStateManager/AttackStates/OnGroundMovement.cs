@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OnGroundMovement : AttackState {
@@ -30,7 +28,8 @@ public class OnGroundMovement : AttackState {
 
     public override void OnUpdate() {
         base.OnUpdate();
-        if (!GroundCheck()) stateManager.SwitchState(typeof(InAirMovement));
+
+        if (!isGrounded) stateManager.SwitchState(typeof(InAirMovement));
 
         if (character.lastInputDirection == LeftInputDirection.left ||
                 character.lastInputDirection == LeftInputDirection.centre ||
@@ -100,8 +99,7 @@ public class OnGroundMovement : AttackState {
 
             if (character.variableMovementSpeed == 0) { // means walking
                 //animator.SetInteger("walking", 1);
-            }
-            else { // means running
+            } else { // means running
                 //animator.SetInteger("walking", 1);
             }
         }
@@ -197,7 +195,7 @@ public class OnGroundMovement : AttackState {
     protected override AttackTypes InputCompare() {
         AttackTypes result = base.InputCompare();
         if (result != AttackTypes.UNASSIGNED) return result;
-        
+
         // unassigned, so we assign one, standing / crouching
         if (character.lastInputDirection == LeftInputDirection.bottomLeft ||
             character.lastInputDirection == LeftInputDirection.bottom ||

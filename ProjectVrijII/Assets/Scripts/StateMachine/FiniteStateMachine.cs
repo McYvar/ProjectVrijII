@@ -13,24 +13,12 @@ public class FiniteStateMachine {
 
     private BaseState currentState;
 
-    public FiniteStateMachine(BaseState[] states) {
+    public FiniteStateMachine(BaseState[] states, System.Type startState) {
         foreach (BaseState state in states) {
             state.Initialize(this);
             stateDictionary.Add(state.GetType(), state);
         }
-        OnAwake();
-    }
-
-    void OnAwake() {
-        foreach (BaseState state in stateDictionary.Values) {
-            state.OnAwake();
-        }
-    }
-
-    public void OnStart() {
-        foreach (BaseState state in stateDictionary.Values) {
-            state.OnStart();
-        }
+        SwitchState(startState);
     }
 
     public void OnUpdate() {
@@ -43,11 +31,6 @@ public class FiniteStateMachine {
 
     public void OnLateUpdate() {
         currentState?.OnLateUpdate();
-    }
-
-    public void InitState(System.Type startStateStype) {
-        currentState = stateDictionary[startStateStype];
-        currentState?.OnEnter();
     }
 
     public void SwitchState(System.Type newStateStype) {

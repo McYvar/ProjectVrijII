@@ -11,8 +11,6 @@ public abstract class BaseState : MonoBehaviour
         this.stateManager = stateManager;
     }
 
-    public abstract void OnAwake();
-    public abstract void OnStart();
     public abstract void OnEnter();
     public abstract void OnExit();
     public abstract void OnUpdate();
