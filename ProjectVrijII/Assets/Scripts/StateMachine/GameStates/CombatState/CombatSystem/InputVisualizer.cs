@@ -1,30 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class InputVisualizer : CombatBase
-{
-    private void Awake()
-    {
-        
-    }
-    private void Start()
-    {
-        
-    }
+public class InputVisualizer : CombatBase {
+	[SerializeField]
+	private CanvasGroup inputInfoObject;
 
-    public override void OnUpdate()
-    {
-        // code
-    }
+	[SerializeField]
+	private RectTransform inputInfo;
 
-    public override void OnFixedUpdate()
-    {
-        // code
-    }
+	[SerializeField]
+	private float distance = 30;
 
-    public override void OnLateUpdate()
-    {
-        // code
-    }
+	private PlayerInput playerInput;
+
+	private void Start() {
+		playerInput = FindObjectOfType<PlayerInput>();
+	}
+
+	public override void OnUpdate() {
+		SetInputPoint();
+	}
+
+	//can be used to disable and re enable (is enabled by standard)
+	public void EnableInputInfo(bool enable) {
+		inputInfoObject.alpha = enable ? 1 : 0;
+	}
+
+	private void SetInputPoint() {
+		Vector2 newpos = Vector2.zero;
+		newpos = playerInput.leftDirection;
+
+		inputInfo.anchoredPosition = newpos * distance;
+	}
 }
