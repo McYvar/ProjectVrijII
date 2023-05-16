@@ -36,9 +36,13 @@ public class OnGroundMovement : AttackState {
                 character.lastInputDirection == LeftInputDirection.right) canJump = true;
 
         if (character.attackPhase == AttackPhase.ready) {
-            if (character.lastInputDirection == LeftInputDirection.bottom)
+            if (character.lastInputDirection == LeftInputDirection.bottom ||
+                character.lastInputDirection == LeftInputDirection.bottomLeft ||
+                character.lastInputDirection == LeftInputDirection.bottomRight)
                 animator.SetInteger("Stance", 1);
-            else if (character.lastInputDirection == LeftInputDirection.centre)
+            else if (character.lastInputDirection == LeftInputDirection.centre ||
+                character.lastInputDirection == LeftInputDirection.left ||
+                character.lastInputDirection == LeftInputDirection.right)
                 animator.SetInteger("Stance", 0);
 
             if (canJump) {

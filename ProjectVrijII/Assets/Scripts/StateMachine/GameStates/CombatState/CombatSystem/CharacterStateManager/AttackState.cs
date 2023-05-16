@@ -73,6 +73,7 @@ public class AttackState : CharacterBaseState {
 
     private void DoAttack(SO_Attack newAttack) {
         // if the player does an attack...
+        if (newAttack == null) return; // has to be fixed later on...
         animator.SetTrigger(character.currentAttackName);
         character.attackMovementReductionScalar = newAttack.movementReduction;
         character.fallReductionScalar = newAttack.fallReduction;

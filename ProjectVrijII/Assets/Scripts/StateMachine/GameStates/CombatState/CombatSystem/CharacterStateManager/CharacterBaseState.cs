@@ -80,7 +80,7 @@ public class CharacterBaseState : BaseState {
         character.isStunned = true;
     }
 
-    public void NoLongerStunner() {
+    public void NoLongerStunned() {
         if (!activeState) return;
         character.isStunned = false;
     }
