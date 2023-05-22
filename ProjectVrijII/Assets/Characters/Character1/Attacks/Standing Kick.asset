@@ -22,4 +22,5 @@ MonoBehaviour:
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
+  onHitPushBack: {x: 0, y: 0}
   attackBounce: {x: 0, y: 0}

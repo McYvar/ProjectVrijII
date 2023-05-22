@@ -14,6 +14,8 @@ public class SO_Attack : ScriptableObject {
     [Range(0f, 1f)] public float fallReduction;
     public bool isSpecial;
     public bool canceledByJump;
+    public Vector2 onHitPushBack;
+
     [Header("Should be used in air attacks only!")]
     public Vector2 attackBounce;
 }
