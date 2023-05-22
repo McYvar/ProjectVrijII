@@ -11,7 +11,7 @@ public class CharacterStateManager : CombatBase {
     protected FiniteStateMachine fsm;
     [SerializeField] protected BaseState startState;
 
-    private void Awake() {
+    private void Start() {
         //DontDestroyOnLoad(this);
 
         // on start we search for all attached BattleBaseState classes to this game object
