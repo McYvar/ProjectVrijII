@@ -16,7 +16,7 @@ public class OnGroundMovement : AttackState {
         canJump = false;
 
         animator.SetBool("isGrounded", true);
-        //animator.SetTrigger("landing animaiton?");
+        //animator.SetTrigger("landing animation?");
     }
 
     public override void OnExit() {
@@ -49,6 +49,7 @@ public class OnGroundMovement : AttackState {
                 if (character.lastInputDirection == LeftInputDirection.top ||
                                character.lastInputDirection == LeftInputDirection.topLeft ||
                                character.lastInputDirection == LeftInputDirection.topRight) {
+                    character.rbInput = true;
                     Jump(character.groundJumpStrength);
                     stateManager.SwitchState(typeof(InAirMovement));
                 }
@@ -60,11 +61,13 @@ public class OnGroundMovement : AttackState {
                     character.lastInputDirection == LeftInputDirection.topRight) {
                     if (character.lastAttack.canceledByJump) {
                         RecoveryInputBuffer = () => {
+                            character.rbInput = true;
                             Jump(character.groundJumpStrength);
                             stateManager.SwitchState(typeof(InAirMovement));
                         };
                     } else {
                         ReadyInputBuffer = () => {
+                            character.rbInput = true;
                             Jump(character.groundJumpStrength);
                             stateManager.SwitchState(typeof(InAirMovement));
                         };
@@ -76,6 +79,7 @@ public class OnGroundMovement : AttackState {
     }
 
     protected override void Movement() {
+        if (!character.rbInput) return;
         if (character.lastInputDirection == LeftInputDirection.bottomLeft || // crouching movement
             character.lastInputDirection == LeftInputDirection.bottom ||
             character.lastInputDirection == LeftInputDirection.bottomRight) {
@@ -83,8 +87,6 @@ public class OnGroundMovement : AttackState {
             Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
             rb.velocity = new Vector2(horizonal.normalized.x * character.crouchMovementSpeed *
                 character.attackMovementReductionScalar, rb.velocity.y);
-
-            //animator.SetInteger("walking", 1);
 
         } else { // walking/running movement
             if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
@@ -102,9 +104,9 @@ public class OnGroundMovement : AttackState {
                 rb.velocity.y);
 
             if (character.variableMovementSpeed == 0) { // means walking
-                //animator.SetInteger("walking", 1);
+                //animator.SetInteger("moveState", 1); // 0 is crouch ofzo
             } else { // means running
-                //animator.SetInteger("walking", 1);
+                //animator.SetInteger("moveState", 2);
             }
         }
     }
@@ -132,8 +134,8 @@ public class OnGroundMovement : AttackState {
                 character.currentAttack = character.quaterCirclePunch;
                 character.currentAttackName = "236P";
                 break;
-            case AttackTypes.HALF_CIRCLE:
-                character.currentAttack = character.halfCirclePunch;
+            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                character.currentAttack = character.quaterBackwardCirclePunch;
                 character.currentAttackName = "41236P";
                 break;
         }
@@ -159,8 +161,8 @@ public class OnGroundMovement : AttackState {
                 character.currentAttack = character.quaterCircleKick;
                 character.currentAttackName = "236K";
                 break;
-            case AttackTypes.HALF_CIRCLE:
-                character.currentAttack = character.halfCircleKick;
+            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                character.currentAttack = character.quaterBackwardCircleKick;
                 character.currentAttackName = "41236K";
                 break;
         }
@@ -186,8 +188,8 @@ public class OnGroundMovement : AttackState {
                 character.currentAttack = character.quaterCircleStrong;
                 character.currentAttackName = "236S";
                 break;
-            case AttackTypes.HALF_CIRCLE:
-                character.currentAttack = character.halfCircleStrong;
+            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                character.currentAttack = character.quaterBackwardCircleStrong;
                 character.currentAttackName = "41236S";
                 break;
         }

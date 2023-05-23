@@ -8,8 +8,21 @@ public class CameraBehaviour : CombatBase
     [SerializeField] private float smoothTime;
     [SerializeField] private Vector2 offset;
     [SerializeField] private Vector2 scalar;
+    [SerializeField] private Vector2 minimals;
+
+    [Header("By bounds I mean invibisble walls...")]
+    [SerializeField] private Transform leftBound;
+    [SerializeField] private Transform rightBound;
     private Vector3 SmoothVector;
-    
+
+    private float centreX, distX;
+
+    private void Start()
+    {
+        centreX = (leftBound.position.x + rightBound.position.x) / 2;
+        distX = rightBound.position.x - leftBound.position.x;
+    }
+
     public override void OnUpdate() {
         base.OnUpdate();
         if (focussedObjects.Length < 2) {
@@ -18,32 +31,23 @@ public class CameraBehaviour : CombatBase
         }
 
         float xAxis = 0f;
-        float leftBound = focussedObjects[0].position.x;
-        float rightBound = focussedObjects[0].position.x;
+        float yAxis = 0f;
 
-        float upperBound = focussedObjects[0].position.y;
-        float lowerBound = focussedObjects[0].position.y;
+        float xMin = focussedObjects[0].position.x;
+        float xMax = focussedObjects[0].position.x;
 
         foreach (var obj in focussedObjects) {
             xAxis += obj.position.x;
-            if (obj.transform.position.x > rightBound) rightBound = obj.transform.position.x;
-            if (obj.transform.position.x < leftBound) leftBound = obj.transform.position.x;
-
-            if (obj.transform.position.y > upperBound) upperBound = obj.transform.position.y;
-            if (obj.transform.position.y < lowerBound) lowerBound = obj.transform.position.y;
+            yAxis += obj.position.y;
         }
         xAxis /= focussedObjects.Length;
-        float horizontalBoundDistance = rightBound - leftBound;
-        float verticalBoundDistance = upperBound - lowerBound;
+        yAxis /= focussedObjects.Length;
 
+        float invLerpX = Mathf.InverseLerp(leftBound.position.x, rightBound.position.x, xAxis);
 
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            new Vector3(
-            xAxis,
-            (verticalBoundDistance * scalar.x) - offset.x,
-            (-horizontalBoundDistance * scalar.y) - offset.y),
-            ref SmoothVector,
-            smoothTime);
+        float hori = Mathf.Lerp(leftBound.position.x, rightBound.position.x, invLerpX) + offset.x;
+        float vert = 0;
+
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(hori, vert, 0), ref SmoothVector, smoothTime);
     }
 }

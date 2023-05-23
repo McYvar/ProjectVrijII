@@ -20,6 +20,10 @@ public class InAirMovement : AttackState {
 
     private float originalGravityScale;
 
+    protected void Start() {
+        originalGravityScale = rb.gravityScale;
+    }
+
     public override void OnEnter() {
         base.OnEnter();
         playerInput.eastFirst += InAirStrong;
@@ -91,8 +95,8 @@ public class InAirMovement : AttackState {
     protected override void Movement() {
         if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
         else {
-            OnDoublePress -= Dash; // air dash can interup all recovery types
-            OnDoublePress += Dash; // air dash can interup all recovery types
+            OnDoublePress -= Dash;
+            OnDoublePress += Dash;
         }
 
         if (character.attackPhase == AttackPhase.ready || character.attackPhase == AttackPhase.recovery) {
@@ -102,9 +106,7 @@ public class InAirMovement : AttackState {
                     didDash = true;
                 }
                 if (Vector2.Distance(transform.position, dashStartingPoint) >= character.airDashLength) {
-                    doDash = false;
-                    didDash = true;
-                    rb.gravityScale = originalGravityScale;
+                    EndDash();
                     rb.velocity = new Vector2(rb.velocity.x * character.airDashStopScalar, rb.velocity.y);
                 }
                 rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -113,20 +115,35 @@ public class InAirMovement : AttackState {
         }
     }
 
+    private void EndDash() {
+        doDash = false;
+        didDash = true;
+        rb.gravityScale = originalGravityScale;
+    }
+
     private void Dash() {
-        if (didDash) return;
+        if (didDash || !character.rbInput) return;
         int direction = 0;
         if (character.lastInputDirection == LeftInputDirection.left) direction = -1;
         else if (character.lastInputDirection == LeftInputDirection.right) direction = 1;
         else return;
 
-        originalGravityScale = rb.gravityScale;
         rb.gravityScale = 0;
         rb.velocity = new Vector2(direction * character.airDashStrength, 0);
 
         doDash = true;
         dashStartingPoint = transform.position;
         SetAttackPhase(AttackPhase.ready); // meaning an air dash can be interupted
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (!activeState) return;
+        if (collision.gameObject != null)
+        {
+            if (collision.gameObject.layer == 11) {
+                EndDash();
+            }
+        }
     }
 
     #region air attacks
@@ -140,8 +157,8 @@ public class InAirMovement : AttackState {
                 character.currentAttack = character.quaterCirclePunch;
                 character.currentAttackName = "j236P";
                 break;
-            case AttackTypes.HALF_CIRCLE:
-                character.currentAttack = character.halfCirclePunch;
+            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                character.currentAttack = character.quaterBackwardCirclePunch;
                 character.currentAttackName = "j41236P";
                 break;
         }
@@ -159,8 +176,8 @@ public class InAirMovement : AttackState {
                 character.currentAttack = character.quaterCircleKick;
                 character.currentAttackName = "j236K";
                 break;
-            case AttackTypes.HALF_CIRCLE:
-                character.currentAttack = character.halfCircleKick;
+            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                character.currentAttack = character.quaterBackwardCircleKick;
                 character.currentAttackName = "j41236K";
                 break;
         }
@@ -178,8 +195,8 @@ public class InAirMovement : AttackState {
                 character.currentAttack = character.quaterCircleStrong;
                 character.currentAttackName = "j236S";
                 break;
-            case AttackTypes.HALF_CIRCLE:
-                character.currentAttack = character.halfCircleStrong;
+            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                character.currentAttack = character.quaterBackwardCircleStrong;
                 character.currentAttackName = "j41236S";
                 break;   
         }

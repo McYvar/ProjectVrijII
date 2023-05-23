@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength:
   - 10
-  lauchStrenght:
-  - {x: 0, y: 15}
+  enemyLaunchStrength:
+  - {x: 0, y: 0}
+  attackFreezeTime:
+  - 1
+  onHitPushBack:
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
-  attackBounce: {x: 0, y: 0}

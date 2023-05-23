@@ -15,11 +15,16 @@ MonoBehaviour:
   strength:
   - 5
   - 20
-  lauchStrenght:
-  - {x: 0, y: 15}
-  - {x: 4, y: 30}
+  enemyLaunchStrength:
+  - {x: 5, y: 5}
+  - {x: 25, y: 25}
+  attackFreezeTime:
+  - 0.1
+  - 0.4
+  onHitPushBack:
+  - {x: 0, y: 0}
+  - {x: -20, y: 10}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
-  attackBounce: {x: 0, y: 0}
