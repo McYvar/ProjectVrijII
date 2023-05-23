@@ -1,6 +1,7 @@
+using System.Collections;
 using UnityEngine;
 
-public class CharacterBaseState : BaseState {
+public class CharacterBaseState : BaseState, IHitable {
 
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
@@ -18,13 +19,18 @@ public class CharacterBaseState : BaseState {
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
 
     protected bool activeState = false; // this is needed to not fire all animation events multiple times in all states
+    protected Rigidbody2D rb;
+    protected bool stunned;
 
     protected virtual void Awake() {
+        character.OnStartUp();
         playerInput = GetComponent<PlayerInput>();
         myCollider = GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
         animator.runtimeAnimatorController = character.overrideController;
+        rb = GetComponent<Rigidbody2D>();
+        stunned = false;
     }
 
     public override void OnEnter() {
@@ -47,12 +53,14 @@ public class CharacterBaseState : BaseState {
 
         // character always faces the current enemy, as should the enemy also face our character, but thats for later
         if (character.attackPhase == AttackPhase.ready) {
-            if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
-                characterFacingDirection = CharacterFacingDirection.RIGHT;
-                transform.localEulerAngles = new Vector3(0, 0, 0);
-            } else {
-                characterFacingDirection = CharacterFacingDirection.LEFT;
-                transform.localEulerAngles = new Vector3(0, 180, 0);
+            if (currentEnemy != null) {
+                if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
+                    characterFacingDirection = CharacterFacingDirection.RIGHT;
+                    transform.localEulerAngles = new Vector3(0, 0, 0);
+                } else {
+                    characterFacingDirection = CharacterFacingDirection.LEFT;
+                    transform.localEulerAngles = new Vector3(0, 180, 0);
+                }
             }
         }
     }
@@ -76,6 +84,25 @@ public class CharacterBaseState : BaseState {
         return false;
     }
 
+    public void OnHit(Vector2 force, float freezeTime) {
+        stunned = true;
+        rb.AddForce(force, ForceMode2D.Impulse);
+        if (force.x > 0) transform.localEulerAngles = new Vector3(0, 0, 0);
+        else if (force.x < 0) transform.localEulerAngles = new Vector3(0, 180, 0);
+        animator.SetTrigger("stunned");
+
+        // hit freeze
+        Time.timeScale = 0; // maybe later use a variable timescale ...
+        StartCoroutine(ResumeTime(freezeTime));
+
+        // take damage...
+    }
+
+    private IEnumerator ResumeTime(float time) {
+        yield return new WaitForSecondsRealtime(time);
+        Time.timeScale = 1;
+    }
+
     public void DoStun() {
         if (!activeState) return;
         character.isStunned = true;
@@ -90,4 +117,8 @@ public class CharacterBaseState : BaseState {
     protected void OnHitEnemy() {
         comboCounter.IncreaseCombo();
     }
+}
+
+public interface IHitable {
+    void OnHit(Vector2 force, float freezeTime);
 }

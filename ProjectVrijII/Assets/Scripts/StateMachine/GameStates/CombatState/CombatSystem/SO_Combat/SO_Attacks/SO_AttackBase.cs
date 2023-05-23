@@ -9,13 +9,11 @@ public class SO_Attack : ScriptableObject {
 
     [Header("Make sure the amount of strengths is equal to the amount of attacks in the animation!")]
     public float[] strength;
-    public Vector2[] lauchStrenght;
+    public Vector2[] enemyLaunchStrength;
+    public float[] attackFreezeTime;
+    public Vector2[] onHitPushBack;
     [Range(0f, 1f)] public float movementReduction;
     [Range(0f, 1f)] public float fallReduction;
     public bool isSpecial;
     public bool canceledByJump;
-    public Vector2 onHitPushBack;
-
-    [Header("Should be used in air attacks only!")]
-    public Vector2 attackBounce;
 }

@@ -27,13 +27,13 @@ public class Character : CombatBase {
 
         // hit freeze
         Time.timeScale = 0; // maybe later use a variable timescale ...
-        StartCoroutine(ResumeTime());
+        StartCoroutine(ResumeTime(0.1f));
 
         // take damage...
     }
 
-    private IEnumerator ResumeTime() {
-        yield return new WaitForSecondsRealtime(0.1f);
+    private IEnumerator ResumeTime(float time) {
+        yield return new WaitForSecondsRealtime(time);
         Time.timeScale = 1;
     }
 

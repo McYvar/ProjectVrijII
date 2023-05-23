@@ -314,6 +314,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.20833333
+    functionName: LaunchHorizontal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 100
+    intParameter: 0
+    messageOptions: 0
   - time: 0.29166666
     functionName: SetAttackPhase
     data: 

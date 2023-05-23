@@ -17,7 +17,6 @@ MonoBehaviour:
   runningMovementSpeed: 14
   crouchMovementSpeed: 0
   groundJumpStrength: 60
-  airMovementSpeed: 14
   airDashStrength: 60
   airDashStopScalar: 0.28
   doubleJumpStrength: 50
@@ -37,14 +36,19 @@ MonoBehaviour:
   quaterCircleKick: {fileID: 11400000, guid: fcb31865e34c8e942a3ac21820d77c0d, type: 2}
   quaterCirclePunch: {fileID: 11400000, guid: 7c3a2472f4bb5cc4b97e31c160d303c1, type: 2}
   quaterCircleStrong: {fileID: 11400000, guid: 9e6d953ead25a3f4eb142c42fbed9a94, type: 2}
-  halfCircleKick: {fileID: 11400000, guid: dc4ac5239ff7e474cb538a12642b7fa9, type: 2}
-  halfCirclePunch: {fileID: 11400000, guid: 5843a0092add5a94faa979475ddc89a6, type: 2}
-  halfCircleStrong: {fileID: 11400000, guid: 5cf703e6c6dd59149a0aeee2f25e54db, type: 2}
+  quaterBackwardCircleKick: {fileID: 11400000, guid: dc4ac5239ff7e474cb538a12642b7fa9,
+    type: 2}
+  quaterBackwardCirclePunch: {fileID: 11400000, guid: 5843a0092add5a94faa979475ddc89a6,
+    type: 2}
+  quaterBackwardCircleStrong: {fileID: 11400000, guid: 5cf703e6c6dd59149a0aeee2f25e54db,
+    type: 2}
   lastInputDirection: 5
   variableMovementSpeed: 0
   attackMovementReductionScalar: 1
   fallReductionScalar: 1
   currentAttackName: jK
   currentAttack: {fileID: 0}
-  lastAttack: {fileID: 11400000, guid: 4683e015428de684786783f9e11976f3, type: 2}
+  lastAttack: {fileID: 0}
+  isStunned: 0
+  canRBInput: 1
   overrideController: {fileID: 22100000, guid: 573de15c8d8687749ad236ceaeb10552, type: 2}

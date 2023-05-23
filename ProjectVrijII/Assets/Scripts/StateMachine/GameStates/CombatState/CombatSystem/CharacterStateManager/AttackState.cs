@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class AttackState : CharacterBaseState {
 
@@ -15,8 +17,6 @@ public class AttackState : CharacterBaseState {
 
     private float joyThreshold = 0.3f;
 
-    protected Rigidbody2D rb;
-
     private bool canDoublePress;
     private float maxDoublePressTime = 0.5f;
     protected Action OnDoublePress;
@@ -27,10 +27,8 @@ public class AttackState : CharacterBaseState {
     protected Action RecoveryInputBuffer;
     protected Action ReadyInputBuffer;
 
-
     protected override void Awake() {
         base.Awake();
-        rb = GetComponent<Rigidbody2D>();
     }
 
     public override void OnEnter() {
@@ -38,7 +36,7 @@ public class AttackState : CharacterBaseState {
         attackDelay = 0;
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
-        SetAttackPhase(AttackPhase.ready);
+        //SetAttackPhase(AttackPhase.ready);
         character.currentAttack = null;
         ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
         RecoveryInputBuffer = null;
@@ -65,9 +63,13 @@ public class AttackState : CharacterBaseState {
         */
         if (character.currentAttack != null) {
             if (CanAttackInstant()) DoAttack(character.currentAttack);
-            else if (CanBufferRecovery()) RecoveryInputBuffer = () => { DoAttack(character.currentAttack); }; // can now be buffered before recovery
-            else if (CanAttackInRecovery()) DoAttack(character.currentAttack);
-            else ReadyInputBuffer = () => { DoAttack(character.currentAttack); };
+            else if (CanBufferRecovery()) RecoveryInputBuffer = () => { 
+                character.rbInput = true; DoAttack(character.currentAttack); 
+            }; // can now be buffered before recovery
+            else if (CanAttackInRecovery()) {
+                character.rbInput = true;
+                DoAttack(character.currentAttack);
+            } else ReadyInputBuffer = () => { DoAttack(character.currentAttack); };
         }
     }
 
@@ -76,12 +78,7 @@ public class AttackState : CharacterBaseState {
         if (newAttack == null) return; // has to be fixed later on...
         animator.SetTrigger(character.currentAttackName);
         character.attackMovementReductionScalar = newAttack.movementReduction;
-        character.fallReductionScalar = newAttack.fallReduction;
-        if (newAttack.attackBounce.y != 0) rb.velocity = new Vector2(rb.velocity.x, newAttack.attackBounce.y);
-        if (newAttack.attackBounce.x != 0) {
-            if (characterFacingDirection == CharacterFacingDirection.RIGHT) rb.velocity = new Vector2(newAttack.attackBounce.x, rb.velocity.y);
-            else rb.velocity = new Vector2(-newAttack.attackBounce.x, rb.velocity.y);
-        }
+        character.fallReductionScalar = newAttack.fallReduction; // implement
         SetAttackPhase(AttackPhase.startup);
 
         // then reset the attack
@@ -129,6 +126,8 @@ public class AttackState : CharacterBaseState {
                     ReadyInputBuffer = null;
                     RecoveryInputBuffer = null;
                 }
+
+                character.rbInput = true;
                 break;
             case AttackPhase.startup:
                 break;
@@ -248,7 +247,7 @@ public class AttackState : CharacterBaseState {
 
     public void TriggerHit(int hitNumber) {
         if (!activeState) return;
-        List<Transform> hitableEntities = new List<Transform>();
+        List<IHitable> hitableEntities = new List<IHitable>();
 
         for (int i = 0; i < hitboxes.Length; i++) {
             Collider2D[] collisions = Physics2D.OverlapBoxAll(hitboxes[i].bounds.center, hitboxes[i].bounds.size, 0, hitLayer);
@@ -256,10 +255,10 @@ public class AttackState : CharacterBaseState {
             // first we check for each hitbox if there are hitable entities in there and add them to a list
             foreach (var hit in collisions) {
                 if (hit.transform == transform) continue;
-                if (hit.GetComponent<Character>() != null) {
-                    Debug.Log(hit + " was hit in collision zone " + i);
-                    if (!hitableEntities.Contains(hit.transform))
-                        hitableEntities.Add(hit.transform);
+                if (hit.GetComponent<IHitable>() != null) {
+                    //Debug.Log(hit + " was hit in collision zone " + i);
+                    if (!hitableEntities.Contains(hit.GetComponent<IHitable>()))
+                        hitableEntities.Add(hit.GetComponent<IHitable>());
                 }
             }
         }
@@ -267,22 +266,56 @@ public class AttackState : CharacterBaseState {
         // then foreach hitable entity we call upon their function
         foreach (var entity in hitableEntities) {
             try {
-                if (characterFacingDirection == CharacterFacingDirection.RIGHT)
-                    entity.GetComponent<Character>().OnHit(character.lastAttack.lauchStrenght[hitNumber]);
-                else entity.GetComponent<Character>().OnHit(character.lastAttack.lauchStrenght[hitNumber] * new Vector2(-1, 1));
+                if (characterFacingDirection == CharacterFacingDirection.RIGHT) {
+                    entity.OnHit(character.lastAttack.enemyLaunchStrength[hitNumber], character.lastAttack.attackFreezeTime[hitNumber]);
+                    if (character.lastAttack.onHitPushBack[hitNumber].magnitude > 0) {
+                        character.rbInput = false;
+                        rb.AddForce(character.lastAttack.onHitPushBack[hitNumber], ForceMode2D.Impulse);
+                    }
+                } else {
+                    entity.OnHit(character.lastAttack.enemyLaunchStrength[hitNumber] * new Vector2(-1, 1), character.lastAttack.attackFreezeTime[hitNumber]);
+                    if (character.lastAttack.onHitPushBack[hitNumber].magnitude > 0) {
+                        character.rbInput = false;
+                        rb.AddForce(character.lastAttack.onHitPushBack[hitNumber] * new Vector2(-1, 1), ForceMode2D.Impulse);
+                    }
+                }
                 OnHitEnemy();
                 // enymy take damage with strength
             }
             catch {
-                Debug.Log(character.lastAttack + " gave an error, please check if the amount of attacks in this " +
-                    "attack(" + character.lastAttack.strength.Length + ") is lower or equal to the amount in the animation(" +
-                    hitNumber + ").");
+                string error = character.lastAttack.name + " " + hitNumber + " has too few elements listed in: ";
+                if (character.lastAttack.strength.Length - 1 < hitNumber) error += "strength: " + (character.lastAttack.strength.Length - 1) + " ";
+                if (character.lastAttack.enemyLaunchStrength.Length - 1 < hitNumber) error += "enemyLaunchStrength: " + (character.lastAttack.enemyLaunchStrength.Length - 1) + " ";
+                if (character.lastAttack.attackFreezeTime.Length - 1 < hitNumber) error += "attackFreezeTime: " + (character.lastAttack.attackFreezeTime.Length - 1) + " ";
+                if (character.lastAttack.onHitPushBack.Length - 1 < hitNumber) error += "onHitPushBack: " + (character.lastAttack.onHitPushBack.Length - 1);
+                Debug.Log(error);
             }
         }
+    }
+
+    public void LaunchVertical(float launchStrength)
+    {
+        if (!activeState) return;
+        rb.AddForce(Vector2.up * launchStrength, ForceMode2D.Impulse);
+        character.rbInput = false;
+    }
+
+    public void LaunchHorizontal(float launchStrength)
+    {
+        if (!activeState) return;
+        rb.AddForce(transform.right * launchStrength, ForceMode2D.Impulse);
+        character.rbInput = false;
+    }
+
+    public void RecoverLaunch()
+    {
+        if (!activeState) return;
+        character.rbInput = true;
     }
     #endregion
 
     protected virtual void Movement() { }
+
 
     protected virtual void Jump(float jumpStrength) {
         float nearVectorLenght = rb.velocity.magnitude *
@@ -312,7 +345,7 @@ public enum AttackTypes {
     JUMPING = 2,
     DRAGON_PUNCH = 3,
     QUARTER_CIRCLE = 4,
-    HALF_CIRCLE = 5
+    QUARTER_CIRCLE_BACKWARD = 5
 }
 
 public enum LeftInputDirection {

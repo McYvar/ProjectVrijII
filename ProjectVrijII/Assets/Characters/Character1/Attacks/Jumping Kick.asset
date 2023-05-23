@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Jumping Kick
   m_EditorClassIdentifier: 
-  strength:
-  - 0
-  lauchStrenght:
-  - {x: 10, y: 20}
+  strength: []
+  enemyLaunchStrength: []
+  attackFreezeTime: []
+  onHitPushBack: []
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
