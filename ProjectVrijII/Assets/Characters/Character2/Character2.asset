@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd3e142b3ddac046ba675a794c8a6b0, type: 3}
+  m_Name: Character2
+  m_EditorClassIdentifier: 
+  characterName: Mac(copy)
+  groundMovementSpeed: 14
+  runningMovementSpeed: 14
+  crouchMovementSpeed: 0
+  groundJumpStrength: 60
+  airDashStrength: 60
+  airDashStopScalar: 0.28
+  doubleJumpStrength: 50
+  airDashLength: 5
+  standingKick: {fileID: 11400000, guid: c0466575a200fb54fa0c5b8b1edb6c02, type: 2}
+  standingPunch: {fileID: 11400000, guid: 3562bb10794c3594eb5d20cbf0b042b8, type: 2}
+  standingStrong: {fileID: 11400000, guid: 5286e04b6ff79874fa3b3110dedaa799, type: 2}
+  crouchingKick: {fileID: 11400000, guid: d52ca24231d46164aa3c6b11fdcaae55, type: 2}
+  crouchingPunch: {fileID: 11400000, guid: 2fe287c165a97074ba706400c5f22e4a, type: 2}
+  crouchingStrong: {fileID: 11400000, guid: da2be82186783184b856ecedbf050a01, type: 2}
+  jumpingKick: {fileID: 11400000, guid: 4683e015428de684786783f9e11976f3, type: 2}
+  jumpingPunch: {fileID: 11400000, guid: 67dce4fc3e470c949a0cf9d7f863ea5a, type: 2}
+  jumpingStrong: {fileID: 11400000, guid: ec0b99b3784a9c14286bcf8480aded47, type: 2}
+  dragonpunchKick: {fileID: 11400000, guid: efb124e6aa38dd64d88d7d2758a4fa08, type: 2}
+  dragonpunchPunch: {fileID: 11400000, guid: 0458392cc94810048b5e83927e9c90ee, type: 2}
+  dragonpunchStrong: {fileID: 11400000, guid: 2a7b4c1fbc49d824eb6e5270ecb5b0bc, type: 2}
+  quaterCircleKick: {fileID: 11400000, guid: fcb31865e34c8e942a3ac21820d77c0d, type: 2}
+  quaterCirclePunch: {fileID: 11400000, guid: 7c3a2472f4bb5cc4b97e31c160d303c1, type: 2}
+  quaterCircleStrong: {fileID: 11400000, guid: 9e6d953ead25a3f4eb142c42fbed9a94, type: 2}
+  quaterBackwardCircleKick: {fileID: 11400000, guid: dc4ac5239ff7e474cb538a12642b7fa9,
+    type: 2}
+  quaterBackwardCirclePunch: {fileID: 11400000, guid: 5843a0092add5a94faa979475ddc89a6,
+    type: 2}
+  quaterBackwardCircleStrong: {fileID: 11400000, guid: 5cf703e6c6dd59149a0aeee2f25e54db,
+    type: 2}
+  lastInputDirection: 5
+  variableMovementSpeed: 0
+  attackMovementReductionScalar: 1
+  fallReductionScalar: 1
+  currentAttackName: jK
+  currentAttack: {fileID: 0}
+  lastAttack: {fileID: 0}
+  isStunned: 0
+  rbInput: 0
+  overrideController: {fileID: 22100000, guid: 573de15c8d8687749ad236ceaeb10552, type: 2}

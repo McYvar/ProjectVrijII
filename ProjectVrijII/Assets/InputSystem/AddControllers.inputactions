@@ -1,0 +1,45 @@
+{
+    "name": "AddControllers",
+    "maps": [
+        {
+            "name": "AddControllers",
+            "id": "3c0e4f2f-7ba1-407d-ad07-ee900f9acfb6",
+            "actions": [
+                {
+                    "name": "JoinPlayer",
+                    "type": "Button",
+                    "id": "ed4eedd1-cd8e-4dbd-bcff-00485a3cdd8c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ba648af7-4f21-45ce-b89c-c981f5134342",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JoinPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4634e968-fd74-44a9-8de0-e7ac4ab63dfc",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JoinPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

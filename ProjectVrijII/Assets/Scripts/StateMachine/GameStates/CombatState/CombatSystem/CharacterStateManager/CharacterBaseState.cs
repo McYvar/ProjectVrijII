@@ -9,10 +9,9 @@ public class CharacterBaseState : BaseState, IHitable {
     /// </summary>
 
     [SerializeField] private LayerMask groundCheckLayers;
-    [SerializeField] protected Transform currentEnemy; // temporaily for facing
     [SerializeField] private ComboCounter comboCounter;
+    [SerializeField] protected Transform currentEnemy; // temporaily for facing
     protected Collider2D myCollider;
-    protected Animator animator;
     protected bool isGrounded;
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
 
@@ -20,17 +19,24 @@ public class CharacterBaseState : BaseState, IHitable {
     protected Rigidbody2D rb;
     protected bool stunned;
 
-    // DEPENDENCIES
-    [HideInInspector] protected SO_Character character; // later input by player selection maybe?
-    [HideInInspector] protected InputHandler playerInput;
+
+    protected Animator animator;
+    protected SO_Character character; // later input by player selection maybe?
+    protected InputHandler inputHandler;
+    private bool isInitialized = false;
 
     protected virtual void Awake() {
         myCollider = GetComponent<Collider2D>();
-
         animator = GetComponent<Animator>();
-        animator.runtimeAnimatorController = character.overrideController;
         rb = GetComponent<Rigidbody2D>();
         stunned = false;
+    }
+
+    public void PlayerAssignment(InputHandler newInputHandler, SO_Character newCharacter) {
+        inputHandler = newInputHandler;
+        character = newCharacter;
+        animator.runtimeAnimatorController = character.overrideController;
+        isInitialized = true;
     }
 
     public override void OnEnter() {
@@ -42,12 +48,16 @@ public class CharacterBaseState : BaseState, IHitable {
     }
 
     public override void OnFixedUpdate() {
+        if (!isInitialized) return;
     }
 
     public override void OnLateUpdate() {
+        if (!isInitialized) return;
     }
 
     public override void OnUpdate() {
+        if (!isInitialized) return;
+        Debug.Log(inputHandler.gameObject.name);
         isGrounded = GroundCheck();
         animator.SetBool("isGrounded", isGrounded);
 
@@ -86,6 +96,7 @@ public class CharacterBaseState : BaseState, IHitable {
 
     public void OnHit(Vector2 force, float freezeTime) {
         stunned = true;
+        stateManager.SwitchState(typeof(IdleState)); // GOTTA BE REMOVED VERY SOON AGAIN JUST FOR TESTING THIS!!!
         rb.AddForce(force, ForceMode2D.Impulse);
         if (force.x > 0) transform.localEulerAngles = new Vector3(0, 0, 0);
         else if (force.x < 0) transform.localEulerAngles = new Vector3(0, 180, 0);

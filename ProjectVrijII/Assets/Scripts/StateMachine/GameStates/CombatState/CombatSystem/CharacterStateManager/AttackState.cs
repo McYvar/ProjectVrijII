@@ -45,7 +45,7 @@ public class AttackState : CharacterBaseState {
     public override void OnUpdate() {
         base.OnUpdate();
         if (Input.GetKeyDown(KeyCode.Space)) stateManager.SwitchState(typeof(OnGroundMovement));
-        LeftInputComboHandler(playerInput.leftDirection);
+        LeftInputComboHandler(inputHandler.leftDirection);
     }
 
     public override void OnFixedUpdate() {

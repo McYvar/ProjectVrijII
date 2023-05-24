@@ -5,14 +5,13 @@ public class OnGroundMovement : AttackState {
     /// <summary>
     /// On ground movement handler
     /// </summary>
-    [SerializeField] float jumpForce;
     private bool canJump;
 
     public override void OnEnter() {
         base.OnEnter();
-        playerInput.eastFirst += OnGroundStrong;
-        playerInput.southFirst += OnGroundKick;
-        playerInput.westFirst += OnGroundPunch;
+        inputHandler.eastFirst += OnGroundStrong;
+        inputHandler.southFirst += OnGroundKick;
+        inputHandler.westFirst += OnGroundPunch;
         canJump = false;
 
         animator.SetBool("isGrounded", true);
@@ -21,9 +20,9 @@ public class OnGroundMovement : AttackState {
 
     public override void OnExit() {
         base.OnExit();
-        playerInput.eastFirst -= OnGroundStrong;
-        playerInput.southFirst -= OnGroundKick;
-        playerInput.westFirst -= OnGroundPunch;
+        inputHandler.eastFirst -= OnGroundStrong;
+        inputHandler.southFirst -= OnGroundKick;
+        inputHandler.westFirst -= OnGroundPunch;
     }
 
     public override void OnUpdate() {
@@ -84,7 +83,7 @@ public class OnGroundMovement : AttackState {
             character.lastInputDirection == LeftInputDirection.bottom ||
             character.lastInputDirection == LeftInputDirection.bottomRight) {
 
-            Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
+            Vector2 horizonal = new Vector2(inputHandler.leftDirection.x, 0);
             rb.velocity = new Vector2(horizonal.normalized.x * character.crouchMovementSpeed *
                 character.attackMovementReductionScalar, rb.velocity.y);
 
@@ -95,7 +94,7 @@ public class OnGroundMovement : AttackState {
                 OnDoublePress += SetVariableSpeedToRunning;
             }
 
-            Vector2 horizonal = new Vector2(playerInput.leftDirection.x, 0);
+            Vector2 horizonal = new Vector2(inputHandler.leftDirection.x, 0);
             float resultMovementSpeed =
                 (character.groundMovementSpeed + character.variableMovementSpeed) *
                 character.attackMovementReductionScalar;

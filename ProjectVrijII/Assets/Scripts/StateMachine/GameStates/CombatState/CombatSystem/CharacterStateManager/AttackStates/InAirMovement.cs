@@ -26,9 +26,9 @@ public class InAirMovement : AttackState {
 
     public override void OnEnter() {
         base.OnEnter();
-        playerInput.eastFirst += InAirStrong;
-        playerInput.southFirst += InAirKick;
-        playerInput.westFirst += InAirPunch;
+        inputHandler.eastFirst += InAirStrong;
+        inputHandler.southFirst += InAirKick;
+        inputHandler.westFirst += InAirPunch;
         inAirTimer = 0;
         didDoubleJump = false;
         canDoubleJump = false;
@@ -42,9 +42,9 @@ public class InAirMovement : AttackState {
 
     public override void OnExit() {
         base.OnExit();
-        playerInput.eastFirst -= InAirStrong;
-        playerInput.southFirst -= InAirKick;
-        playerInput.westFirst -= InAirPunch;
+        inputHandler.eastFirst -= InAirStrong;
+        inputHandler.southFirst -= InAirKick;
+        inputHandler.westFirst -= InAirPunch;
     }
 
     public override void OnUpdate() {
