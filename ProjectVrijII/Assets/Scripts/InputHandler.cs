@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : MonoBehaviour
+public class InputHandler : MonoBehaviour
 {
     public Vector2 leftJoyDirection;
     public Vector2 rightJoyDirection;
@@ -51,9 +51,6 @@ public class PlayerInput : MonoBehaviour
     public bool options;
     public Action optionsFirst;
     public Action optionsLast;
-
-    private void Update() {
-    }
 
     public void LeftJoy(InputAction.CallbackContext cc) {
         leftJoyDirection = cc.ReadValue<Vector2>();

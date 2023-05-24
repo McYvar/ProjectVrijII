@@ -13,10 +13,10 @@ public class InputVisualizer : CombatBase {
 	[SerializeField]
 	private float distance = 30;
 
-	private PlayerInput playerInput;
+	private InputHandler playerInput;
 
 	private void Start() {
-		playerInput = FindObjectOfType<PlayerInput>();
+		playerInput = FindObjectOfType<InputHandler>();
 	}
 
 	public override void OnUpdate() {

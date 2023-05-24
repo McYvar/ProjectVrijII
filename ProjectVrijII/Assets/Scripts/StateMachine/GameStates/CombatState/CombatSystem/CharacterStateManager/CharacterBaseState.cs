@@ -8,8 +8,6 @@ public class CharacterBaseState : BaseState, IHitable {
     /// Base class containing the main functionality for the character
     /// </summary>
 
-    [SerializeField] protected SO_Character character; // later input by player selection maybe?
-    [HideInInspector] protected PlayerInput playerInput;
     [SerializeField] private LayerMask groundCheckLayers;
     [SerializeField] protected Transform currentEnemy; // temporaily for facing
     [SerializeField] private ComboCounter comboCounter;
@@ -22,9 +20,11 @@ public class CharacterBaseState : BaseState, IHitable {
     protected Rigidbody2D rb;
     protected bool stunned;
 
+    // DEPENDENCIES
+    [HideInInspector] protected SO_Character character; // later input by player selection maybe?
+    [HideInInspector] protected InputHandler playerInput;
+
     protected virtual void Awake() {
-        character.OnStartUp();
-        playerInput = GetComponent<PlayerInput>();
         myCollider = GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();

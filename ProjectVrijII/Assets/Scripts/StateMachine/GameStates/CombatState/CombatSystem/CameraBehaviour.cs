@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraBehaviour : CombatBase
 {
-    [SerializeField] private Transform[] focussedObjects; // for now set them in manually
+    [SerializeField] private Transform[] focussedObjects; // for now set them in manually 
     [SerializeField] private float smoothTime;
     [SerializeField] private Vector2 offset;
     [SerializeField] private Vector2 min;
@@ -15,14 +15,6 @@ public class CameraBehaviour : CombatBase
     [SerializeField] private Transform rightBound;
     private Vector3 smoothVector;
 
-    private float centreX, distX;
-
-    private void Start()
-    {
-        centreX = (leftBound.position.x + rightBound.position.x) / 2;
-        distX = rightBound.position.x - leftBound.position.x;
-    }
-
     public override void OnUpdate() {
         base.OnUpdate();
         if (focussedObjects.Length < 2) {
@@ -30,21 +22,18 @@ public class CameraBehaviour : CombatBase
             return;
         }
 
-        float xAxis = 0f;
-        float yAxis = 0f;
+        float cameraCentrePointX = 0f;
 
         float xMin = focussedObjects[0].position.x;
         float xMax = focussedObjects[0].position.x;
 
         foreach (var obj in focussedObjects) {
-            xAxis += obj.position.x;
-            yAxis += obj.position.y;
+            cameraCentrePointX += obj.position.x;
 
             if (obj.position.x < xMin) xMin = obj.position.x;
             if (obj.position.x > xMax) xMax = obj.position.x;
         }
-        xAxis /= focussedObjects.Length;
-        yAxis /= focussedObjects.Length;
+        cameraCentrePointX /= focussedObjects.Length;
 
         float invlerpXMin = Mathf.InverseLerp(leftBound.position.x, rightBound.position.x, xMin); // pos most left obj from 0-1
         float invlerpXMax = Mathf.InverseLerp(leftBound.position.x, rightBound.position.x, xMax); // for right from 0-1
@@ -52,6 +41,6 @@ public class CameraBehaviour : CombatBase
         float hori = Mathf.Lerp(min.x, max.x, dist);
         float vert = Mathf.Lerp(min.y, max.y, dist);
 
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(xAxis, vert + offset.y, hori + offset.x), ref smoothVector, smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(cameraCentrePointX, vert + offset.y, hori + offset.x), ref smoothVector, smoothTime);
     }
 }
