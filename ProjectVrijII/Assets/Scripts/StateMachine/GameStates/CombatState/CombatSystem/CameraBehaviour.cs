@@ -22,7 +22,6 @@ public class CameraBehaviour : CombatBase
     public override void OnUpdate() {
         base.OnUpdate();
         if (focussedObjects.Count < 2) {
-            Debug.Log("No objects found!");
             return;
         }
 

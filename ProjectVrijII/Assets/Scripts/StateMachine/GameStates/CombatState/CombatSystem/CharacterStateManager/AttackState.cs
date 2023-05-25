@@ -37,7 +37,6 @@ public class AttackState : CharacterBaseState {
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
         //SetAttackPhase(AttackPhase.ready);
-        character.currentAttack = null;
         ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
         RecoveryInputBuffer = null;
     }

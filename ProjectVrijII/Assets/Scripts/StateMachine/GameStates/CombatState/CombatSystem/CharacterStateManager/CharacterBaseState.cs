@@ -10,7 +10,7 @@ public class CharacterBaseState : BaseState, IHitable {
 
     [SerializeField] private LayerMask groundCheckLayers;
     [SerializeField] private ComboCounter comboCounter;
-    [SerializeField] protected Transform currentEnemy; // temporaily for facing
+    protected Transform currentEnemy; // temporaily for facing
     protected Collider2D myCollider;
     protected bool isGrounded;
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
@@ -19,11 +19,9 @@ public class CharacterBaseState : BaseState, IHitable {
     protected Rigidbody2D rb;
     protected bool stunned;
 
-
     protected Animator animator;
     protected SO_Character character; // later input by player selection maybe?
     protected InputHandler inputHandler;
-    private bool isInitialized = false;
 
     protected virtual void Awake() {
         myCollider = GetComponent<Collider2D>();
@@ -32,11 +30,18 @@ public class CharacterBaseState : BaseState, IHitable {
         stunned = false;
     }
 
-    public void PlayerAssignment(InputHandler newInputHandler, SO_Character newCharacter) {
+    public void SetInputHandler(InputHandler newInputHandler) {
+        Debug.Log(gameObject.name);
         inputHandler = newInputHandler;
+    }
+
+    public void SetCharacter(SO_Character newCharacter) {
         character = newCharacter;
         animator.runtimeAnimatorController = character.overrideController;
-        isInitialized = true;
+    }
+
+    public void SetEnemy(Transform enemy) {
+        currentEnemy = enemy;
     }
 
     public override void OnEnter() {
@@ -48,16 +53,12 @@ public class CharacterBaseState : BaseState, IHitable {
     }
 
     public override void OnFixedUpdate() {
-        if (!isInitialized) return;
     }
 
     public override void OnLateUpdate() {
-        if (!isInitialized) return;
     }
 
     public override void OnUpdate() {
-        if (!isInitialized) return;
-        Debug.Log(inputHandler.gameObject.name);
         isGrounded = GroundCheck();
         animator.SetBool("isGrounded", isGrounded);
 
@@ -84,8 +85,10 @@ public class CharacterBaseState : BaseState, IHitable {
     }
 
     private bool GroundCheck() {
-        float maxRayDistance = (myCollider.bounds.size.y / 2) + 0.1f; // check actual cast dist sometime in future
+        float maxRayDistance = 0.1f; // check actual cast dist sometime in future
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, maxRayDistance, groundCheckLayers);
+
+        Debug.DrawLine(transform.position, transform.position + Vector3.down * maxRayDistance);
 
         if (hit.collider != null) {
             return true;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2548445267731007156}
   - component: {fileID: 2548445267731007157}
+  - component: {fileID: 2760112746516609215}
   m_Layer: 0
   m_Name: InnerCollider
   m_TagString: Untagged
@@ -45,9 +46,25 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 3.814478}
-  m_Size: {x: 1, y: 7.548606}
+  m_Offset: {x: 0, y: 3.7083097}
+  m_Size: {x: 1, y: 7.3362694}
   m_Direction: 0
+--- !u!58 &2760112746516609215
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548445267731007163}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 7.375}
+  serializedVersion: 2
+  m_Radius: 0.2
 --- !u!1 &2548445268067047024
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +285,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   comboCounter: {fileID: 0}
-  currentEnemy: {fileID: 0}
   inputOrders:
   - name: quarter backward circle left
     attackType: 5
@@ -341,7 +357,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   comboCounter: {fileID: 0}
-  currentEnemy: {fileID: 0}
   inputOrders:
   - name: quarter backward circle left
     attackType: 5
@@ -382,7 +397,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   comboCounter: {fileID: 0}
-  currentEnemy: {fileID: 0}
 --- !u!212 &2548445269591056921
 SpriteRenderer:
   m_ObjectHideFlags: 0

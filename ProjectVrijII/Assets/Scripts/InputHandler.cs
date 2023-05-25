@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    public Action<InputHandler> OnReassignment = null;
+
     public Vector2 leftJoyDirection;
     public Vector2 rightJoyDirection;
 
