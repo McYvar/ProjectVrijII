@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterAssignment : CombatBase
 {
     [SerializeField] private GameObject characterController;
     [SerializeField] private SO_Character[] characters;
     [SerializeField] private Vector3[] spawns;
-    [SerializeField] private PlayerDistribution playerDistribution;
     [SerializeField] private CameraBehaviour cameraBehaviour;
 
     private GameObject[] activeCharacters = new GameObject[2];
+
+    [SerializeField] GameObject UI_PlayerDisconectedWindow;
+    private bool haveSpawned = false;
+
+    private void Start() {
+        PlayerDistribution.Instance.OnActivePlayerReconnected += CharacterReconnected;
+        PlayerDistribution.Instance.OnActivePlayerDisconnected += CharacterLostConnection;
+    }
 
     public override void OnUpdate() {
         if (Input.GetKeyDown(KeyCode.Backspace)) {
@@ -34,16 +42,16 @@ public class CharacterAssignment : CombatBase
 
     // Tthis method is supposed to be called when the players spawn in
     private void AssignToCharacters() {
-        for (int i = 0; i < playerDistribution.connectedPlayers; i++) {
+        for (int i = 0; i < PlayerDistribution.Instance.connectedPlayers; i++) {
             GameObject characterObj = Instantiate(characterController, spawns[i], Quaternion.identity);
             characterObj.name = characters[i].name;
 
             CharacterBaseState[] characterBaseStates = characterObj.GetComponents<CharacterBaseState>();
             foreach (var characterState in characterBaseStates) {
-                characterState.SetInputHandler(playerDistribution.playerInputHandlers[i]);
+                characterState.SetInputHandler(PlayerDistribution.Instance.playerInputHandlers[i]);
 
                 // add a method to the action on the inputHandler to assure good reassignment
-                playerDistribution.playerInputHandlers[i].OnReassignment += characterState.SetInputHandler;
+                PlayerDistribution.Instance.playerInputHandlers[i].OnReassignment += characterState.SetInputHandler;
 
                 // temp...
                 characterState.SetCharacter(characters[i]);
@@ -51,6 +59,20 @@ public class CharacterAssignment : CombatBase
 
             // also temp...
             activeCharacters[i] = characterObj;
+        }
+
+        haveSpawned = true;
+    }
+
+    private void CharacterLostConnection() {
+        UI_PlayerDisconectedWindow.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    private void CharacterReconnected() {
+        if (PlayerDistribution.Instance.playerInputHandlers.Count >= activeCharacters.Length) {
+            UI_PlayerDisconectedWindow.SetActive(false);
+            Time.timeScale = 1;
         }
     }
 }
