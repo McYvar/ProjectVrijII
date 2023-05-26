@@ -13,7 +13,6 @@ public class CharacterAssignment : CombatBase
     private GameObject[] activeCharacters = new GameObject[2];
 
     [SerializeField] GameObject UI_PlayerDisconectedWindow;
-    private bool haveSpawned = false;
 
     private void Start() {
         PlayerDistribution.Instance.OnActivePlayerReconnected += CharacterReconnected;
@@ -40,9 +39,9 @@ public class CharacterAssignment : CombatBase
         }
     }
 
-    // Tthis method is supposed to be called when the players spawn in
+    // This method is supposed to be called when the players spawn in
     private void AssignToCharacters() {
-        for (int i = 0; i < PlayerDistribution.Instance.connectedPlayers; i++) {
+        for (int i = 0; i < activeCharacters.Length; i++) {
             GameObject characterObj = Instantiate(characterController, spawns[i], Quaternion.identity);
             characterObj.name = characters[i].name;
 
@@ -60,8 +59,6 @@ public class CharacterAssignment : CombatBase
             // also temp...
             activeCharacters[i] = characterObj;
         }
-
-        haveSpawned = true;
     }
 
     private void CharacterLostConnection() {

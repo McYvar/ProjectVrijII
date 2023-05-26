@@ -4,150 +4,130 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerDistribution : MonoBehaviour {
-    /// <summary>
-    /// Class to distribute the connected controllers over actually being a player in the game.
-    /// The class allows multiple controllers to be connected, however, the first ones that press 
-    /// a join button will become a player up to the playerlimit.
-    /// 
-    /// When a controller is connected to a player prefab, only the InputHandlers on the prefab have to be assigned.
-    /// </summary>
-
-    // bad practice, but heres a singleton :(
-    public static PlayerDistribution Instance;
-
-    [SerializeField] private GameObject inputController;
     public int maxPlayerSlots = 2;
+    public GameObject inputControllerPrefab;
+    public GameObject joinControllerPrefab;
+    public Action OnActivePlayerDisconnected;
+    public Action OnActivePlayerReconnected;
 
-    private int[] playerId, deviceId;
-    [HideInInspector] public int connectedPlayers;
+    private static PlayerDistribution instance;
+    private readonly Dictionary<int, PlayerInput> allConnectedControllers = new Dictionary<int, PlayerInput>();
+    private readonly Dictionary<int, PlayerInput> assignedPlayers = new Dictionary<int, PlayerInput>();
+    public readonly Dictionary<int, InputHandler> playerInputHandlers = new Dictionary<int, InputHandler>();
+    private readonly Dictionary<int, int> deviceToPlayerMapping = new Dictionary<int, int>();
 
-    public Dictionary<int, InputHandler> playerInputHandlers = new Dictionary<int, InputHandler>();
-    private PlayerInput[] players;
-    
-    [SerializeField] private GameObject joinControllerPrefab;
-    public Dictionary<int, PlayerInput> allConnectedControllers = new Dictionary<int, PlayerInput>();
-    public Action OnActivePlayerDisconnected = null;
-    public Action OnActivePlayerReconnected = null;
+    public static PlayerDistribution Instance {
+        get { return instance; }
+    }
 
     private void Awake() {
-        Instance = this;
-        DontDestroyOnLoad(this);
+        if (instance != null && instance != this) {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start() {
+        InputSystem.onDeviceChange += OnDeviceChange;
+
         foreach (var device in InputSystem.devices) {
-            int id = allConnectedControllers.Count;
-            PlayerInput newPlayer = PlayerInput.Instantiate(joinControllerPrefab, allConnectedControllers.Count, "AddControllersMap", -1, device);
-            allConnectedControllers.Add(allConnectedControllers.Count, newPlayer);
-            newPlayer.name = $"Controller{id}";
+            AssignDevice(device);
         }
-
-        playerId = new int[maxPlayerSlots];
-        for (int i = 0; i < maxPlayerSlots; i++) {
-            playerId[i] = i;
-        }
-
-        deviceId = new int[maxPlayerSlots];
-        for (int i = 0; i < maxPlayerSlots; i++) {
-            deviceId[i] = -1;
-        }
-
-        players = new PlayerInput[maxPlayerSlots];
-
-        InputSystem.onDeviceChange += (device, inputDeviceChange) => {
-            Debug.Log(device.name + " " + inputDeviceChange);
-
-            if (inputDeviceChange == InputDeviceChange.Reconnected) {
-                ReconnectDevice(device);
-            } else if (inputDeviceChange == InputDeviceChange.Added) {
-                AssignDevice(device);
-            } else if (inputDeviceChange == InputDeviceChange.Removed) {
-                RemoveDevice(device);
-            }
-        };
     }
 
-    public void AssignPlayer(InputDevice device) {
-        int playerIndex = FreeSlot(device);
-        if (playerIndex == -1) return;
-        connectedPlayers++;
-        PlayerInput player = PlayerInput.Instantiate(inputController, playerIndex, "ControllerMap", -1, device);
-        player.name = $"Player{playerIndex}";
-        PlayerInput old = players[playerIndex];
-        players[playerIndex] = player;
-        InputHandler inputHandler = player.gameObject.GetComponent<InputHandler>();
-
-        if (playerInputHandlers.ContainsKey(playerIndex)) { // player exists, reassign inputhandlers...
-            playerInputHandlers[playerIndex].OnReassignment?.Invoke(inputHandler);
-
-            // replace the old one with the new one so if another controller connects to this player they get to control them
-            Action<InputHandler> temp = playerInputHandlers[playerIndex].OnReassignment;
-            playerInputHandlers[playerIndex] = inputHandler;
-            inputHandler.OnReassignment = temp;
-        }
-        else { // player doesn't exsist yet
-            playerInputHandlers.Add(playerIndex, inputHandler);
-        }
-
-        if (old != null) Destroy(old.gameObject);
-
-        OnActivePlayerReconnected?.Invoke();
+    private void OnDestroy() {
+        InputSystem.onDeviceChange -= OnDeviceChange;
     }
 
-    private int FreeSlot(InputDevice device) {
-        // check if device already exists
-        for (int i = 0; i < playerId.Length; i++) {
-            if (deviceId[i] == device.deviceId) return -1;
+    private void OnDeviceChange(InputDevice device, InputDeviceChange inputDeviceChange) {
+        if (inputDeviceChange == InputDeviceChange.Added) {
+            AssignDevice(device);
+        } else if (inputDeviceChange == InputDeviceChange.Removed) {
+            RemoveDevice(device);
+        } else if (inputDeviceChange == InputDeviceChange.Reconnected) {
+            //AssignDevice(device);
         }
-
-        // then assign
-        for (int i = 0; i < playerId.Length; i++) {
-            if (deviceId[i] == -1) {
-                deviceId[i] = device.deviceId;
-                return playerId[i];
-            }
-        }
-        return -1;
     }
 
     private void AssignDevice(InputDevice device) {
-        Debug.Log($"Assigned {device.name}");
-        // create prefab and assign device to Player Input
-        int id = allConnectedControllers.Count;
-        PlayerInput newPlayer = PlayerInput.Instantiate(joinControllerPrefab, allConnectedControllers.Count, "AddControllersMap", -1, device);
-        allConnectedControllers.Add(allConnectedControllers.Count, newPlayer);
-        newPlayer.name = $"Controller{id}";
+        int deviceId = device.deviceId;
+
+        if (deviceToPlayerMapping.ContainsKey(deviceId)) {
+            Debug.Log($"Device({deviceId} already assigned to a join controller");
+            return;
+        }
+
+        int controllerId = allConnectedControllers.Count;
+
+        PlayerInput newPlayer = PlayerInput.Instantiate(joinControllerPrefab, controllerId, "AddControllersMap", -1, device);
+        allConnectedControllers.Add(deviceId, newPlayer);
+        deviceToPlayerMapping.Add(deviceId, -1);
+        newPlayer.name = $"Controller{controllerId}";
     }
 
     private void RemoveDevice(InputDevice device) {
-        Debug.Log($"Removed {device.name}");
-        for (int i = 0; i < playerId.Length; i++) {
-            if (deviceId[i] == device.deviceId) {
-                deviceId[i] = -1;
-                connectedPlayers--;
-                OnActivePlayerDisconnected?.Invoke();
-                break;
+        int deviceId = device.deviceId;
+
+        int playerId = deviceToPlayerMapping[deviceId];
+
+        deviceToPlayerMapping.Remove(deviceId);
+        Destroy(allConnectedControllers[deviceId].gameObject);
+        allConnectedControllers.Remove(deviceId);
+
+        if (assignedPlayers.ContainsKey(playerId)) {
+            assignedPlayers[playerId] = null;
+            OnActivePlayerDisconnected?.Invoke();
+        }
+    }
+
+
+    public void AssignPlayer(InputDevice device) {
+        int deviceId = device.deviceId;
+        int playerId = FindFreePlayerSlot();
+
+        if (deviceToPlayerMapping.ContainsKey(deviceId)) {
+            if (deviceToPlayerMapping[deviceId] == playerId) {
+                Debug.Log("Device is alread assigned to a player.");
+                return;
             }
         }
 
-        int removeFromDict = -1;
-        for (int i = 0; i < allConnectedControllers.Count; i++) {
-            if (allConnectedControllers[i].user.pairedDevices.Count == 0) {
-                removeFromDict = i;
-                break;
+        PlayerInput player = PlayerInput.Instantiate(inputControllerPrefab, playerId, "ControllerMap", -1, device);
+
+        if (assignedPlayers.ContainsKey(playerId)) {
+            if (assignedPlayers[playerId] == null) {
+                assignedPlayers[playerId] = player;
+
+                InputHandler inputHandler = player.GetComponent<InputHandler>();
+                playerInputHandlers[playerId]?.OnReassignment.Invoke(inputHandler);
+
+                // replace the old one with the new one so if another controller connects to this player they get to control them
+                Action<InputHandler> temp = playerInputHandlers[playerId].OnReassignment;
+                playerInputHandlers[playerId] = inputHandler;
+                inputHandler.OnReassignment = temp;
+
+                // then call that a player was reconnected
+                OnActivePlayerReconnected?.Invoke();
             }
+        } else {
+            assignedPlayers.Add(playerId, player);
+            InputHandler inputHandler = player.GetComponent<InputHandler>();
+            playerInputHandlers.Add(playerId, inputHandler);
         }
 
-        if (removeFromDict == -1) return;
-        Debug.Log("removed from dict");
-        Destroy(allConnectedControllers[removeFromDict].gameObject);
-        allConnectedControllers.Remove(removeFromDict);
+        deviceToPlayerMapping[deviceId] = playerId;
+        player.name = $"Player{playerId}";
     }
 
-    private void ReconnectDevice(InputDevice device) {
-        Debug.Log($"Reconnected {device.name}");
-        // assign to correct device?
-
+    public int FindFreePlayerSlot() {
+        for (int i = 0; i < maxPlayerSlots; i++) {
+            if (assignedPlayers.ContainsKey(i)) {
+                if (assignedPlayers[i] == null) return i;
+            } else return i;
+        }
+        return -1;
     }
-
 }
