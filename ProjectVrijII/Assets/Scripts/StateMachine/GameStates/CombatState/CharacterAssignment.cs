@@ -47,10 +47,10 @@ public class CharacterAssignment : CombatBase
 
             CharacterBaseState[] characterBaseStates = characterObj.GetComponents<CharacterBaseState>();
             foreach (var characterState in characterBaseStates) {
-                characterState.SetInputHandler(PlayerDistribution.Instance.playerInputHandlers[i]);
+                characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
 
                 // add a method to the action on the inputHandler to assure good reassignment
-                PlayerDistribution.Instance.playerInputHandlers[i].OnReassignment += characterState.SetInputHandler;
+                PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
 
                 // temp...
                 characterState.SetCharacter(characters[i]);
@@ -61,13 +61,15 @@ public class CharacterAssignment : CombatBase
         }
     }
 
-    private void CharacterLostConnection() {
+    private void CharacterLostConnection(int deviceId, ControllerType controllerType) {
         UI_PlayerDisconectedWindow.SetActive(true);
+        Debug.Log($"{deviceId} lost connection; {controllerType}");
         Time.timeScale = 0;
     }
 
-    private void CharacterReconnected() {
-        if (PlayerDistribution.Instance.playerInputHandlers.Count >= activeCharacters.Length) {
+    private void CharacterReconnected(int deviceId, ControllerType controllerType) {
+        if (PlayerDistribution.Instance.GetAssignedPlayersCount() >= activeCharacters.Length) {
+            Debug.Log($"{deviceId} reconnected; {controllerType}");
             UI_PlayerDisconectedWindow.SetActive(false);
             Time.timeScale = 1;
         }

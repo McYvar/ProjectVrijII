@@ -31,7 +31,6 @@ public class CharacterBaseState : BaseState, IHitable {
     }
 
     public void SetInputHandler(InputHandler newInputHandler) {
-        Debug.Log(gameObject.name);
         inputHandler = newInputHandler;
     }
 

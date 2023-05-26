@@ -7,14 +7,15 @@ public class PlayerDistribution : MonoBehaviour {
     public int maxPlayerSlots = 2;
     public GameObject inputControllerPrefab;
     public GameObject joinControllerPrefab;
-    public Action OnActivePlayerDisconnected;
-    public Action OnActivePlayerReconnected;
+    public Action<int, ControllerType> OnActivePlayerDisconnected;
+    public Action<int, ControllerType> OnActivePlayerReconnected;
 
     private static PlayerDistribution instance;
     private readonly Dictionary<int, PlayerInput> allConnectedControllers = new Dictionary<int, PlayerInput>();
     private readonly Dictionary<int, PlayerInput> assignedPlayers = new Dictionary<int, PlayerInput>();
-    public readonly Dictionary<int, InputHandler> playerInputHandlers = new Dictionary<int, InputHandler>();
+    private readonly Dictionary<int, InputHandler> playerInputHandlers = new Dictionary<int, InputHandler>();
     private readonly Dictionary<int, int> deviceToPlayerMapping = new Dictionary<int, int>();
+    private readonly Dictionary<int, ControllerType> connectedControllerTypes = new Dictionary<int, ControllerType>();
 
     public static PlayerDistribution Instance {
         get { return instance; }
@@ -47,8 +48,6 @@ public class PlayerDistribution : MonoBehaviour {
             AssignDevice(device);
         } else if (inputDeviceChange == InputDeviceChange.Removed) {
             RemoveDevice(device);
-        } else if (inputDeviceChange == InputDeviceChange.Reconnected) {
-            //AssignDevice(device);
         }
     }
 
@@ -60,12 +59,15 @@ public class PlayerDistribution : MonoBehaviour {
             return;
         }
 
-        int controllerId = allConnectedControllers.Count;
-
-        PlayerInput newPlayer = PlayerInput.Instantiate(joinControllerPrefab, controllerId, "AddControllersMap", -1, device);
+        PlayerInput newPlayer = PlayerInput.Instantiate(joinControllerPrefab, deviceId, "AddControllersMap", -1, device);
         allConnectedControllers.Add(deviceId, newPlayer);
         deviceToPlayerMapping.Add(deviceId, -1);
-        newPlayer.name = $"Controller{controllerId}";
+
+        ControllerType controllerType = GetControllerType(device.description.ToString());
+        connectedControllerTypes.Add(deviceId, controllerType);
+        Debug.Log(controllerType.ToString());
+
+        newPlayer.name = $"Controller{deviceId}({controllerType})";
     }
 
     private void RemoveDevice(InputDevice device) {
@@ -79,20 +81,23 @@ public class PlayerDistribution : MonoBehaviour {
 
         if (assignedPlayers.ContainsKey(playerId)) {
             assignedPlayers[playerId] = null;
-            OnActivePlayerDisconnected?.Invoke();
+            OnActivePlayerDisconnected?.Invoke(playerId, connectedControllerTypes[deviceId]);
         }
     }
 
 
     public void AssignPlayer(InputDevice device) {
         int deviceId = device.deviceId;
-        int playerId = FindFreePlayerSlot();
 
-        if (deviceToPlayerMapping.ContainsKey(deviceId)) {
-            if (deviceToPlayerMapping[deviceId] == playerId) {
-                Debug.Log("Device is alread assigned to a player.");
-                return;
-            }
+        if (deviceToPlayerMapping[deviceId] != -1) {
+            Debug.Log($"Device ({deviceId}) already mapped to a player!");
+            return;
+        }
+
+        int playerId = FindFreePlayerSlot();
+        if (playerId == -1) {
+            Debug.Log($"No player left to assign to; device: {deviceId}");
+            return;
         }
 
         PlayerInput player = PlayerInput.Instantiate(inputControllerPrefab, playerId, "ControllerMap", -1, device);
@@ -106,11 +111,12 @@ public class PlayerDistribution : MonoBehaviour {
 
                 // replace the old one with the new one so if another controller connects to this player they get to control them
                 Action<InputHandler> temp = playerInputHandlers[playerId].OnReassignment;
+                Destroy(playerInputHandlers[playerId].gameObject);
                 playerInputHandlers[playerId] = inputHandler;
                 inputHandler.OnReassignment = temp;
 
                 // then call that a player was reconnected
-                OnActivePlayerReconnected?.Invoke();
+                OnActivePlayerReconnected?.Invoke(playerId, connectedControllerTypes[deviceId]);
             }
         } else {
             assignedPlayers.Add(playerId, player);
@@ -119,7 +125,7 @@ public class PlayerDistribution : MonoBehaviour {
         }
 
         deviceToPlayerMapping[deviceId] = playerId;
-        player.name = $"Player{playerId}";
+        player.name = $"Player{playerId}({connectedControllerTypes[deviceId]})";
     }
 
     public int FindFreePlayerSlot() {
@@ -130,4 +136,43 @@ public class PlayerDistribution : MonoBehaviour {
         }
         return -1;
     }
+
+    private ControllerType GetControllerType(string deviceDescription) {
+        Debug.Log(deviceDescription);
+        if (deviceDescription.Contains("Keyboard")) {
+            return ControllerType.Keyboard;
+        } else if (deviceDescription.Contains("Mouse")) {
+            return ControllerType.Mouse;
+        } else if (deviceDescription.Contains("Sony")) {
+            return ControllerType.PS4;
+        } else if (deviceDescription.Contains("XBox")) {
+            return ControllerType.Xbox;
+        }
+
+        return ControllerType.Unknown;
+    }
+
+    public void SubscribeToPlayerInputHandler(int playerId, Action<InputHandler> callback) {
+        playerInputHandlers[playerId].OnReassignment += callback;
+    }
+
+    public void UnSubscribeFromPlayerInputHandler(int playerId, Action<InputHandler> callback) {
+        playerInputHandlers[playerId].OnReassignment -= callback;
+    }
+
+    public InputHandler GetPlayerInputHandler(int playerId) {
+        return playerInputHandlers[playerId];
+    }
+
+    public int GetAssignedPlayersCount() {
+        return assignedPlayers.Count;
+    }
+}
+public enum ControllerType {
+    Unknown = -1,
+    Keyboard = 0,
+    Mouse = 1,
+    PS4 = 2,
+    Xbox = 3,
+    // Add more controller types as needed
 }

@@ -352,10 +352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6153e202024add4d9eb2e6927d07c5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputController: {fileID: 8734913272852361017, guid: fdfe8472ce3a6774fa08158f99991208,
-    type: 3}
   maxPlayerSlots: 2
-  connectedPlayers: 0
+  inputControllerPrefab: {fileID: 8734913272852361017, guid: fdfe8472ce3a6774fa08158f99991208,
+    type: 3}
   joinControllerPrefab: {fileID: 3107445489378401450, guid: 14a24c8baa716c1439679d1791ac8be1,
     type: 3}
 --- !u!114 &227982905
