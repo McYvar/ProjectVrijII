@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: backgroundCelShading
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: backgroundCelShading
     Event: 450
@@ -20,7 +20,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 128
+        m_Bits: 512
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 957f028af97946d42a3b99507fbe6947, type: 2}
     overrideMaterialPassIndex: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: foregroundCelShading
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: foregroundCelShading
     Event: 450
@@ -59,7 +59,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 512
+        m_Bits: 128
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: e8131e08baa1a704fbc6f39484065ce4, type: 2}
     overrideMaterialPassIndex: 0
