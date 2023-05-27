@@ -15,7 +15,7 @@ public class PlayerDistribution : MonoBehaviour {
     private readonly Dictionary<int, PlayerInput> assignedPlayers = new Dictionary<int, PlayerInput>();
     private readonly Dictionary<int, InputHandler> playerInputHandlers = new Dictionary<int, InputHandler>();
     private readonly Dictionary<int, int> deviceToPlayerMapping = new Dictionary<int, int>();
-    private readonly Dictionary<int, ControllerType> connectedControllerTypes = new Dictionary<int, ControllerType>();
+    private readonly Dictionary<int, ControllerType> allConnectedControllersType = new Dictionary<int, ControllerType>();
 
     public static PlayerDistribution Instance {
         get { return instance; }
@@ -64,7 +64,7 @@ public class PlayerDistribution : MonoBehaviour {
         deviceToPlayerMapping.Add(deviceId, -1);
 
         ControllerType controllerType = GetControllerType(device.description.ToString());
-        connectedControllerTypes.Add(deviceId, controllerType);
+        allConnectedControllersType.Add(deviceId, controllerType);
         Debug.Log(controllerType.ToString());
 
         newPlayer.name = $"Controller{deviceId}({controllerType})";
@@ -75,14 +75,16 @@ public class PlayerDistribution : MonoBehaviour {
 
         int playerId = deviceToPlayerMapping[deviceId];
 
-        deviceToPlayerMapping.Remove(deviceId);
-        Destroy(allConnectedControllers[deviceId].gameObject);
-        allConnectedControllers.Remove(deviceId);
-
         if (assignedPlayers.ContainsKey(playerId)) {
             assignedPlayers[playerId] = null;
-            OnActivePlayerDisconnected?.Invoke(playerId, connectedControllerTypes[deviceId]);
+            OnActivePlayerDisconnected?.Invoke(playerId, allConnectedControllersType[deviceId]); // invoke disconnection action with player ID and controller type
         }
+
+        Destroy(allConnectedControllers[deviceId].gameObject);
+        allConnectedControllers.Remove(deviceId);
+        deviceToPlayerMapping.Remove(deviceId);
+        allConnectedControllersType.Remove(deviceId);
+
     }
 
 
@@ -105,6 +107,7 @@ public class PlayerDistribution : MonoBehaviour {
         if (assignedPlayers.ContainsKey(playerId)) {
             if (assignedPlayers[playerId] == null) {
                 assignedPlayers[playerId] = player;
+                Debug.Log(playerId);
 
                 InputHandler inputHandler = player.GetComponent<InputHandler>();
                 playerInputHandlers[playerId]?.OnReassignment.Invoke(inputHandler);
@@ -116,7 +119,7 @@ public class PlayerDistribution : MonoBehaviour {
                 inputHandler.OnReassignment = temp;
 
                 // then call that a player was reconnected
-                OnActivePlayerReconnected?.Invoke(playerId, connectedControllerTypes[deviceId]);
+                OnActivePlayerReconnected?.Invoke(playerId, allConnectedControllersType[deviceId]);
             }
         } else {
             assignedPlayers.Add(playerId, player);
@@ -125,7 +128,7 @@ public class PlayerDistribution : MonoBehaviour {
         }
 
         deviceToPlayerMapping[deviceId] = playerId;
-        player.name = $"Player{playerId}({connectedControllerTypes[deviceId]})";
+        player.name = $"Player{playerId}({allConnectedControllersType[deviceId]})";
     }
 
     public int FindFreePlayerSlot() {
@@ -144,7 +147,7 @@ public class PlayerDistribution : MonoBehaviour {
         } else if (deviceDescription.Contains("Mouse")) {
             return ControllerType.Mouse;
         } else if (deviceDescription.Contains("Sony")) {
-            return ControllerType.PS4;
+            return ControllerType.PS;
         } else if (deviceDescription.Contains("XBox")) {
             return ControllerType.Xbox;
         }
@@ -165,14 +168,18 @@ public class PlayerDistribution : MonoBehaviour {
     }
 
     public int GetAssignedPlayersCount() {
-        return assignedPlayers.Count;
+        int result = 0;
+        foreach (var p in assignedPlayers.Values) {
+            if (p != null) result++;
+        }
+        return result;
     }
 }
 public enum ControllerType {
     Unknown = -1,
     Keyboard = 0,
     Mouse = 1,
-    PS4 = 2,
+    PS = 2,
     Xbox = 3,
     // Add more controller types as needed
 }

@@ -13,6 +13,7 @@ public class CharacterAssignment : CombatBase
     private GameObject[] activeCharacters = new GameObject[2];
 
     [SerializeField] GameObject UI_PlayerDisconectedWindow;
+    [SerializeField] TMPro.TMP_Text disconnectedPlayerCounter;
 
     private void Start() {
         PlayerDistribution.Instance.OnActivePlayerReconnected += CharacterReconnected;
@@ -20,7 +21,7 @@ public class CharacterAssignment : CombatBase
     }
 
     public override void OnUpdate() {
-        if (Input.GetKeyDown(KeyCode.Backspace)) {
+        if (Input.GetKeyDown(KeyCode.Backspace)) { // spawns the characters for now
             AssignToCharacters();
 
             if (activeCharacters.Length >= 2) {
@@ -62,13 +63,17 @@ public class CharacterAssignment : CombatBase
     }
 
     private void CharacterLostConnection(int deviceId, ControllerType controllerType) {
+        int assignedPlayerCount = PlayerDistribution.Instance.GetAssignedPlayersCount();
+        disconnectedPlayerCounter.text = $"Disconnected players: {activeCharacters.Length - assignedPlayerCount}";
         UI_PlayerDisconectedWindow.SetActive(true);
         Debug.Log($"{deviceId} lost connection; {controllerType}");
         Time.timeScale = 0;
     }
 
     private void CharacterReconnected(int deviceId, ControllerType controllerType) {
-        if (PlayerDistribution.Instance.GetAssignedPlayersCount() >= activeCharacters.Length) {
+        int assignedPlayerCount = PlayerDistribution.Instance.GetAssignedPlayersCount();
+        disconnectedPlayerCounter.text = $"Disconnected players: {activeCharacters.Length - assignedPlayerCount}";
+        if (assignedPlayerCount >= activeCharacters.Length) {
             Debug.Log($"{deviceId} reconnected; {controllerType}");
             UI_PlayerDisconectedWindow.SetActive(false);
             Time.timeScale = 1;
