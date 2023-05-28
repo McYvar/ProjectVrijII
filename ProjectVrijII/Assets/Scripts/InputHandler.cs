@@ -1,18 +1,23 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InputHandler : MonoBehaviour
-{
+public class InputHandler : MonoBehaviour {
     public Action<InputHandler> OnReassignment = null;
 
     public Vector2 leftJoyDirection;
     public Vector2 rightJoyDirection;
 
     public Vector2 leftDPadDirection;
+    public Action UpFirst;
+    public Action DownFirst;
+    public Action LeftFirst;
+    public Action RightFirst;
+    public Action UpLast;
+    public Action DownLast;
+    public Action LeftLast;
+    public Action RightLast;
+
     public Vector2 leftDirection;
 
     public float leftTrigger;
@@ -55,8 +60,9 @@ public class InputHandler : MonoBehaviour
     public Action optionsLast;
 
     public void LeftJoy(InputAction.CallbackContext cc) {
-        leftJoyDirection = cc.ReadValue<Vector2>();
-        leftDirection = cc.ReadValue<Vector2>();
+        Vector2 direction = cc.ReadValue<Vector2>();
+        leftJoyDirection = direction;
+        leftDirection = direction;
     }
 
     public void RightJoy(InputAction.CallbackContext cc) {
@@ -64,8 +70,30 @@ public class InputHandler : MonoBehaviour
     }
 
     public void LeftDPad(InputAction.CallbackContext cc) {
-        leftDPadDirection = cc.ReadValue<Vector2>();
-        leftDirection = cc.ReadValue<Vector2>();
+        Vector2 direction = cc.ReadValue<Vector2>();
+        leftDPadDirection = direction;
+        leftDirection = direction;
+
+        if (cc.started) {
+            if (direction == Vector2.up) UpFirst?.Invoke();
+            else if (direction == Vector2.down) DownFirst?.Invoke();
+            else if (direction == Vector2.left) LeftFirst?.Invoke();
+            else if (direction == Vector2.right) RightFirst?.Invoke();
+            else if (direction.x > 0 && direction.y > 0) { UpFirst?.Invoke(); RightFirst?.Invoke(); } // upper right
+            else if (direction.x > 0 && direction.y < 0) { DownFirst?.Invoke(); RightFirst?.Invoke(); } // lower right
+            else if (direction.x < 0 && direction.y > 0) { UpFirst?.Invoke(); LeftFirst?.Invoke(); } // upper left
+            else if (direction.x < 0 && direction.y < 0) { DownFirst?.Invoke(); LeftFirst?.Invoke(); } // lower left
+        }
+        else if (cc.canceled) {
+            if (direction == Vector2.up) UpLast?.Invoke();
+            else if (direction == Vector2.down) DownLast?.Invoke();
+            else if (direction == Vector2.left) LeftLast?.Invoke();
+            else if (direction == Vector2.right) RightLast?.Invoke();
+            else if (direction.x > 0 && direction.y > 0) { UpLast?.Invoke(); RightLast?.Invoke(); } // upper right
+            else if (direction.x > 0 && direction.y < 0) { DownLast?.Invoke(); RightLast?.Invoke(); } // lower right
+            else if (direction.x < 0 && direction.y > 0) { UpLast?.Invoke(); LeftLast?.Invoke(); } // upper left
+            else if (direction.x < 0 && direction.y < 0) { DownLast?.Invoke(); LeftLast?.Invoke(); } // lower left
+        }
     }
 
     public void LeftTrigger(InputAction.CallbackContext cc) {

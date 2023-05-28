@@ -19,6 +19,10 @@ public class SO_Character : ScriptableObject
     public float doubleJumpStrength;
     public float airDashLength;
 
+    [Header("Item list")]
+    public List<SO_Item> availableItems = new List<SO_Item>();
+    public List<SO_Item> usingItems = new List<SO_Item>();
+
     [Header("Character attacks")]
     public SO_Kick standingKick;
     public SO_Punch standingPunch;
@@ -73,6 +77,7 @@ public class SO_Character : ScriptableObject
         // reset values here
         switch (attackPhase) {
             case AttackPhase.ready:
+                rbInput = true;
                 break;
             case AttackPhase.startup:
                 break;

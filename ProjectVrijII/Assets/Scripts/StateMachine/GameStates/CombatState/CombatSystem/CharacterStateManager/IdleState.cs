@@ -14,7 +14,7 @@ public class IdleState : CharacterBaseState, IHitable {
         rb.velocity = Vector2.zero;
     }
 
-    public void OnHit(Vector2 force, float freezeTime) {
+    public void Launch(Vector2 force, float freezeTime) {
         rb.AddForce(force, ForceMode2D.Impulse);
         if (force.x > 0) transform.localEulerAngles = new Vector3(0, 0, 0);
         else if (force.x < 0) transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -38,5 +38,8 @@ public class IdleState : CharacterBaseState, IHitable {
 
     public void RecoverFromHitstun() {
         TurnSystem.Instance.OnReset.Invoke();
+    }
+
+    public void TakeDamage(float damage) {
     }
 }

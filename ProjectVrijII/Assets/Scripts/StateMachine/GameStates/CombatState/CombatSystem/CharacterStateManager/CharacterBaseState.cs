@@ -86,7 +86,4 @@ public class CharacterBaseState : BaseState, INeedInput {
 
         return false;
     }
-
-    protected void OnHitEnemy() {
-    }
 }

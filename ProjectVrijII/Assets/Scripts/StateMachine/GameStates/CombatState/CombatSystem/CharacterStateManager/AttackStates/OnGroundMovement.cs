@@ -15,7 +15,6 @@ public class OnGroundMovement : AttackState {
         canJump = false;
 
         animator.SetBool("isGrounded", true);
-        //animator.SetTrigger("landing animation?");
     }
 
     public override void OnExit() {

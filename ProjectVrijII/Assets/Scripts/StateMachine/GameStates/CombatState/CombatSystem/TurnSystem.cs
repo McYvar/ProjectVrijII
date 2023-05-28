@@ -62,9 +62,8 @@ public class TurnSystem : CombatBase {
         if (turn == allCharacters.Length) turn = 0;
 
         currentCharacterTurn = allCharacters[turn];
-        //currentCharacterTurn.SwitchState(typeof(SelectionState));
-        currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
-        currentCharacterTurn.DebugMSG();
+        currentCharacterTurn.SwitchState(typeof(SelectionState));
+        //currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
 
         currentPlayerText.text = $"Player{turn}'s turn!";
         readyCharacters = 0;

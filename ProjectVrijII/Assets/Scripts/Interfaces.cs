@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IHitable {
-    void OnHit(Vector2 force, float freezeTime);
+    void TakeDamage(float damage);
+    void Launch(Vector2 force, float freezeTime);
 }
 
 public interface INeedInput {

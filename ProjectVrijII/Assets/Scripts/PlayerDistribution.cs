@@ -65,7 +65,6 @@ public class PlayerDistribution : MonoBehaviour {
 
         ControllerType controllerType = GetControllerType(device.description.ToString());
         allConnectedControllersType.Add(deviceId, controllerType);
-        Debug.Log(controllerType.ToString());
 
         newPlayer.name = $"Controller{deviceId}({controllerType})";
     }
@@ -141,7 +140,6 @@ public class PlayerDistribution : MonoBehaviour {
     }
 
     private ControllerType GetControllerType(string deviceDescription) {
-        Debug.Log(deviceDescription);
         if (deviceDescription.Contains("Keyboard")) {
             return ControllerType.Keyboard;
         } else if (deviceDescription.Contains("Mouse")) {

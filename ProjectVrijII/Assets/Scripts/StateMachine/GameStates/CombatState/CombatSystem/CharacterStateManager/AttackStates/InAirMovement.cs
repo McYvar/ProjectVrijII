@@ -45,6 +45,9 @@ public class InAirMovement : AttackState {
         inputHandler.eastFirst -= InAirStrong;
         inputHandler.southFirst -= InAirKick;
         inputHandler.westFirst -= InAirPunch;
+
+        // if isGrounded
+        //animator.SetTrigger("landing animation?");
     }
 
     public override void OnUpdate() {

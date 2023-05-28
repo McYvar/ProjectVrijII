@@ -21,6 +21,8 @@ MonoBehaviour:
   airDashStopScalar: 0.28
   doubleJumpStrength: 50
   airDashLength: 5
+  availableItems: []
+  usingItems: []
   standingKick: {fileID: 11400000, guid: c0466575a200fb54fa0c5b8b1edb6c02, type: 2}
   standingPunch: {fileID: 11400000, guid: 3562bb10794c3594eb5d20cbf0b042b8, type: 2}
   standingStrong: {fileID: 11400000, guid: 5286e04b6ff79874fa3b3110dedaa799, type: 2}
@@ -49,6 +51,5 @@ MonoBehaviour:
   currentAttackName: jK
   currentAttack: {fileID: 0}
   lastAttack: {fileID: 0}
-  isStunned: 0
   rbInput: 0
   overrideController: {fileID: 22100000, guid: 573de15c8d8687749ad236ceaeb10552, type: 2}

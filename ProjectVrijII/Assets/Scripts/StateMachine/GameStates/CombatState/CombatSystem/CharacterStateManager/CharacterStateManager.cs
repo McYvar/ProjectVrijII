@@ -46,8 +46,4 @@ public class CharacterStateManager : CombatBase {
     public void SwitchState(System.Type state) {
         fsm?.SwitchState(state);
     }
-
-    public void DebugMSG() {
-        fsm?.DebugCurrentState();
-    }
 }
