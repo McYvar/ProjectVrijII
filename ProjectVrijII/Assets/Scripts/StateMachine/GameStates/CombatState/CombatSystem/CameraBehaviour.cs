@@ -19,8 +19,8 @@ public class CameraBehaviour : CombatBase
         focussedObjects = new List<Transform>();
     }
 
-    public override void OnUpdate() {
-        base.OnUpdate();
+    public override void OnLateUpdate() {
+        base.OnLateUpdate();
         if (focussedObjects.Count < 2) {
             return;
         }

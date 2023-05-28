@@ -808,14 +808,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: DoStun
+    functionName: StartHitStun
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 4
     messageOptions: 0
   - time: 0.5
-    functionName: NoLongerStunned
+    functionName: RecoverFromHitstun
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

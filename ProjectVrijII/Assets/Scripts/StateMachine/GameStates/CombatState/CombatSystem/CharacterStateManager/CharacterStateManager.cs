@@ -12,7 +12,17 @@ public class CharacterStateManager : CombatBase {
     [SerializeField] protected BaseState startState;
 
     private void Start() {
-        //DontDestroyOnLoad(this);
+        if (fsm != null) return;
+
+        // on start we search for all attached BattleBaseState classes to this game object
+        BaseState[] states = GetComponents<BaseState>();
+
+        // then we couple all those states to the state machine ready for running
+        fsm = new FiniteStateMachine(states, startState.GetType());
+    }
+
+    public void ManualInitialize() {
+        if (fsm != null) return;
 
         // on start we search for all attached BattleBaseState classes to this game object
         BaseState[] states = GetComponents<BaseState>();
@@ -33,7 +43,11 @@ public class CharacterStateManager : CombatBase {
         fsm?.OnLateUpdate();
     }
 
-    protected void SwitchState(System.Type state) {
+    public void SwitchState(System.Type state) {
         fsm?.SwitchState(state);
+    }
+
+    public void DebugMSG() {
+        fsm?.DebugCurrentState();
     }
 }

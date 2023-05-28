@@ -52,7 +52,6 @@ public class SO_Character : ScriptableObject
     [HideInInspector] public string currentAttackName = "";
     [HideInInspector] public SO_Attack currentAttack = null;
     [HideInInspector] public SO_Attack lastAttack = null;
-    [HideInInspector] public bool isStunned;
     [HideInInspector] public bool rbInput;
 
     [Header("Animation clips for this character")]
@@ -64,7 +63,6 @@ public class SO_Character : ScriptableObject
         fallReductionScalar = 1;
         currentAttack = null;
         lastAttack = null;
-        isStunned = false;
         rbInput = true;
     }
 

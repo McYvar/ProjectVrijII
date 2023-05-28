@@ -37,6 +37,9 @@ public class CharacterAssignment : CombatBase
                 }
                 cameraBehaviour.AssignObjects(activeCharacters[1].transform);
             }
+
+            TurnSystem.Instance.InitializeCharacters(activeCharacters[0].GetComponent<CharacterStateManager>(), activeCharacters[1].GetComponent<CharacterStateManager>());
+            TurnSystem.Instance.StartCombat();
         }
     }
 
@@ -44,6 +47,7 @@ public class CharacterAssignment : CombatBase
     private void AssignToCharacters() {
         for (int i = 0; i < activeCharacters.Length; i++) {
             GameObject characterObj = Instantiate(characterController, spawns[i], Quaternion.identity);
+            characterObj.GetComponent<CharacterStateManager>().ManualInitialize();
             characterObj.name = characters[i].name;
 
             CharacterBaseState[] characterBaseStates = characterObj.GetComponents<CharacterBaseState>();

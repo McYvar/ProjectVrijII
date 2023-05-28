@@ -87,6 +87,8 @@ public class OnGroundMovement : AttackState {
             rb.velocity = new Vector2(horizonal.normalized.x * character.crouchMovementSpeed *
                 character.attackMovementReductionScalar, rb.velocity.y);
 
+            animator.SetInteger("Move", 0);
+
         } else { // walking/running movement
             if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
             else {
@@ -102,10 +104,23 @@ public class OnGroundMovement : AttackState {
                 horizonal.normalized.x * resultMovementSpeed,
                 rb.velocity.y);
 
-            if (character.variableMovementSpeed == 0) { // means walking
-                //animator.SetInteger("moveState", 1); // 0 is crouch ofzo
+            if (horizonal.x == 0) animator.SetInteger("Move", 0);
+            else if (character.variableMovementSpeed == 0) { // means walking
+                if (characterFacingDirection == CharacterFacingDirection.RIGHT) {
+                    if (horizonal.x > 0) animator.SetInteger("Move", 1); // walking foward facing right
+                    if (horizonal.x < 0) animator.SetInteger("Move", -1); // walking backward facing right
+                } else {
+                    if (horizonal.x > 0) animator.SetInteger("Move", -1); // walking backward facing left
+                    if (horizonal.x < 0) animator.SetInteger("Move", 1); // walking forward facing left
+                }
             } else { // means running
-                //animator.SetInteger("moveState", 2);
+                if (characterFacingDirection == CharacterFacingDirection.RIGHT) {
+                    if (horizonal.x > 0) animator.SetInteger("Move", 2); // running foward facing right
+                    if (horizonal.x < 0) animator.SetInteger("Move", -2); // running backward facing right
+                } else {
+                    if (horizonal.x > 0) animator.SetInteger("Move", -2); // running backward facing left
+                    if (horizonal.x < 0) animator.SetInteger("Move", 2); // running forward facing left
+                }
             }
         }
     }
