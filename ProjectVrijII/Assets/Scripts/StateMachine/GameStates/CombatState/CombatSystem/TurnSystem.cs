@@ -11,7 +11,6 @@ public class TurnSystem : CombatBase {
     /// Class that handles turnhandling for the combat phase of the game
     /// </summary>
 
-    [SerializeField] private bool testmode = false; // testmode makes sure you can only play one character, other is a dummy
     [SerializeField] private ComboCounter comboCounter;
     [SerializeField] TMP_Text currentPlayerText;
     private CharacterStateManager currentCharacterTurn;
@@ -50,7 +49,7 @@ public class TurnSystem : CombatBase {
         allCharacters = characters;
 
         foreach (var character in allCharacters) {
-            if (!testmode) OnReset += () => character.SwitchState(typeof(ResetState));
+            OnReset += () => character.SwitchState(typeof(ResetState));
         }
     }
 
@@ -60,12 +59,12 @@ public class TurnSystem : CombatBase {
     }
 
     private void NextTurn() {
-        if (!testmode) turn++;
+        turn++;
         if (turn == allCharacters.Length) turn = 0;
 
         currentCharacterTurn = allCharacters[turn];
-        if (testmode) currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
-        else currentCharacterTurn.SwitchState(typeof(SelectionState));
+        //currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
+        currentCharacterTurn.SwitchState(typeof(SelectionState));
 
         currentPlayerText.text = $"Player{turn}'s turn!";
         readyCharacters = 0;

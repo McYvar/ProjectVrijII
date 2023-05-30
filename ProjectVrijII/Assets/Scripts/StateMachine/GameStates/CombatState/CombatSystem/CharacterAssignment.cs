@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class CharacterAssignment : CombatBase {
-    [SerializeField] bool instantStart = false; // for test build
     [SerializeField] private GameObject characterController;
     [SerializeField] private SO_Character[] characters;
     [SerializeField] private Vector3[] spawns;
@@ -18,8 +17,7 @@ public class CharacterAssignment : CombatBase {
     }
 
     public override void OnUpdate() {
-        if (Input.GetKeyDown(KeyCode.Backspace) || instantStart) { // spawns the characters for now
-            instantStart = false;
+        if (Input.GetKeyDown(KeyCode.Backspace)) { // spawns the characters for now
             AssignToCharacters();
 
             if (activeCharacters.Length >= 2) {
@@ -51,11 +49,11 @@ public class CharacterAssignment : CombatBase {
             CharacterBaseState[] characterBaseStates = characterObj.GetComponents<CharacterBaseState>();
             foreach (var characterState in characterBaseStates) {
                 InputHandler inputHandler = PlayerDistribution.Instance.GetPlayerInputHandler(i);
-                if (inputHandler != null) { // null check should also be temp to make a playable build for the team
-                    characterState.SetInputHandler(inputHandler);
-                    // add a method to the action on the inputHandler to assure good reassignment
-                    PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
-                }
+                characterState.SetInputHandler(inputHandler);
+
+                // add a method to the action on the inputHandler to assure good reassignment
+                PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
+
                 // temp...
                 characterState.SetCharacter(characters[i]);
             }
