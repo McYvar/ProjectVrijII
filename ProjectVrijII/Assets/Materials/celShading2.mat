@@ -48,8 +48,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_cd94af623a7440c783e20dfdb6cfa18c: 247
+    - Vector1_cd94af623a7440c783e20dfdb6cfa18c: 248
+    - _Contrast: 0.95
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _ReplacementOpacity: 0.721
+    - _Saturation: 0.757
+    m_Colors:
+    - _ShadowReplacement: {r: 0.16518332, g: 0.16518332, b: 0.4528302, a: 0}
   m_BuildTextureStacks: []
