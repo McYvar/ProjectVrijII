@@ -37,7 +37,6 @@ public class AttackState : CharacterBaseState {
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
         //SetAttackPhase(AttackPhase.ready);
-        character.currentAttack = null;
         ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
         RecoveryInputBuffer = null;
     }
@@ -45,7 +44,7 @@ public class AttackState : CharacterBaseState {
     public override void OnUpdate() {
         base.OnUpdate();
         if (Input.GetKeyDown(KeyCode.Space)) stateManager.SwitchState(typeof(OnGroundMovement));
-        LeftInputComboHandler(playerInput.leftDirection);
+        LeftInputComboHandler(inputHandler.leftDirection);
     }
 
     public override void OnFixedUpdate() {
@@ -265,31 +264,19 @@ public class AttackState : CharacterBaseState {
 
         // then foreach hitable entity we call upon their function
         foreach (var entity in hitableEntities) {
-            try {
-                if (characterFacingDirection == CharacterFacingDirection.RIGHT) {
-                    entity.OnHit(character.lastAttack.enemyLaunchStrength[hitNumber], character.lastAttack.attackFreezeTime[hitNumber]);
-                    if (character.lastAttack.onHitPushBack[hitNumber].magnitude > 0) {
-                        character.rbInput = false;
-                        rb.AddForce(character.lastAttack.onHitPushBack[hitNumber], ForceMode2D.Impulse);
-                    }
-                } else {
-                    entity.OnHit(character.lastAttack.enemyLaunchStrength[hitNumber] * new Vector2(-1, 1), character.lastAttack.attackFreezeTime[hitNumber]);
-                    if (character.lastAttack.onHitPushBack[hitNumber].magnitude > 0) {
-                        character.rbInput = false;
-                        rb.AddForce(character.lastAttack.onHitPushBack[hitNumber] * new Vector2(-1, 1), ForceMode2D.Impulse);
-                    }
+            SO_Attack attack = ScriptableObject.CreateInstance<SO_Attack>();
+            character.lastAttack.CopyTo(attack);
+            foreach (var item in character.usingItems) { // attempt at a attack decorator, which is maybe not going too well...
+                if (item.attackDecorator != null) {
+                    attack = item.attackDecorator.Decorate(attack, hitNumber);
                 }
-                OnHitEnemy();
-                // enymy take damage with strength
             }
-            catch {
-                string error = character.lastAttack.name + " " + hitNumber + " has too few elements listed in: ";
-                if (character.lastAttack.strength.Length - 1 < hitNumber) error += "strength: " + (character.lastAttack.strength.Length - 1) + " ";
-                if (character.lastAttack.enemyLaunchStrength.Length - 1 < hitNumber) error += "enemyLaunchStrength: " + (character.lastAttack.enemyLaunchStrength.Length - 1) + " ";
-                if (character.lastAttack.attackFreezeTime.Length - 1 < hitNumber) error += "attackFreezeTime: " + (character.lastAttack.attackFreezeTime.Length - 1) + " ";
-                if (character.lastAttack.onHitPushBack.Length - 1 < hitNumber) error += "onHitPushBack: " + (character.lastAttack.onHitPushBack.Length - 1);
-                Debug.Log(error);
-            }
+
+            attack.DoAttack(entity, hitNumber);
+            attack.LaunchEnemey(entity, hitNumber, characterFacingDirection);
+            if (attack.DoPushBack(rb, hitNumber, characterFacingDirection)) character.rbInput = false;
+
+            Destroy(attack);
         }
     }
 

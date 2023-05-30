@@ -22,10 +22,9 @@ MonoBehaviour:
   - 0
   - 0
   onHitPushBack:
-  - {x: 2, y: 15}
-  - {x: 0.0000006899094, y: 0.00000021084715}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
-  attackBounce: {x: 0, y: 0}

@@ -26,6 +26,11 @@ public class ComboCounter : CombatBase {
 	private int effectId = -1;
 	private int comboCounter;
 
+	[Header("OnComboFinish")]
+	[SerializeField]
+	private float comboDisplayTime;
+
+
 	private void Start() {
 		ResetCombo();
 	}
@@ -62,4 +67,8 @@ public class ComboCounter : CombatBase {
 		comboText.color = counterEffects[effectId].TextColor;
 		comboText.colorGradientPreset = counterEffects[effectId].Gradient;
 	}
+
+	public void EndCombo() {
+		Invoke("ResetCombo", comboDisplayTime);
+    }
 }

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionState : CharacterBaseState {
+public class SelectionState : PreAttackBase {
 
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
@@ -10,8 +8,14 @@ public class SelectionState : CharacterBaseState {
     /// for example, select attack, go to attack state
     /// </summary>
 
+    public override void OnEnter() {
+        base.OnEnter();
+        buttonActions[0] += SelectAttackState;
+        buttonActions[1] += SelectItemState;
+    }
+
     public void SelectAttackState() {
-        stateManager.SwitchState(typeof(AttackState));
+        stateManager.SwitchState(typeof(OnGroundMovement));
     }
 
     public void SelectItemState() {
@@ -20,5 +24,10 @@ public class SelectionState : CharacterBaseState {
 
     public void SelectSkillState() {
         stateManager.SwitchState(typeof(SkillState));
+    }
+
+    protected override void ConfirmChoice() {
+        base.ConfirmChoice();
+        Debug.Log("selection confirmation");
     }
 }
