@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf65454ca7454ad458bb27b44f7b94ff, type: 3}
   m_Name: Quarter Circle Punch
   m_EditorClassIdentifier: 
+  attackName: Quarter Circle Punch
   strength:
   - 20
-  lauchStrenght:
-  - {x: 0, y: 60}
+  enemyLaunchStrength: []
+  attackFreezeTime: []
+  onHitPushBack: []
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
-  attackBounce: {x: 0, y: 0}
