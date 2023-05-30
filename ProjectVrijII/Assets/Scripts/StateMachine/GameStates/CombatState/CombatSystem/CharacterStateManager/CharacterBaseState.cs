@@ -86,4 +86,8 @@ public class CharacterBaseState : BaseState, INeedInput {
 
         return false;
     }
+
+    private void OnDestroy() {
+        inputHandler.ResetBindings();
+    }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 
 public class PlayerDistribution : MonoBehaviour {
     public int maxPlayerSlots = 2;
@@ -13,9 +14,13 @@ public class PlayerDistribution : MonoBehaviour {
     private static PlayerDistribution instance;
     private readonly Dictionary<int, PlayerInput> allConnectedControllers = new Dictionary<int, PlayerInput>();
     private readonly Dictionary<int, PlayerInput> assignedPlayers = new Dictionary<int, PlayerInput>();
+    private readonly Dictionary<int, Color> assignedPlayersColors = new Dictionary<int, Color>();
     private readonly Dictionary<int, InputHandler> playerInputHandlers = new Dictionary<int, InputHandler>();
-    private readonly Dictionary<int, int> deviceToPlayerMapping = new Dictionary<int, int>();
+    private readonly Dictionary<int, int> deviceToPlayerMapping = new Dictionary<int, int>(); // deviceId, playerId
+    private readonly Dictionary<int, int> playerToDeviceMapping = new Dictionary<int, int>(); // playerId, deviceId
     private readonly Dictionary<int, ControllerType> allConnectedControllersType = new Dictionary<int, ControllerType>();
+
+    [SerializeField] private Color[] playerColors;
 
     public static PlayerDistribution Instance {
         get { return instance; }
@@ -63,7 +68,7 @@ public class PlayerDistribution : MonoBehaviour {
         allConnectedControllers.Add(deviceId, newPlayer);
         deviceToPlayerMapping.Add(deviceId, -1);
 
-        ControllerType controllerType = GetControllerType(device.description.ToString());
+        ControllerType controllerType = GetControllerType(device);
         allConnectedControllersType.Add(deviceId, controllerType);
 
         newPlayer.name = $"Controller{deviceId}({controllerType})";
@@ -77,6 +82,8 @@ public class PlayerDistribution : MonoBehaviour {
         if (assignedPlayers.ContainsKey(playerId)) {
             assignedPlayers[playerId] = null;
             OnActivePlayerDisconnected?.Invoke(playerId, allConnectedControllersType[deviceId]); // invoke disconnection action with player ID and controller type
+            playerToDeviceMapping.Remove(playerId);
+            assignedPlayersColors.Remove(playerId);
         }
 
         Destroy(allConnectedControllers[deviceId].gameObject);
@@ -106,18 +113,17 @@ public class PlayerDistribution : MonoBehaviour {
         if (assignedPlayers.ContainsKey(playerId)) {
             if (assignedPlayers[playerId] == null) {
                 assignedPlayers[playerId] = player;
-                Debug.Log(playerId);
 
+                // create a new handler
                 InputHandler inputHandler = player.GetComponent<InputHandler>();
-                playerInputHandlers[playerId]?.OnReassignment.Invoke(inputHandler);
 
                 // replace the old one with the new one so if another controller connects to this player they get to control them
-                Action<InputHandler> temp = playerInputHandlers[playerId].OnReassignment;
+                playerInputHandlers[playerId].CopyTo(inputHandler);
                 Destroy(playerInputHandlers[playerId].gameObject);
                 playerInputHandlers[playerId] = inputHandler;
-                inputHandler.OnReassignment = temp;
 
-                // then call that a player was reconnected
+                // then rebind the controlls to all objects that require it and call that a player was reconnected
+                inputHandler.OnReassignment?.Invoke(inputHandler);
                 OnActivePlayerReconnected?.Invoke(playerId, allConnectedControllersType[deviceId]);
             }
         } else {
@@ -127,7 +133,9 @@ public class PlayerDistribution : MonoBehaviour {
         }
 
         deviceToPlayerMapping[deviceId] = playerId;
+        playerToDeviceMapping.Add(playerId, deviceId);
         player.name = $"Player{playerId}({allConnectedControllersType[deviceId]})";
+        SetPlayerColor(playerId, playerColors[playerId]);
     }
 
     public int FindFreePlayerSlot() {
@@ -139,12 +147,15 @@ public class PlayerDistribution : MonoBehaviour {
         return -1;
     }
 
-    private ControllerType GetControllerType(string deviceDescription) {
+    private ControllerType GetControllerType(InputDevice device) {
+        string deviceDescription = device.description.ToString();
         if (deviceDescription.Contains("Keyboard")) {
             return ControllerType.Keyboard;
         } else if (deviceDescription.Contains("Mouse")) {
             return ControllerType.Mouse;
         } else if (deviceDescription.Contains("Sony")) {
+            var controller = (DualShockGamepad)device;
+            if (controller != null) controller.SetLightBarColor(new Color(255, 255, 255));
             return ControllerType.PS;
         } else if (deviceDescription.Contains("XBox")) {
             return ControllerType.Xbox;
@@ -171,6 +182,23 @@ public class PlayerDistribution : MonoBehaviour {
             if (p != null) result++;
         }
         return result;
+    }
+
+    public void SetPlayerColor(int playerId, Color color) {
+        Debug.Log(playerId);
+        int deviceId = playerToDeviceMapping[playerId];
+        assignedPlayersColors.Add(playerId, color);
+
+        if (allConnectedControllers.ContainsKey(deviceId)) {
+            if (allConnectedControllersType[deviceId] == ControllerType.PS) {
+                if (allConnectedControllers[deviceId].devices.Count > 0) {
+                    var controller = (DualShockGamepad)allConnectedControllers[deviceId].devices[0];
+                    if (controller != null) {
+                        controller.SetLightBarColor(color);
+                    }
+                }
+            }
+        }
     }
 }
 public enum ControllerType {

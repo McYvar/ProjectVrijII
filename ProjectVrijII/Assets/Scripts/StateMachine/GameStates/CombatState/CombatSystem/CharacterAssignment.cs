@@ -12,7 +12,7 @@ public class CharacterAssignment : CombatBase
 
     private GameObject[] activeCharacters = new GameObject[2];
 
-    [SerializeField] GameObject UI_PlayerDisconectedWindow;
+    [SerializeField] GameObject UI_PlayerDisconnectedWindow;
     [SerializeField] TMPro.TMP_Text disconnectedPlayerCounter;
 
     private void Start() {
@@ -52,10 +52,14 @@ public class CharacterAssignment : CombatBase
 
             CharacterBaseState[] characterBaseStates = characterObj.GetComponents<CharacterBaseState>();
             foreach (var characterState in characterBaseStates) {
-                characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
-
                 // add a method to the action on the inputHandler to assure good reassignment
-                PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
+                try {
+                    characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
+                    PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
+                }
+                catch {
+                    Debug.LogWarning("Not enough players are connected!");
+                }
 
                 // temp...
                 characterState.SetCharacter(characters[i]);
@@ -69,8 +73,8 @@ public class CharacterAssignment : CombatBase
     private void CharacterLostConnection(int deviceId, ControllerType controllerType) {
         int assignedPlayerCount = PlayerDistribution.Instance.GetAssignedPlayersCount();
         disconnectedPlayerCounter.text = $"Disconnected players: {activeCharacters.Length - assignedPlayerCount}";
-        UI_PlayerDisconectedWindow.SetActive(true);
-        Debug.Log($"{deviceId} lost connection; {controllerType}");
+        UI_PlayerDisconnectedWindow.SetActive(true);
+        //Debug.Log($"{deviceId} lost connection; {controllerType}");
         Time.timeScale = 0;
     }
 
@@ -78,8 +82,8 @@ public class CharacterAssignment : CombatBase
         int assignedPlayerCount = PlayerDistribution.Instance.GetAssignedPlayersCount();
         disconnectedPlayerCounter.text = $"Disconnected players: {activeCharacters.Length - assignedPlayerCount}";
         if (assignedPlayerCount >= activeCharacters.Length) {
-            Debug.Log($"{deviceId} reconnected; {controllerType}");
-            UI_PlayerDisconectedWindow.SetActive(false);
+            //Debug.Log($"{deviceId} reconnected; {controllerType}");
+            UI_PlayerDisconnectedWindow.SetActive(false);
             Time.timeScale = 1;
         }
     }

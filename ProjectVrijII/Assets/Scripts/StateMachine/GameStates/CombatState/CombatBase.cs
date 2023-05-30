@@ -21,4 +21,10 @@ public class CombatBase : BaseState {
 
     public override void OnLateUpdate() {
     }
+
+    private void OnDestroy() {
+        // on destroy force remove class from combatState
+        OnExit();
+        if (CombatState.combatClasses.Contains(this)) CombatState.combatClasses.Remove(this);
+    }
 }

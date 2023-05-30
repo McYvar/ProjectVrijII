@@ -59,6 +59,10 @@ public class InputHandler : MonoBehaviour {
     public Action optionsFirst;
     public Action optionsLast;
 
+    private void Awake() {
+        DontDestroyOnLoad(this);
+    }
+
     public void LeftJoy(InputAction.CallbackContext cc) {
         Vector2 direction = cc.ReadValue<Vector2>();
         leftJoyDirection = direction;
@@ -83,8 +87,7 @@ public class InputHandler : MonoBehaviour {
             else if (direction.x > 0 && direction.y < 0) { DownFirst?.Invoke(); RightFirst?.Invoke(); } // lower right
             else if (direction.x < 0 && direction.y > 0) { UpFirst?.Invoke(); LeftFirst?.Invoke(); } // upper left
             else if (direction.x < 0 && direction.y < 0) { DownFirst?.Invoke(); LeftFirst?.Invoke(); } // lower left
-        }
-        else if (cc.canceled) {
+        } else if (cc.canceled) {
             if (direction == Vector2.up) UpLast?.Invoke();
             else if (direction == Vector2.down) DownLast?.Invoke();
             else if (direction == Vector2.left) LeftLast?.Invoke();
@@ -192,5 +195,83 @@ public class InputHandler : MonoBehaviour {
             options = false;
             optionsLast?.Invoke();
         }
+    }
+
+    public void CopyTo(InputHandler other) {
+        other.OnReassignment = this.OnReassignment;
+        other.UpFirst = this.UpFirst;
+        other.DownFirst = this.DownFirst;
+        other.LeftFirst = this.LeftFirst;
+        other.RightFirst = this.RightFirst;
+        other.UpLast = this.UpLast;
+        other.DownLast = this.DownLast;
+        other.LeftLast = this.LeftLast;
+        other.RightLast = this.RightLast;
+
+        other.leftShoulderFirst = this.leftShoulderFirst;
+        other.leftShoulderLast = this.leftShoulderLast;
+
+        other.rightShoulderFirst = this.rightShoulderFirst;
+        other.rightShoulderLast = this.rightShoulderLast;
+
+        other.northFirst = this.northFirst;
+        other.northLast = this.northLast;
+
+        other.eastFirst = this.eastFirst;
+        other.eastLast = this.eastLast;
+
+        other.southFirst = this.southFirst;
+        other.southLast = this.southLast;
+
+        other.westFirst = this.westFirst;
+        other.westLast = this.westLast;
+
+        other.leftPressFirst = this.leftPressFirst;
+        other.leftPressLast = this.leftPressLast;
+
+        other.rightPressFirst = this.rightPressFirst;
+        other.rightPressLast = this.rightPressLast;
+
+        other.optionsFirst = this.optionsFirst;
+        other.optionsLast = this.optionsLast;
+    }
+
+    public void ResetBindings() {
+        UpFirst = null;
+        DownFirst = null;
+        LeftFirst = null;
+        RightFirst = null;
+        UpLast = null;
+        DownLast = null;
+        LeftLast = null;
+        RightLast = null;
+
+        leftShoulderFirst = null;
+        leftShoulderLast = null;
+
+        rightShoulderFirst = null;
+        rightShoulderLast = null;
+
+        northFirst = null;
+        northLast = null;
+
+        eastFirst = null;
+        eastLast = null;
+
+        southFirst = null;
+        southLast = null;
+
+        westFirst = null;
+        westLast = null;
+
+        leftPressFirst = null;
+        leftPressLast = null;
+
+        rightPressFirst = null;
+        rightPressLast = null;
+
+        optionsFirst = null;
+        optionsLast = null;
+
     }
 }
