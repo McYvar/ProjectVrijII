@@ -24,6 +24,8 @@ public class PreAttackBase : CharacterBaseState {
 
     public override void OnUpdate() {
         base.OnUpdate();
+        menu.transform.eulerAngles = new Vector3 (0f, 0f, 0f);
+        
     }
 
     public override void OnEnter() {

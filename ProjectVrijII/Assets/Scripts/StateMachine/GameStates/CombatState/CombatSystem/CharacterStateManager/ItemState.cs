@@ -11,8 +11,12 @@ public class ItemState : PreAttackBase {
 
     // foreach item there has to be a frame containing that item and it's stats when hovering over
 
+    [SerializeField] private GameObject buttonPrefab;
+
     public override void OnEnter() {
         base.OnEnter();
+
+        buttonActions[0] += SelectReturn;
 
         for (int i = 0; i < character.availableItems.Count; i++) {
             // create button prefab for parent class
@@ -29,6 +33,7 @@ public class ItemState : PreAttackBase {
 
     public override void OnExit() {
         base.OnExit();
+        buttonActions[0] -= SelectReturn;
     }
 
     public void SelectReturn() {
@@ -38,5 +43,13 @@ public class ItemState : PreAttackBase {
     protected override void ConfirmChoice() {
         base.ConfirmChoice();
         Debug.Log("item confirmation");
+    }
+
+    private GameObject CreateButton() {
+        GameObject newButton = Instantiate(buttonPrefab, menu.transform);
+
+        // set button position based of button amount
+
+        return newButton;
     }
 }

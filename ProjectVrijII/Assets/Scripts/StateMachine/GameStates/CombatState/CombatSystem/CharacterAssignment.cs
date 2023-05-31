@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class CharacterAssignment : CombatBase {
-    [SerializeField] bool instantStart = false; // for test build
     [SerializeField] private GameObject characterController;
     [SerializeField] private SO_Character[] characters;
     [SerializeField] private Vector3[] spawns;
@@ -9,7 +8,7 @@ public class CharacterAssignment : CombatBase {
 
     private GameObject[] activeCharacters = new GameObject[2];
 
-    [SerializeField] GameObject UI_PlayerDisconectedWindow;
+    [SerializeField] GameObject UI_PlayerDisconnectedWindow;
     [SerializeField] TMPro.TMP_Text disconnectedPlayerCounter;
 
     private void Start() {
@@ -18,8 +17,7 @@ public class CharacterAssignment : CombatBase {
     }
 
     public override void OnUpdate() {
-        if (Input.GetKeyDown(KeyCode.Backspace) || instantStart) { // spawns the characters for now
-            instantStart = false;
+        if (Input.GetKeyDown(KeyCode.Backspace)) { // spawns the characters for now
             AssignToCharacters();
 
             if (activeCharacters.Length >= 2) {
@@ -36,7 +34,10 @@ public class CharacterAssignment : CombatBase {
                 cameraBehaviour.AssignObjects(activeCharacters[1].transform);
             }
 
-            TurnSystem.Instance.InitializeCharacters(activeCharacters[0].GetComponent<CharacterStateManager>(), activeCharacters[1].GetComponent<CharacterStateManager>());
+            CharacterStateManager[] team1 = new CharacterStateManager[1] { activeCharacters[0].GetComponent<CharacterStateManager>() };
+            CharacterStateManager[] team2 = new CharacterStateManager[1] { activeCharacters[1].GetComponent<CharacterStateManager>() };
+            TurnSystem.Instance.AddTeam(0, team1);
+            TurnSystem.Instance.AddTeam(1, team2);
             TurnSystem.Instance.StartCombat();
         }
     }
@@ -50,12 +51,15 @@ public class CharacterAssignment : CombatBase {
 
             CharacterBaseState[] characterBaseStates = characterObj.GetComponents<CharacterBaseState>();
             foreach (var characterState in characterBaseStates) {
-                InputHandler inputHandler = PlayerDistribution.Instance.GetPlayerInputHandler(i);
-                if (inputHandler != null) { // null check should also be temp to make a playable build for the team
-                    characterState.SetInputHandler(inputHandler);
-                    // add a method to the action on the inputHandler to assure good reassignment
+                // add a method to the action on the inputHandler to assure good reassignment
+                try {
+                    characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
                     PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
                 }
+                catch {
+                    Debug.LogWarning("Not enough players are connected!");
+                }
+
                 // temp...
                 characterState.SetCharacter(characters[i]);
             }
@@ -68,8 +72,8 @@ public class CharacterAssignment : CombatBase {
     private void CharacterLostConnection(int deviceId, ControllerType controllerType) {
         int assignedPlayerCount = PlayerDistribution.Instance.GetAssignedPlayersCount();
         disconnectedPlayerCounter.text = $"Disconnected players: {activeCharacters.Length - assignedPlayerCount}";
-        UI_PlayerDisconectedWindow.SetActive(true);
-        Debug.Log($"{deviceId} lost connection; {controllerType}");
+        UI_PlayerDisconnectedWindow.SetActive(true);
+        //Debug.Log($"{deviceId} lost connection; {controllerType}");
         Time.timeScale = 0;
     }
 
@@ -77,8 +81,8 @@ public class CharacterAssignment : CombatBase {
         int assignedPlayerCount = PlayerDistribution.Instance.GetAssignedPlayersCount();
         disconnectedPlayerCounter.text = $"Disconnected players: {activeCharacters.Length - assignedPlayerCount}";
         if (assignedPlayerCount >= activeCharacters.Length) {
-            Debug.Log($"{deviceId} reconnected; {controllerType}");
-            UI_PlayerDisconectedWindow.SetActive(false);
+            //Debug.Log($"{deviceId} reconnected; {controllerType}");
+            UI_PlayerDisconnectedWindow.SetActive(false);
             Time.timeScale = 1;
         }
     }
