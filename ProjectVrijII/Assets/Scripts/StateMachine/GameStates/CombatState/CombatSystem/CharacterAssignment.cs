@@ -34,7 +34,10 @@ public class CharacterAssignment : CombatBase {
                 cameraBehaviour.AssignObjects(activeCharacters[1].transform);
             }
 
-            TurnSystem.Instance.InitializeCharacters(activeCharacters[0].GetComponent<CharacterStateManager>(), activeCharacters[1].GetComponent<CharacterStateManager>());
+            CharacterStateManager[] team1 = new CharacterStateManager[1] { activeCharacters[0].GetComponent<CharacterStateManager>() };
+            CharacterStateManager[] team2 = new CharacterStateManager[1] { activeCharacters[1].GetComponent<CharacterStateManager>() };
+            TurnSystem.Instance.AddTeam(0, team1);
+            TurnSystem.Instance.AddTeam(1, team2);
             TurnSystem.Instance.StartCombat();
         }
     }
