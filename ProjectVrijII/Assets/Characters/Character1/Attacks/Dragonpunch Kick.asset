@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Dragonpunch Kick
   m_EditorClassIdentifier: 
+  attackName: Dragonpunch Kick
   strength:
   - 30
   enemyLaunchStrength: []

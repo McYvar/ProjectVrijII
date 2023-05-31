@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class CharacterAssignment : CombatBase
-{
+public class CharacterAssignment : CombatBase {
     [SerializeField] private GameObject characterController;
     [SerializeField] private SO_Character[] characters;
     [SerializeField] private Vector3[] spawns;

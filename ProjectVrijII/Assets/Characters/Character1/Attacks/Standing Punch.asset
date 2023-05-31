@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf65454ca7454ad458bb27b44f7b94ff, type: 3}
   m_Name: Standing Punch
   m_EditorClassIdentifier: 
+  attackName: Standing Punch
   strength:
   - 10
   enemyLaunchStrength:

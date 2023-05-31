@@ -160,8 +160,10 @@ public class PlayerDistribution : MonoBehaviour {
         } else if (deviceDescription.Contains("XBox")) {
             return ControllerType.Xbox;
         }
-
-        return ControllerType.Unknown;
+        else {
+            Debug.Log($"Description: {deviceDescription}");
+            return ControllerType.Unknown;
+        }
     }
 
     public void SubscribeToPlayerInputHandler(int playerId, Action<InputHandler> callback) {
@@ -173,7 +175,17 @@ public class PlayerDistribution : MonoBehaviour {
     }
 
     public InputHandler GetPlayerInputHandler(int playerId) {
-        return playerInputHandlers[playerId];
+        if (playerInputHandlers.ContainsKey(playerId)) {
+            return playerInputHandlers[playerId];
+        }
+        else {
+            PlayerInput dummy = PlayerInput.Instantiate(inputControllerPrefab, playerId, "ControllerMap", -1);
+            assignedPlayers.Add(playerId, dummy);
+            InputHandler inputHandler = dummy.GetComponent<InputHandler>();
+            playerInputHandlers.Add(playerId, inputHandler);
+            Debug.Log("spawned dummy");
+            return inputHandler;
+        }
     }
 
     public int GetAssignedPlayersCount() {

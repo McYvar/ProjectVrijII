@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor.Build;
 
 public class TurnSystem : CombatBase {
     /// <summary>
@@ -62,8 +63,8 @@ public class TurnSystem : CombatBase {
         if (turn == allCharacters.Length) turn = 0;
 
         currentCharacterTurn = allCharacters[turn];
-        currentCharacterTurn.SwitchState(typeof(SelectionState));
         //currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
+        currentCharacterTurn.SwitchState(typeof(SelectionState));
 
         currentPlayerText.text = $"Player{turn}'s turn!";
         readyCharacters = 0;

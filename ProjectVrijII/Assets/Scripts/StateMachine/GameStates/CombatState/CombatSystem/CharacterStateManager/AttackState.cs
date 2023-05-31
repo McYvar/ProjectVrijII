@@ -274,8 +274,7 @@ public class AttackState : CharacterBaseState {
 
             attack.DoAttack(entity, hitNumber);
             attack.LaunchEnemey(entity, hitNumber, characterFacingDirection);
-            if (attack.onHitPushBack[hitNumber].magnitude > 0) character.rbInput = false;
-            attack.DoPushBack(rb, hitNumber, characterFacingDirection);
+            if (attack.DoPushBack(rb, hitNumber, characterFacingDirection)) character.rbInput = false;
 
             Destroy(attack);
         }

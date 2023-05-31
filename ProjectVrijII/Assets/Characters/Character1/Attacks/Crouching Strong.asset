@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03a89eb74034cc4fa6e7bfae269cbe4, type: 3}
   m_Name: Crouching Strong
   m_EditorClassIdentifier: 
+  attackName: Crouching Strong
   strength:
   - 25
-  lauchStrenght:
-  - {x: 0, y: 50}
+  enemyLaunchStrength: []
+  attackFreezeTime: []
+  onHitPushBack: []
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 1
-  attackBounce: {x: 0, y: 0}
