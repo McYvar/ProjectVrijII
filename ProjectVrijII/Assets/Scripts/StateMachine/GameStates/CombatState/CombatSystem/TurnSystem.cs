@@ -10,6 +10,7 @@ public class TurnSystem : CombatBase {
     /// Class that handles turnhandling for the combat phase of the game
     /// </summary>
 
+    [SerializeField] private bool testmodus;
     [SerializeField] private ComboCounter comboCounter;
     private CharacterStateManager currentCharacterTurn;
     private int totalCharacters = 0;
@@ -63,23 +64,24 @@ public class TurnSystem : CombatBase {
     public void StartCombat() {
         readyCharacters = 0;
         playerTurn = 0;
-        teamTurn = UnityEngine.Random.Range(0, totalCharacters);
+        if (!testmodus) teamTurn = UnityEngine.Random.Range(0, totalCharacters);
+        else teamTurn = 0;
         NextTurn();
     }
 
     private void NextTurn() {
         // to do, write a condition check if team has no healt left
 
-        playerTurn++;
-        if (playerTurn >= teams[teamTurn].Length) {
+        if (!testmodus) playerTurn++;
+        if (playerTurn >= teams[teamTurn].Length && !testmodus) {
             playerTurn = 0;
             teamTurn++;
             if (teamTurn >= teams.Count) teamTurn = 0;
         }
 
         currentCharacterTurn = teams[teamTurn][playerTurn];
-        //currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
-        currentCharacterTurn.SwitchState(typeof(SelectionState));
+        if (!testmodus) currentCharacterTurn.SwitchState(typeof(SelectionState));
+        else currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
 
     }
 
@@ -98,6 +100,7 @@ public class TurnSystem : CombatBase {
     public void AddTeam(int teamNumber, CharacterStateManager[] characterList) {
         teams.Add(teamNumber, characterList);
 
+        if (testmodus) return;
         foreach (var character in characterList) {
             OnReset += () => character.SwitchState(typeof(ResetState));
         }
