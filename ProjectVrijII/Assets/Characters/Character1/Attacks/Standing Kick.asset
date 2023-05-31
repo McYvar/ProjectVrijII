@@ -12,15 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf2995a72959eb44974e447e4481576, type: 3}
   m_Name: Standing Kick
   m_EditorClassIdentifier: 
+  attackName: Standing Kick
   strength:
   - 2
   - 15
-  lauchStrenght:
-  - {x: 0, y: 15}
-  - {x: 10, y: 20}
+  enemyLaunchStrength:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  attackFreezeTime:
+  - 0
+  - 0
+  onHitPushBack:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
-  onHitPushBack: {x: 0, y: 0}
-  attackBounce: {x: 0, y: 0}

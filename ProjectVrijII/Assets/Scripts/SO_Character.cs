@@ -14,11 +14,14 @@ public class SO_Character : ScriptableObject
     public float crouchMovementSpeed;
     public float groundJumpStrength;
 
-    public float airMovementSpeed;
     public float airDashStrength;
     [Range(0f, 1f)] public float airDashStopScalar;
     public float doubleJumpStrength;
     public float airDashLength;
+
+    [Header("Item list")]
+    public List<SO_Item> availableItems = new List<SO_Item>();
+    public List<SO_Item> usingItems = new List<SO_Item>();
 
     [Header("Character attacks")]
     public SO_Kick standingKick;
@@ -41,9 +44,9 @@ public class SO_Character : ScriptableObject
     public SO_Punch quaterCirclePunch;
     public SO_Strong quaterCircleStrong;
     
-    public SO_Kick halfCircleKick;
-    public SO_Punch halfCirclePunch;
-    public SO_Strong halfCircleStrong;
+    public SO_Kick quaterBackwardCircleKick;
+    public SO_Punch quaterBackwardCirclePunch;
+    public SO_Strong quaterBackwardCircleStrong;
 
     [HideInInspector] public LinkedList<int> numpadInputOrder = new LinkedList<int>();
     [HideInInspector] public LeftInputDirection lastInputDirection = LeftInputDirection.centre;
@@ -53,10 +56,19 @@ public class SO_Character : ScriptableObject
     [HideInInspector] public string currentAttackName = "";
     [HideInInspector] public SO_Attack currentAttack = null;
     [HideInInspector] public SO_Attack lastAttack = null;
-    [HideInInspector] public bool isStunned;
+    [HideInInspector] public bool rbInput;
 
     [Header("Animation clips for this character")]
     public AnimatorOverrideController overrideController;
+
+    public void OnStartUp() {
+        variableMovementSpeed = 1;
+        attackMovementReductionScalar = 1;
+        fallReductionScalar = 1;
+        currentAttack = null;
+        lastAttack = null;
+        rbInput = true;
+    }
 
     [HideInInspector] public AttackPhase attackPhase { get; private set; } = AttackPhase.ready;
     public void SetAttackPhase(AttackPhase attackPhase) {
@@ -65,6 +77,7 @@ public class SO_Character : ScriptableObject
         // reset values here
         switch (attackPhase) {
             case AttackPhase.ready:
+                rbInput = true;
                 break;
             case AttackPhase.startup:
                 break;

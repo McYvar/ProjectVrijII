@@ -12,20 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf65454ca7454ad458bb27b44f7b94ff, type: 3}
   m_Name: Jumping Punch
   m_EditorClassIdentifier: 
+  attackName: Jumping Punch
   strength:
   - 2
   - 2
   - 2
-  - 2
-  - 2
-  lauchStrenght:
-  - {x: 1, y: 15}
-  - {x: 1, y: 15}
-  - {x: 1, y: 15}
-  - {x: 1, y: 15}
-  - {x: 3, y: 20}
+  - 5
+  enemyLaunchStrength:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 20, y: 20}
+  attackFreezeTime:
+  - 0.04
+  - 0.04
+  - 0.04
+  - 0.04
+  onHitPushBack:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 20, y: 20}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
   canceledByJump: 0
-  attackBounce: {x: 0, y: 0}

@@ -4,46 +4,50 @@ using UnityEngine;
 
 public class CameraBehaviour : CombatBase
 {
-    [SerializeField] private Transform[] focussedObjects; // for now set them in manually
+    [SerializeField] private List<Transform> focussedObjects; // for now set them in manually 
     [SerializeField] private float smoothTime;
     [SerializeField] private Vector2 offset;
-    [SerializeField] private Vector2 scalar;
-    private Vector3 SmoothVector;
-    
-    public override void OnUpdate() {
-        base.OnUpdate();
-        if (focussedObjects.Length < 2) {
-            Debug.Log("No objects found!");
+    [SerializeField] private Vector2 min;
+    [SerializeField] private Vector2 max;
+
+    [Header("By bounds I mean invibisble walls...")]
+    [SerializeField] private Transform leftBound;
+    [SerializeField] private Transform rightBound;
+    private Vector3 smoothVector;
+
+    private void Start() {
+        focussedObjects = new List<Transform>();
+    }
+
+    public override void OnLateUpdate() {
+        base.OnLateUpdate();
+        if (focussedObjects.Count < 2) {
             return;
         }
 
-        float xAxis = 0f;
-        float leftBound = focussedObjects[0].position.x;
-        float rightBound = focussedObjects[0].position.x;
+        float cameraCentrePointX = 0f;
 
-        float upperBound = focussedObjects[0].position.y;
-        float lowerBound = focussedObjects[0].position.y;
+        float xMin = focussedObjects[0].position.x;
+        float xMax = focussedObjects[0].position.x;
 
         foreach (var obj in focussedObjects) {
-            xAxis += obj.position.x;
-            if (obj.transform.position.x > rightBound) rightBound = obj.transform.position.x;
-            if (obj.transform.position.x < leftBound) leftBound = obj.transform.position.x;
+            cameraCentrePointX += obj.position.x;
 
-            if (obj.transform.position.y > upperBound) upperBound = obj.transform.position.y;
-            if (obj.transform.position.y < lowerBound) lowerBound = obj.transform.position.y;
+            if (obj.position.x < xMin) xMin = obj.position.x;
+            if (obj.position.x > xMax) xMax = obj.position.x;
         }
-        xAxis /= focussedObjects.Length;
-        float horizontalBoundDistance = rightBound - leftBound;
-        float verticalBoundDistance = upperBound - lowerBound;
+        cameraCentrePointX /= focussedObjects.Count;
 
+        float invlerpXMin = Mathf.InverseLerp(leftBound.position.x, rightBound.position.x, xMin); // pos most left obj from 0-1
+        float invlerpXMax = Mathf.InverseLerp(leftBound.position.x, rightBound.position.x, xMax); // for right from 0-1
+        float dist = invlerpXMax - invlerpXMin; // distance between most left and most right, also from 0-1
+        float hori = Mathf.Lerp(min.x, max.x, dist);
+        float vert = Mathf.Lerp(min.y, max.y, dist);
 
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            new Vector3(
-            xAxis,
-            (verticalBoundDistance * scalar.x) - offset.x,
-            (-horizontalBoundDistance * scalar.y) - offset.y),
-            ref SmoothVector,
-            smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(cameraCentrePointX, vert + offset.y, hori + offset.x), ref smoothVector, smoothTime);
+    }
+
+    public void AssignObjects(Transform transform) {
+        focussedObjects.Add(transform);
     }
 }
