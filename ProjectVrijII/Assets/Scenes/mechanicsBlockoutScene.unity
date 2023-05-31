@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c92cac2fc2a829b44b65a2bc505c4b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instantStart: 0
   characterController: {fileID: 2548445269591056924, guid: aed26aee06602fe4592b1a85a652f07c,
     type: 3}
   characters:
@@ -5342,6 +5343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a1d77db709e71748808019311abec3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testmode: 0
   comboCounter: {fileID: 608180137}
   currentPlayerText: {fileID: 2144013871}
 --- !u!4 &1997295839
