@@ -12,11 +12,11 @@ TagManager:
   - Water
   - UI
   - Character
-  - Background
+  - Foreground
   - 
-  - 
+  - Midground
   - Ground
-  - Wall
+  - Blockout
   - 
   - 
   - 
