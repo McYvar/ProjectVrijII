@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/startMenu.unity
     guid: 205d5d627981f3641bfe0f5adaa754d0
   - enabled: 0
@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/mechanicsBlockoutScene.unity
     guid: 4e0d26281128b7e408f3b858d13fa256
+  - enabled: 1
+    path: Assets/Scenes/testScenes/PLAYTESTSCENE.unity
+    guid: ce57d0e7c2b25a54fb95d5308bab7b47
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 07075788d40a27f489d0201dd729932b,
       type: 2}
