@@ -620,6 +620,7 @@ GameObject:
   - component: {fileID: 3117074279663987033}
   - component: {fileID: -1716009331199898804}
   - component: {fileID: 6283679276063732702}
+  - component: {fileID: 8678857759101692279}
   m_Layer: 6
   m_Name: CharacterController
   m_TagString: Untagged
@@ -908,7 +909,6 @@ MonoBehaviour:
   menu: {fileID: 0}
   buttons: []
   unhighlightColor: {r: 0, g: 0, b: 0, a: 0}
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &3117074279663987033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,7 +926,6 @@ MonoBehaviour:
   - {fileID: 4830804475375524156}
   - {fileID: 3822525546426935342}
   unhighlightColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 0, g: 0.89161634, b: 1, a: 1}
 --- !u!114 &-1716009331199898804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,8 +954,21 @@ MonoBehaviour:
   buttons:
   - {fileID: 8519654794363329856}
   unhighlightColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 0, g: 1, b: 0.16457057, a: 1}
   buttonPrefab: {fileID: 0}
+--- !u!114 &8678857759101692279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548445269591056924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e8a67ced8112c478f21743d1861b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 500
+  died: 0
 --- !u!1 &2548445269768881292
 GameObject:
   m_ObjectHideFlags: 0

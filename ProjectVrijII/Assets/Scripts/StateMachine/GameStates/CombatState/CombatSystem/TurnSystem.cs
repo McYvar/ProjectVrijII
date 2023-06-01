@@ -12,6 +12,7 @@ public class TurnSystem : CombatBase {
 
     [SerializeField] private bool testmodus;
     [SerializeField] private ComboCounter comboCounter;
+    [SerializeField] private TMP_Text gameOverText;
     private CharacterStateManager currentCharacterTurn;
     private int totalCharacters = 0;
 
@@ -64,6 +65,11 @@ public class TurnSystem : CombatBase {
     public void StartCombat() {
         readyCharacters = 0;
         playerTurn = 0;
+        foreach (var team in teams) {
+            foreach (var player in team.Value) {
+                totalCharacters++;
+            }
+        }
         if (!testmodus) teamTurn = UnityEngine.Random.Range(0, totalCharacters);
         else teamTurn = 0;
         NextTurn();
@@ -71,6 +77,16 @@ public class TurnSystem : CombatBase {
 
     private void NextTurn() {
         // to do, write a condition check if team has no healt left
+        for (int i = 0; i < teams.Count; i++) {
+            int dead = 0;
+            foreach (var player in teams[i]) {
+                if (player.GetComponent<Health>().died) dead++; // also temp solution?
+            }
+            if (dead == teams[i].Length) {
+                EndGame(i);
+                return;
+            }
+        }
 
         if (!testmodus) playerTurn++;
         if (playerTurn >= teams[teamTurn].Length && !testmodus) {
@@ -85,12 +101,19 @@ public class TurnSystem : CombatBase {
 
     }
 
+    private void EndGame(int loser) {
+        gameOverText.text = $"Game over! Player {loser} died!";
+    }
+
     public void ReadyForNextTurn() {
         readyCharacters++;
         if (readyCharacters >= totalCharacters) {
             foreach(var team in teams) {
                 foreach (var character in team.Value) {
-                character.SwitchState(typeof(IdleState));}
+                    character.SwitchState(typeof(IdleState));
+                }
+
+                readyCharacters = 0;
             }
             NextTurn();
         }

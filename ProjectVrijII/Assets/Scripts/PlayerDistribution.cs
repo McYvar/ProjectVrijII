@@ -183,6 +183,7 @@ public class PlayerDistribution : MonoBehaviour {
             assignedPlayers.Add(playerId, dummy);
             InputHandler inputHandler = dummy.GetComponent<InputHandler>();
             playerInputHandlers.Add(playerId, inputHandler);
+            assignedPlayersColors.Add(playerId, new Color(150, 150, 150));
             Debug.Log("spawned dummy");
             return inputHandler;
         }
@@ -215,6 +216,12 @@ public class PlayerDistribution : MonoBehaviour {
 
     public Color GetPlayerColor(int playerId) {
         return assignedPlayersColors[playerId];
+    }
+
+    public void ResetInputHandlers() {
+        for (int i = 0; i < playerInputHandlers.Count; i++) {
+            playerInputHandlers[i].ResetBindings();
+        }
     }
 }
 public enum ControllerType {

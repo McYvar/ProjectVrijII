@@ -73,7 +73,6 @@ public class OnGroundMovement : AttackState {
                 }
             }
         }
-
     }
 
     protected override void Movement() {

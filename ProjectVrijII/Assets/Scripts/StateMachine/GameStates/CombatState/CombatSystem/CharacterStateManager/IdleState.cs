@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IdleState : CharacterBaseState, IHitable {
@@ -8,10 +7,21 @@ public class IdleState : CharacterBaseState, IHitable {
     /// <summary>
     /// Idle state while the enemy turn is processed
     /// </summary>
+    private Health health;
+
+    protected override void Awake() {
+        base.Awake();
+        health = GetComponent<Health>();
+    }
 
     public override void OnEnter() {
         base.OnEnter();
         rb.velocity = Vector2.zero;
+    }
+
+    public override void OnExit() {
+        base.OnExit();
+        SetAttackPhase(AttackPhase.ready);
     }
 
     public void Launch(Vector2 force, float freezeTime) {
@@ -41,5 +51,6 @@ public class IdleState : CharacterBaseState, IHitable {
     }
 
     public void TakeDamage(float damage) {
+        health.GetDamaged((int)damage);
     }
 }

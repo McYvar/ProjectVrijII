@@ -1,10 +1,12 @@
 using UnityEngine;
 
 public class CharacterAssignment : CombatBase {
+    [SerializeField] private bool instantStart = false;
     [SerializeField] private GameObject characterController;
     [SerializeField] private SO_Character[] characters;
     [SerializeField] private Vector3[] spawns;
     [SerializeField] private CameraBehaviour cameraBehaviour;
+    [SerializeField] UIHealthBar[] healtbar; // quick solution for playtest
 
     private GameObject[] activeCharacters = new GameObject[2];
 
@@ -17,7 +19,8 @@ public class CharacterAssignment : CombatBase {
     }
 
     public override void OnUpdate() {
-        if (Input.GetKeyDown(KeyCode.Backspace)) { // spawns the characters for now
+        if (Input.GetKeyDown(KeyCode.Backspace) || instantStart) { // spawns the characters for now
+            instantStart = false;
             AssignToCharacters();
 
             if (activeCharacters.Length >= 2) {
@@ -53,6 +56,7 @@ public class CharacterAssignment : CombatBase {
             foreach (var characterState in characterBaseStates) {
                 // add a method to the action on the inputHandler to assure good reassignment
                 try {
+                    characterState.SetPlayerId(i);
                     characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
                     PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
                 }
@@ -66,6 +70,7 @@ public class CharacterAssignment : CombatBase {
 
             // also temp...
             activeCharacters[i] = characterObj;
+            healtbar[i].InitializeUIHealthbar(characterObj.GetComponent<Health>());
         }
     }
 

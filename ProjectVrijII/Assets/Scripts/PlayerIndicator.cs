@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,12 +30,13 @@ public class PlayerIndicator : MonoBehaviour
     }
 
     private void MoveIndicator() {
-        transform.position += new Vector3(inputHandler.leftDirection.x, inputHandler.leftDirection.y) * indicatorMoveSpeed;
+        transform.position += new Vector3(inputHandler.leftDirection.x, inputHandler.leftDirection.y) * (CanvasSingleton.Instance.GetScaleFactor() * indicatorMoveSpeed);
     }
 
-    public void InitializeIndicator(InputHandler inputHandler, int playerId) {
+    public void InitializeIndicator(InputHandler inputHandler, int playerId, Color color) {
         this.playerId = playerId;
         this.inputHandler = inputHandler;
+        indicatorImage.color = color;
     }
 
     public void HideIndicator() {
@@ -63,6 +65,14 @@ public class PlayerIndicator : MonoBehaviour
     private void OnDrawGizmos() {
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(GetCentre(), 10);
+    }
+
+    public void SubscribeToConfirm(Action callback) {
+        inputHandler.southFirst += callback;
+    }
+
+    public void UnsubscribeFromConfirm(Action callback) {
+        inputHandler.southFirst -= callback;
     }
 }
  

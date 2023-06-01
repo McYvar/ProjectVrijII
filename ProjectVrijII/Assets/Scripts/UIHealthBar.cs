@@ -1,20 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIHealthBar : MonoBehaviour {
-    public Transform assignedCharacter;
 
+    private Health health;
     [SerializeField]
     private Image healthBarFilling;
-   
-    private void OnEnable() {
-        if (assignedCharacter) assignedCharacter.GetComponent<Health>().OnHealthChanged += HealthChanged;
-    }
 
     private void OnDisable() {
-        if (assignedCharacter) assignedCharacter.GetComponent<Health>().OnHealthChanged -= HealthChanged;
+        health.OnHealthChanged -= HealthChanged;
+    }
+
+    public void InitializeUIHealthbar(Health health) {
+        this.health = health;
+        this.health.OnHealthChanged += HealthChanged;
     }
 
     //Called when hp changes

@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class MainSettingsMenuState : SubMenusBase
 {
-
+    public void ReturnToMainStartMenu() {
+        stateManager.SwitchState(typeof(MainStartMenuState));
+    }
 }

@@ -13,7 +13,6 @@ public class PreAttackBase : CharacterBaseState {
     protected Canvas characterCanvas;
 
     [SerializeField] private Color unhighlightColor;
-    [SerializeField] private Color highlightColor;
 
     protected Action[] buttonActions;
 
@@ -64,7 +63,7 @@ public class PreAttackBase : CharacterBaseState {
         if (buttons.Length <= 0) return;
         if (currentImage != null) currentImage.color = unhighlightColor;
         currentImage = buttons[currentlySelectedButton];
-        currentImage.color = highlightColor;
+        currentImage.color = PlayerDistribution.Instance.GetPlayerColor(playerId);
     }
 
     protected virtual void MoveUp() {

@@ -10,4 +10,8 @@ public class MenuButton : MonoBehaviour
     public void OnButtonClick() {
         onButtonClick.Invoke();
     }
+
+    public void MSG(string input) {
+        Debug.Log(input);
+    }
 }

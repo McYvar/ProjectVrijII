@@ -9,9 +9,11 @@ public class Health : MonoBehaviour {
     [SerializeField]
     private int maxHealth = 100; //may change the value in the inspector
     private int currentHealth;
+    public bool died;
 
     private void Start() {
         GetHealed(maxHealth);
+        died = false;
     }
 
 	//Decrease current hp
@@ -22,8 +24,9 @@ public class Health : MonoBehaviour {
             if (currentHealth <= 0) {
                 currentHealth = 0;
                 OnDeath?.Invoke(gameObject);
+                died = true;
             }
-
+            Debug.Log($"{name} took {damage} damage!");
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
         }
     }
