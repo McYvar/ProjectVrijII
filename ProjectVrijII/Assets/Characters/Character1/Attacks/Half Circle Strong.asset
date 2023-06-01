@@ -15,10 +15,13 @@ MonoBehaviour:
   attackName: Half Circle Strong
   strength:
   - 30
-  enemyLaunchStrength: []
-  attackFreezeTime: []
-  onHitPushBack: []
+  enemyLaunchStrength:
+  - {x: 20, y: 0}
+  attackFreezeTime:
+  - 0
+  onHitPushBack:
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
-  isSpecial: 0
+  isSpecial: 1
   canceledByJump: 0

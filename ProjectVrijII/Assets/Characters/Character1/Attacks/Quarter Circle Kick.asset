@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Quarter Circle Kick
   strength:
-  - 20
-  enemyLaunchStrength: []
-  attackFreezeTime: []
-  onHitPushBack: []
+  - 23
+  enemyLaunchStrength:
+  - {x: 0, y: 0}
+  attackFreezeTime:
+  - 0
+  onHitPushBack:
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
-  isSpecial: 0
-  canceledByJump: 1
+  isSpecial: 1
+  canceledByJump: 0

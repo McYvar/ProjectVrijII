@@ -17,14 +17,14 @@ MonoBehaviour:
   - 2
   - 15
   enemyLaunchStrength:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: 3, y: 0}
+  - {x: 15, y: 0}
   attackFreezeTime:
-  - 0
-  - 0
+  - 0.1
+  - 0.1
   onHitPushBack:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: -5, y: 0}
+  - {x: -15, y: 0}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

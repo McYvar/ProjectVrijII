@@ -817,11 +817,11 @@ MonoBehaviour:
   - name: quarter circle left
     attackType: 4
     characterFacingDirection: 0
-    numpadOrder: 020001000400
+    numpadOrder: 020001000400d007
   - name: quarter circle right
     attackType: 4
     characterFacingDirection: 1
-    numpadOrder: 020003000600
+    numpadOrder: 020003000600d007
   - name: Standing left
     attackType: 0
     characterFacingDirection: 0
@@ -869,11 +869,11 @@ MonoBehaviour:
   - name: quarter circle left
     attackType: 4
     characterFacingDirection: 0
-    numpadOrder: 020001000400
+    numpadOrder: 020001000400d007
   - name: quarter circle right
     attackType: 4
     characterFacingDirection: 1
-    numpadOrder: 020003000600
+    numpadOrder: 020003000600d007
   hitboxes:
   - {fileID: 2548445269768881294}
   - {fileID: 2548445269399983031}

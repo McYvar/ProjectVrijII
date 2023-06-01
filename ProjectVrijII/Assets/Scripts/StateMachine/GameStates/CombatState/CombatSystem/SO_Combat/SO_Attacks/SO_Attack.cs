@@ -41,7 +41,7 @@ public class SO_Attack : ScriptableObject {
     public void DoAttack(IHitable enemy, int hitNumber) {
         try {
             enemy.TakeDamage(strength[hitNumber]);
-            Debug.Log($"Enemy took {strength[hitNumber]} damage");
+            Debug.Log($"Enemy took {strength[hitNumber]} damage with {attackName}");
         } catch {
             Debug.LogWarning($"There are too few elements ({strength.Length}) in strength from attack {attackName}." +
                 $" Make sure the strength list from attack {attackName} has at least {hitNumber} elements!");
