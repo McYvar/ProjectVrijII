@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Dragonpunch Strong
   strength:
-  - 25
+  - 30
   enemyLaunchStrength:
-  - {x: 15, y: 40}
+  - {x: 15, y: 70}
   attackFreezeTime:
   - 0.2
   onHitPushBack:

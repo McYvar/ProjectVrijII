@@ -16,7 +16,7 @@ MonoBehaviour:
   strength:
   - 25
   enemyLaunchStrength:
-  - {x: 15, y: 40}
+  - {x: 15, y: 60}
   attackFreezeTime:
   - 0.2
   onHitPushBack:
