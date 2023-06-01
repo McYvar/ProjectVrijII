@@ -12,6 +12,9 @@ public class MainMenuState : BaseState {
     }
 
     public override void OnExit() {
+    }
+
+    public override void OnUpdate() {
         foreach (var menu in mainMenuClasses) {
             menu.OnUpdate();
         }
@@ -24,11 +27,6 @@ public class MainMenuState : BaseState {
         while (mainMenuRemoveQueue.Count > 0) {
             MainMenuBase toAdd = mainMenuRemoveQueue.Dequeue();
             if (toAdd != null) mainMenuClasses.Remove(toAdd);
-        }
-    }
-    public override void OnUpdate() {
-        foreach (var menu in mainMenuClasses) {
-            menu.OnUpdate();
         }
     }
 

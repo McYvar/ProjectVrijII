@@ -11,7 +11,6 @@ public class PlayerDistribution : MonoBehaviour {
     public Action<int, ControllerType> OnActivePlayerDisconnected;
     public Action<int, ControllerType> OnActivePlayerReconnected;
 
-    private static PlayerDistribution instance;
     private readonly Dictionary<int, PlayerInput> allConnectedControllers = new Dictionary<int, PlayerInput>();
     private readonly Dictionary<int, PlayerInput> assignedPlayers = new Dictionary<int, PlayerInput>();
     private readonly Dictionary<int, Color> assignedPlayersColors = new Dictionary<int, Color>();
@@ -22,6 +21,7 @@ public class PlayerDistribution : MonoBehaviour {
 
     [SerializeField] private Color[] playerColors;
 
+    private static PlayerDistribution instance;
     public static PlayerDistribution Instance {
         get { return instance; }
     }
@@ -211,6 +211,10 @@ public class PlayerDistribution : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public Color GetPlayerColor(int playerId) {
+        return assignedPlayersColors[playerId];
     }
 }
 public enum ControllerType {

@@ -30,19 +30,19 @@ public class InputVisualizer : CombatBase {
 	[SerializeField]
 	private float glowSpeed = 0.8f;
 
-	private PlayerInput playerInput;
+	private InputHandler playerInput;
 	private Vector2[] startKeyScale;
 	private Coroutine specialEffectCoroutine;
 	private bool[] specialEffectPlacement;
 
 	//TODO: REMOVE call from start when player select screen is added
 	private void Start() {
-		AssignPlayer(FindObjectOfType<PlayerInput>().gameObject);
+		AssignPlayer(FindObjectOfType<InputHandler>().gameObject);
 	}
 
 	//CALL after player select
 	public void AssignPlayer(GameObject player) {
-		playerInput = player.GetComponent<PlayerInput>();
+		playerInput = player.GetComponent<InputHandler>();
 
 		specialEffectPlacement = new bool[inputKeys.Length];
 		startKeyScale = new Vector2[inputKeys.Length];

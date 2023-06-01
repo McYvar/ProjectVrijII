@@ -13,13 +13,16 @@ public class MainMenuBase : BaseState {
     public override void OnExit() {
     }
 
+    public override void OnUpdate() {
+    }
+
     public override void OnFixedUpdate() {
     }
 
     public override void OnLateUpdate() {
     }
 
-    public override void OnUpdate() {
+    private void OnDestroy() {
         OnExit();
         if (MainMenuState.mainMenuClasses.Contains(this)) MainMenuState.mainMenuClasses.Remove(this);
     }
