@@ -9,5 +9,7 @@ public interface IHitable {
 
 public interface INeedInput {
     InputHandler inputHandler { get; set; }
+    int playerId { get; set; }
+    void SetPlayerId(int playerId);
     void SetInputHandler(InputHandler newInputHandler);
 }

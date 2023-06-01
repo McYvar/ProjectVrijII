@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 4861463583028931143}
   - component: {fileID: 4861463583028931141}
   - component: {fileID: 4861463583028931142}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: PlayerDisconectedWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

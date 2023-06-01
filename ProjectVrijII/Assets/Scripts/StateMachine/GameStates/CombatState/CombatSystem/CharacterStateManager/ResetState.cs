@@ -21,6 +21,11 @@ public class ResetState : CharacterBaseState {
         base.OnEnter();
         hasResetted = false;
         animator.SetInteger("Stance", 0);
+        SetAttackPhase(AttackPhase.ready);
+    }
+
+    public override void OnExit() {
+        base.OnExit();
     }
 
     public override void OnUpdate() {

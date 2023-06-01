@@ -24,9 +24,6 @@ public class AttackState : CharacterBaseState {
     [SerializeField] Collider2D[] hitboxes;
     [SerializeField] LayerMask hitLayer;
 
-    protected Action RecoveryInputBuffer;
-    protected Action ReadyInputBuffer;
-
     protected override void Awake() {
         base.Awake();
     }
@@ -36,7 +33,7 @@ public class AttackState : CharacterBaseState {
         attackDelay = 0;
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
-        //SetAttackPhase(AttackPhase.ready);
+        SetAttackPhase(AttackPhase.ready);
         ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
         RecoveryInputBuffer = null;
     }
@@ -109,37 +106,6 @@ public class AttackState : CharacterBaseState {
             if (character.lastAttack as SO_Kick && character.currentAttack as SO_Strong) return true; // non special kick can be canceld by strong
         }
         return false;
-    }
-
-    public void SetAttackPhase(AttackPhase attackPhase) {
-        if (!activeState) return;
-
-        character.SetAttackPhase(attackPhase);
-
-        // reset values here
-        switch (attackPhase) {
-            case AttackPhase.ready:
-                character.attackMovementReductionScalar = 1;
-                if (ReadyInputBuffer != null) {
-                    ReadyInputBuffer.Invoke();
-                    ReadyInputBuffer = null;
-                    RecoveryInputBuffer = null;
-                }
-
-                character.rbInput = true;
-                break;
-            case AttackPhase.startup:
-                break;
-            case AttackPhase.active:
-                break;
-            case AttackPhase.recovery:
-                if (RecoveryInputBuffer != null) {
-                    RecoveryInputBuffer.Invoke();
-                    RecoveryInputBuffer = null;
-                    ReadyInputBuffer = null;
-                }
-                break;
-        }
     }
 
     public void StartRecoveryInputBuffer() {

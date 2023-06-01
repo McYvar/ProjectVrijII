@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Jumping Strong
   strength:
-  - 20
-  enemyLaunchStrength: []
-  attackFreezeTime: []
-  onHitPushBack: []
+  - 24
+  enemyLaunchStrength:
+  - {x: 0, y: 10}
+  attackFreezeTime:
+  - 0
+  onHitPushBack:
+  - {x: 0, y: 0}
   movementReduction: 1
   fallReduction: 0
   isSpecial: 0

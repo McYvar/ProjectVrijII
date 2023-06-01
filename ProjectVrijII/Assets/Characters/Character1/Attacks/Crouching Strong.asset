@@ -15,9 +15,12 @@ MonoBehaviour:
   attackName: Crouching Strong
   strength:
   - 25
-  enemyLaunchStrength: []
-  attackFreezeTime: []
-  onHitPushBack: []
+  enemyLaunchStrength:
+  - {x: 5, y: 50}
+  attackFreezeTime:
+  - 0.2
+  onHitPushBack:
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

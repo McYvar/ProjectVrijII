@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class CharacterBaseState : BaseState, INeedInput {
     /// </summary>
     
     public InputHandler inputHandler { get; set; }
+    public int playerId { get; set; }
 
     private LayerMask groundCheckLayers;
     protected Transform currentEnemy; // temporaily for facing
@@ -22,11 +24,18 @@ public class CharacterBaseState : BaseState, INeedInput {
     protected Animator animator;
     protected SO_Character character; // later input by player selection maybe?
 
+    protected Action RecoveryInputBuffer;
+    protected Action ReadyInputBuffer;
+
     protected virtual void Awake() {
         groundCheckLayers = LayerMask.GetMask("Ground");
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void SetPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public void SetInputHandler(InputHandler newInputHandler) {
@@ -85,5 +94,40 @@ public class CharacterBaseState : BaseState, INeedInput {
         }
 
         return false;
+    }
+
+    public void SetAttackPhase(AttackPhase attackPhase) {
+        if (!activeState) return;
+
+        character.SetAttackPhase(attackPhase);
+
+        // reset values here
+        switch (attackPhase) {
+            case AttackPhase.ready:
+                character.attackMovementReductionScalar = 1;
+                if (ReadyInputBuffer != null) {
+                    ReadyInputBuffer.Invoke();
+                    ReadyInputBuffer = null;
+                    RecoveryInputBuffer = null;
+                }
+
+                character.rbInput = true;
+                break;
+            case AttackPhase.startup:
+                break;
+            case AttackPhase.active:
+                break;
+            case AttackPhase.recovery:
+                if (RecoveryInputBuffer != null) {
+                    RecoveryInputBuffer.Invoke();
+                    RecoveryInputBuffer = null;
+                    ReadyInputBuffer = null;
+                }
+                break;
+        }
+    }
+
+    private void OnDestroy() {
+        inputHandler.ResetBindings();
     }
 }

@@ -19,14 +19,14 @@ public class CombatState : BaseState {
             combatClass.OnUpdate();
         }
 
-        while (combatAddQueue.Count > 0)
-        {
-            combatClasses.Add(combatAddQueue.Dequeue());
+        while (combatAddQueue.Count > 0) {
+            CombatBase toAdd = combatAddQueue.Dequeue();
+            if (toAdd != null) combatClasses.Add(toAdd);
         }
 
-        while (combatRemoveQueue.Count > 0)
-        {
-            combatClasses.Remove(combatRemoveQueue.Dequeue());
+        while (combatRemoveQueue.Count > 0) {
+            CombatBase toRemove = combatRemoveQueue.Dequeue();
+            if (toRemove != null) combatClasses.Remove(toRemove);
         }
     }
 

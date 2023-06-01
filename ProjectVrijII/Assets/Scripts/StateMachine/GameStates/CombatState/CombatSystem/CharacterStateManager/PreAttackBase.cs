@@ -13,7 +13,6 @@ public class PreAttackBase : CharacterBaseState {
     protected Canvas characterCanvas;
 
     [SerializeField] private Color unhighlightColor;
-    [SerializeField] private Color highlightColor;
 
     protected Action[] buttonActions;
 
@@ -24,6 +23,8 @@ public class PreAttackBase : CharacterBaseState {
 
     public override void OnUpdate() {
         base.OnUpdate();
+        menu.transform.eulerAngles = new Vector3 (0f, 0f, 0f);
+        
     }
 
     public override void OnEnter() {
@@ -62,7 +63,7 @@ public class PreAttackBase : CharacterBaseState {
         if (buttons.Length <= 0) return;
         if (currentImage != null) currentImage.color = unhighlightColor;
         currentImage = buttons[currentlySelectedButton];
-        currentImage.color = highlightColor;
+        currentImage.color = PlayerDistribution.Instance.GetPlayerColor(playerId);
     }
 
     protected virtual void MoveUp() {
