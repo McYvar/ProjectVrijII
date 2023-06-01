@@ -15,10 +15,13 @@ MonoBehaviour:
   attackName: Dragonpunch Punch
   strength:
   - 30
-  enemyLaunchStrength: []
-  attackFreezeTime: []
-  onHitPushBack: []
+  enemyLaunchStrength:
+  - {x: 15, y: 40}
+  attackFreezeTime:
+  - 0.2
+  onHitPushBack:
+  - {x: 0, y: 0}
   movementReduction: 0
   fallReduction: 0
-  isSpecial: 0
+  isSpecial: 1
   canceledByJump: 0

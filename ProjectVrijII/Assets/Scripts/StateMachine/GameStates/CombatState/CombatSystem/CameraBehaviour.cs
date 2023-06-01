@@ -59,7 +59,7 @@ public class CameraBehaviour : CombatBase
 
         float vertDist = yMax - yMin;
         Vector3 topOfScreenPoint = thisCam.ScreenToWorldPoint(new Vector3(transform.position.x, Screen.height, focussedObjects[0].position.z - transform.position.z));
-        Debug.Log(topOfScreenPoint);
+        //Debug.Log(topOfScreenPoint);
         Debug.DrawLine(Vector3.zero, topOfScreenPoint);
         if (vertDist > topOfScreenPoint.y - minHeight) vert += vertDist - (topOfScreenPoint.y - minHeight);
 
