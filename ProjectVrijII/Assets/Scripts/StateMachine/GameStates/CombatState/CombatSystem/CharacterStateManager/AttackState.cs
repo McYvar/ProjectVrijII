@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class AttackState : CharacterBaseState {
 
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
-    /// A state that starting signature attack and ends when attack combo is finished
+    /// A state that starts a signature attack and ends when the attack combo is finished.
     /// </summary>
 
+    // Serialized fields
     [SerializeField] protected InputOrder[] inputOrders;
+    [SerializeField] Collider2D[] hitboxes;
+    [SerializeField] LayerMask hitLayer;
 
+    // Variables
     protected float attackDelay;
-
     private float joyThreshold = 0.3f;
-
     private bool canDoublePress;
     private float maxDoublePressTime = 0.5f;
     protected Action OnDoublePress;
 
-    [SerializeField] Collider2D[] hitboxes;
-    [SerializeField] LayerMask hitLayer;
+    [SerializeField] LayerMask hitLayerMask;
 
     protected override void Awake() {
         base.Awake();
@@ -50,13 +49,6 @@ public class AttackState : CharacterBaseState {
 
     #region attacks
     public void OnAttack() {
-        /*
-        string input = "";
-        foreach (int i in character.numpadInputOrder) {
-            input += i + ", ";
-        }
-        Debug.Log(input);
-        */
         if (character.currentAttack != null) {
             if (CanAttackInstant()) DoAttack(character.currentAttack);
             else if (CanBufferRecovery()) RecoveryInputBuffer = () => { 

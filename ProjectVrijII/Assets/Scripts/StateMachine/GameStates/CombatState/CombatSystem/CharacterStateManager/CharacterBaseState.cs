@@ -1,33 +1,35 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class CharacterBaseState : BaseState, INeedInput {
-
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
-    /// Base class containing the main functionality for the character
+    /// Base class containing the main functionality for the character's state.
     /// </summary>
-    
+
+    // Properties
     public InputHandler inputHandler { get; set; }
     public int playerId { get; set; }
 
+    // Variables for ground check and character facing direction
     private LayerMask groundCheckLayers;
-    protected Transform currentEnemy; // temporaily for facing
+    protected Transform currentEnemy; // Temporarily used for facing
     protected Collider2D myCollider;
     protected bool isGrounded;
     protected CharacterFacingDirection characterFacingDirection = CharacterFacingDirection.RIGHT;
 
-    protected bool activeState = false; // this is needed to not fire all animation events multiple times in all states
+    // State-related variables
+    protected bool activeState = false; // Used to prevent firing animation events multiple times in all states
     protected Rigidbody2D rb;
-
     protected Animator animator;
-    protected SO_Character character; // later input by player selection maybe?
+    protected SO_Character character; // May be set by player selection in the future
 
+    // Input buffer actions
     protected Action RecoveryInputBuffer;
     protected Action ReadyInputBuffer;
 
     protected virtual void Awake() {
+        // Set up ground check layer mask, collider, animator, and rigidbody
         groundCheckLayers = LayerMask.GetMask("Ground");
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
@@ -59,20 +61,15 @@ public class CharacterBaseState : BaseState, INeedInput {
         activeState = false;
     }
 
-    public override void OnFixedUpdate() {
-    }
-
-    public override void OnLateUpdate() {
-    }
-
     public override void OnUpdate() {
         isGrounded = GroundCheck();
         animator.SetBool("isGrounded", isGrounded);
 
-        // character always faces the current enemy, as should the enemy also face our character, but thats for later
+        // character should always face the current enemy
         if (character.attackPhase == AttackPhase.ready) {
             if (currentEnemy != null) {
-                if (currentEnemy.position.x >= transform.position.x) { // enemy is to our right
+                if (currentEnemy.position.x >= transform.position.x) // enemy is to our right
+                {
                     characterFacingDirection = CharacterFacingDirection.RIGHT;
                     transform.localEulerAngles = new Vector3(0, 0, 0);
                 } else {
@@ -127,7 +124,13 @@ public class CharacterBaseState : BaseState, INeedInput {
         }
     }
 
-    private void OnDestroy() {
-        inputHandler.ResetBindings();
+    protected virtual void OnDestroy() {
+        inputHandler.ResetBindings(); // Reset input bindings
+    }
+
+    public override void OnFixedUpdate() {
+    }
+
+    public override void OnLateUpdate() {
     }
 }
