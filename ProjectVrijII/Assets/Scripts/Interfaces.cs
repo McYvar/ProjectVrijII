@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IHitable {
     void TakeDamage(float damage);
     void Launch(Vector2 force, float freezeTime);
+    void SetHitstun(float time);
 }
 
 public interface INeedInput {

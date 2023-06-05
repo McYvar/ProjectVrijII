@@ -13,6 +13,7 @@ public class SO_Attack : ScriptableObject {
     public Vector2[] enemyLaunchStrength;
     public float[] attackFreezeTime;
     public Vector2[] onHitPushBack;
+    public float[] onHitHitstun;
     [Range(0f, 1f)] public float movementReduction;
     [Range(0f, 1f)] public float fallReduction;
     public bool isSpecial;
@@ -31,6 +32,10 @@ public class SO_Attack : ScriptableObject {
 
         copy.onHitPushBack = new Vector2[onHitPushBack.Length];
         onHitPushBack.CopyTo(copy.onHitPushBack, 0);
+
+        copy.onHitHitstun = new float[onHitHitstun.Length];
+        onHitHitstun.CopyTo(copy.onHitHitstun, 0);
+
         copy.movementReduction = movementReduction;
         copy.fallReduction = fallReduction;
         copy.isSpecial = isSpecial;
@@ -42,9 +47,14 @@ public class SO_Attack : ScriptableObject {
         try {
             enemy.TakeDamage(strength[hitNumber]);
             Debug.Log($"Enemy took {strength[hitNumber]} damage with {attackName}");
+
+            enemy.SetHitstun(onHitHitstun[hitNumber]);
+            Debug.Log($"Enemy is stunned for {onHitHitstun[hitNumber]} seconds with {attackName}");
         } catch {
             Debug.LogWarning($"There are too few elements ({strength.Length}) in strength from attack {attackName}." +
                 $" Make sure the strength list from attack {attackName} has at least {hitNumber} elements!");
+            Debug.LogWarning($"There are too few elements ({onHitHitstun.Length}) in onHitHitstun from attack {attackName}." +
+                $" Make sure the onHitHitstun list from attack {attackName} has at least {hitNumber} elements!");
         }
     }
 

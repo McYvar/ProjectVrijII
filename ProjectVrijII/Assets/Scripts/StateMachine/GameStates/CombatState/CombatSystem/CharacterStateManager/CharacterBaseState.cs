@@ -28,6 +28,8 @@ public class CharacterBaseState : BaseState, INeedInput {
     protected Action RecoveryInputBuffer;
     protected Action ReadyInputBuffer;
 
+    protected bool doJump = false;
+
     protected virtual void Awake() {
         // Set up ground check layer mask, collider, animator, and rigidbody
         groundCheckLayers = LayerMask.GetMask("Ground");
@@ -91,6 +93,10 @@ public class CharacterBaseState : BaseState, INeedInput {
         }
 
         return false;
+    }
+
+    protected void CheckForJumpInput() {
+        doJump = true;
     }
 
     public void SetAttackPhase(AttackPhase attackPhase) {

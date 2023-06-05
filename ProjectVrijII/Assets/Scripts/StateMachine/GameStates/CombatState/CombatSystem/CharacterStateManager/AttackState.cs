@@ -15,7 +15,6 @@ public class AttackState : CharacterBaseState {
     [SerializeField] LayerMask hitLayer;
 
     // Variables
-    protected float attackDelay;
     private float joyThreshold = 0.3f;
     private bool canDoublePress;
     private float maxDoublePressTime = 0.5f;
@@ -28,18 +27,26 @@ public class AttackState : CharacterBaseState {
     }
 
     public override void OnEnter() {
+        inputHandler.northFirst += CheckForJumpInput;
+        inputHandler.UpFirst += CheckForJumpInput;
+        doJump = false;
+
         base.OnEnter();
-        attackDelay = 0;
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
-        SetAttackPhase(AttackPhase.ready);
         ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
         RecoveryInputBuffer = null;
+        SetAttackPhase(AttackPhase.ready);
+    }
+
+    public override void OnExit() {
+        base.OnExit();
+        inputHandler.northFirst -= CheckForJumpInput;
+        inputHandler.UpFirst -= CheckForJumpInput;
     }
 
     public override void OnUpdate() {
         base.OnUpdate();
-        if (Input.GetKeyDown(KeyCode.Space)) stateManager.SwitchState(typeof(OnGroundMovement));
         LeftInputComboHandler(inputHandler.leftDirection);
     }
 
@@ -50,23 +57,32 @@ public class AttackState : CharacterBaseState {
     #region attacks
     public void OnAttack() {
         if (character.currentAttack != null) {
-            if (CanAttackInstant()) DoAttack(character.currentAttack);
-            else if (CanBufferRecovery()) RecoveryInputBuffer = () => { 
-                character.rbInput = true; DoAttack(character.currentAttack); 
-            }; // can now be buffered before recovery
-            else if (CanAttackInRecovery()) {
+            Debug.Log(character.attackPhase.ToString());
+            if (CanAttackInstant()) {
+                Debug.Log("instant attack!");
+                DoAttack(character.currentAttack);
+            } else if (CanBufferRecovery()) {
+                Debug.Log("buffered recovery attack!");
+                RecoveryInputBuffer = () => {
+                    character.rbInput = true; DoAttack(character.currentAttack);
+                };
+            } else if (CanAttackInRecovery()) {
+                Debug.Log("instant recovery attack!");
                 character.rbInput = true;
                 DoAttack(character.currentAttack);
-            } else ReadyInputBuffer = () => { DoAttack(character.currentAttack); };
+            } else {
+                Debug.Log("buffered ready attack!");
+                ReadyInputBuffer = () => { DoAttack(character.currentAttack); };
+            }
         }
     }
 
     private void DoAttack(SO_Attack newAttack) {
         // if the player does an attack...
-        if (newAttack == null) return; // has to be fixed later on...
+        if (newAttack == null) return;
         animator.SetTrigger(character.currentAttackName);
         character.attackMovementReductionScalar = newAttack.movementReduction;
-        character.fallReductionScalar = newAttack.fallReduction; // implement
+        character.fallReductionScalar = newAttack.fallReduction;
         SetAttackPhase(AttackPhase.startup);
 
         // then reset the attack
@@ -103,11 +119,13 @@ public class AttackState : CharacterBaseState {
     public void StartRecoveryInputBuffer() {
         if (!activeState) return;
         RecoveryInputBuffer = null;
+        character.currentAttack = null;
     }
 
     public void StartReadyInputBuffer() {
         if (!activeState) return;
         ReadyInputBuffer = null;
+        character.currentAttack = null;
     }
 
     public void LeftInputComboHandler(Vector2 direction) {
@@ -241,6 +259,7 @@ public class AttackState : CharacterBaseState {
     public void LaunchVertical(float launchStrength)
     {
         if (!activeState) return;
+        rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.AddForce(Vector2.up * launchStrength, ForceMode2D.Impulse);
         character.rbInput = false;
     }
@@ -248,6 +267,7 @@ public class AttackState : CharacterBaseState {
     public void LaunchHorizontal(float launchStrength)
     {
         if (!activeState) return;
+        rb.velocity = new Vector2(0, rb.velocity.y);
         rb.AddForce(transform.right * launchStrength, ForceMode2D.Impulse);
         character.rbInput = false;
     }
@@ -259,10 +279,12 @@ public class AttackState : CharacterBaseState {
     }
     #endregion
 
-    protected virtual void Movement() { }
-
+    protected virtual void Movement() {
+    }
 
     protected virtual void Jump(float jumpStrength) {
+        doJump = false;
+        animator.SetTrigger("jump");
         float nearVectorLenght = rb.velocity.magnitude *
             Mathf.Cos(Vector2.Angle(Vector2.down, rb.velocity) * Mathf.Deg2Rad);
         rb.velocity += Vector2.up * nearVectorLenght;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InAirMovement : AttackState {
@@ -11,33 +9,27 @@ public class InAirMovement : AttackState {
     private float minInAirTime = 0.1f;
     private float inAirTimer;
     private bool didDoubleJump;
-    private bool canDoubleJump;
 
     private bool doDash;
     private bool didDash;
 
     private Vector2 dashStartingPoint;
 
-    private float originalGravityScale;
-
-    protected void Start() {
-        originalGravityScale = rb.gravityScale;
-    }
-
     public override void OnEnter() {
         base.OnEnter();
         inputHandler.eastFirst += InAirStrong;
         inputHandler.southFirst += InAirKick;
         inputHandler.westFirst += InAirPunch;
+        inputHandler.leftShoulderFirst += Dash;
+
         inAirTimer = 0;
         didDoubleJump = false;
-        canDoubleJump = false;
 
         doDash = false;
         didDash = false;
 
         animator.SetBool("isGrounded", false);
-        //animator.SetTrigger("jump animation?");
+        character.fallReductionScalar = 1;
     }
 
     public override void OnExit() {
@@ -45,9 +37,9 @@ public class InAirMovement : AttackState {
         inputHandler.eastFirst -= InAirStrong;
         inputHandler.southFirst -= InAirKick;
         inputHandler.westFirst -= InAirPunch;
+        inputHandler.leftShoulderFirst -= Dash;
 
-        // if isGrounded
-        //animator.SetTrigger("landing animation?");
+        animator.SetTrigger("landing");
     }
 
     public override void OnUpdate() {
@@ -59,38 +51,25 @@ public class InAirMovement : AttackState {
             inAirTimer += Time.deltaTime;
         }
 
-        if (!didDoubleJump && !canDoubleJump) {
-            if (character.lastInputDirection == LeftInputDirection.left ||
-                  character.lastInputDirection == LeftInputDirection.centre ||
-                  character.lastInputDirection == LeftInputDirection.right) canDoubleJump = true;
-        }
-        
         if (character.attackPhase == AttackPhase.ready) {
-            if (canDoubleJump && !didDoubleJump) {
-                if (character.lastInputDirection == LeftInputDirection.top ||
-                    character.lastInputDirection == LeftInputDirection.topLeft ||
-                    character.lastInputDirection == LeftInputDirection.topRight) {
-                    Jump(character.doubleJumpStrength);
-                    didDoubleJump = true;
-                }
+            if (!didDoubleJump && doJump) {
+                Jump(character.doubleJumpStrength);
+                didDoubleJump = true;
             }
         } else {
-            if (canDoubleJump && !didDoubleJump) {
-                if (character.lastInputDirection == LeftInputDirection.top ||
-                character.lastInputDirection == LeftInputDirection.topLeft ||
-                character.lastInputDirection == LeftInputDirection.topRight) {
-                    if (character.lastAttack.canceledByJump) {
-                        RecoveryInputBuffer = () => {
-                            Jump(character.doubleJumpStrength);
-                            didDoubleJump = true;
-                        };
-                    } else {
-                        ReadyInputBuffer = () => {
-                            Jump(character.doubleJumpStrength);
-                            didDoubleJump = true;
-                        };
-                    }
+            if (!didDoubleJump && doJump) {
+                if (character.lastAttack.canceledByJump) {
+                    RecoveryInputBuffer = () => {
+                        Jump(character.doubleJumpStrength);
+                        didDoubleJump = true;
+                    };
+                } else {
+                    ReadyInputBuffer = () => {
+                        Jump(character.doubleJumpStrength);
+                        didDoubleJump = true;
+                    };
                 }
+
             }
         }
     }
@@ -101,7 +80,7 @@ public class InAirMovement : AttackState {
             OnDoublePress -= Dash;
             OnDoublePress += Dash;
         }
-
+        Debug.Log(doDash);
         if (character.attackPhase == AttackPhase.ready || character.attackPhase == AttackPhase.recovery) {
             if (doDash && !didDash) {
                 if (Mathf.Abs(rb.velocity.x) < 1) {
@@ -116,12 +95,18 @@ public class InAirMovement : AttackState {
                 return;
             }
         }
+
+        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) {
+            rb.velocity = new Vector2(
+                rb.velocity.x * character.attackMovementReductionScalar,
+                rb.velocity.y > 0 ? rb.velocity.y : rb.velocity.y * character.fallReductionScalar);
+        }
     }
 
     private void EndDash() {
         doDash = false;
         didDash = true;
-        rb.gravityScale = originalGravityScale;
+        rb.gravityScale = 1;
     }
 
     private void Dash() {
@@ -129,7 +114,8 @@ public class InAirMovement : AttackState {
         int direction = 0;
         if (character.lastInputDirection == LeftInputDirection.left) direction = -1;
         else if (character.lastInputDirection == LeftInputDirection.right) direction = 1;
-        else return;
+        else if (characterFacingDirection == CharacterFacingDirection.LEFT) direction = -1;
+        else direction = 1;
 
         rb.gravityScale = 0;
         rb.velocity = new Vector2(direction * character.airDashStrength, 0);
@@ -141,8 +127,7 @@ public class InAirMovement : AttackState {
 
     private void OnCollisionStay2D(Collision2D collision) {
         if (!activeState) return;
-        if (collision.gameObject != null)
-        {
+        if (collision.gameObject != null) {
             if (collision.gameObject.layer == 11) {
                 EndDash();
             }
@@ -201,7 +186,7 @@ public class InAirMovement : AttackState {
             case AttackTypes.QUARTER_CIRCLE_BACKWARD:
                 character.currentAttack = character.quaterBackwardCircleStrong;
                 character.currentAttackName = "j41236S";
-                break;   
+                break;
         }
 
         OnAttack();

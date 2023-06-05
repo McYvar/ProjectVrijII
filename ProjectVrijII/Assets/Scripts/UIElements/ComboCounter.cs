@@ -30,6 +30,7 @@ public class ComboCounter : CombatBase {
 	[SerializeField]
 	private float comboDisplayTime;
 
+	private float timeUntilEndingCombo = 0;
 
 	private void Start() {
 		ResetCombo();
@@ -43,10 +44,11 @@ public class ComboCounter : CombatBase {
 	}
 
 	//Call this to increase the combo and make it visible
-	public void IncreaseCombo() {
+	public void IncreaseCombo(float time) {
 		comboCounter++;
 		SetComboText();
 		counterObject.alpha = 1;
+		timeUntilEndingCombo = time;
 	}
 
 	//sets the text and checks for change in effects

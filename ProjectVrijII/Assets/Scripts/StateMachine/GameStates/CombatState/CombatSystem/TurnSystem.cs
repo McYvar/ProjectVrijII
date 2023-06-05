@@ -16,7 +16,7 @@ public class TurnSystem : CombatBase {
     private CharacterStateManager currentCharacterTurn;
     private int totalCharacters = 0;
 
-    public Action OnHit = null;
+    public Action<float> OnHit = null;
     public Action OnReset = null;
 
     private int readyCharacters = 0;
