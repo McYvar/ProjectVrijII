@@ -35,14 +35,9 @@ public class InputVisualizer : CombatBase {
 	private Coroutine specialEffectCoroutine;
 	private bool[] specialEffectPlacement;
 
-	//TODO: REMOVE call from start when player select screen is added
-	private void Start() {
-		AssignPlayer(FindObjectOfType<InputHandler>().gameObject);
-	}
-
 	//CALL after player select
-	public void AssignPlayer(GameObject player) {
-		playerInput = player.GetComponent<InputHandler>();
+	public void AssignPlayer(InputHandler playerInput) {
+		this.playerInput = playerInput;
 
 		specialEffectPlacement = new bool[inputKeys.Length];
 		startKeyScale = new Vector2[inputKeys.Length];
@@ -56,6 +51,7 @@ public class InputVisualizer : CombatBase {
 	}
 
 	public override void OnUpdate() {
+		if (playerInput == null) return;
 		SetInputPoint();
 		SetInputKey();
 	}

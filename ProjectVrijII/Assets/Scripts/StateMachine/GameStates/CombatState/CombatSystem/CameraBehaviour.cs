@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraBehaviour : CombatBase
 {
     private List<Transform> focussedObjects;
-    [SerializeField] private float smoothTime;
     [SerializeField] private Vector2 offset;
     [SerializeField] private Vector2 min;
     [SerializeField] private Vector2 max;
@@ -14,13 +13,8 @@ public class CameraBehaviour : CombatBase
     [Header("By bounds I mean invibisble walls...")]
     [SerializeField] private Transform leftBound;
     [SerializeField] private Transform rightBound;
-    private Vector3 smoothVector;
 
-    private Camera thisCam;
-
-    private void Awake() {
-        thisCam = GetComponent<Camera>();
-    }
+    [SerializeField] private Camera screenPointCamera; // doesn't scale upward to determine a height point on the screen in 3D space
 
     private void Start() {
         focussedObjects = new List<Transform>();
@@ -58,13 +52,16 @@ public class CameraBehaviour : CombatBase
         float vert = Mathf.Lerp(min.y, max.y, horiDist);
 
         float vertDist = yMax - yMin;
-        Vector3 topOfScreenPoint = thisCam.ScreenToWorldPoint(new Vector3(transform.position.x, Screen.height, focussedObjects[0].position.z - transform.position.z));
-        //Debug.Log(topOfScreenPoint);
+        Vector3 topOfScreenPoint = screenPointCamera.ScreenToWorldPoint(new Vector3(transform.position.x, Screen.height, focussedObjects[0].position.z - transform.position.z));
+
+        float oldvert = vert;
         Debug.DrawLine(Vector3.zero, topOfScreenPoint);
-        if (vertDist > topOfScreenPoint.y - minHeight) vert += vertDist - (topOfScreenPoint.y - minHeight);
+        if (vertDist > topOfScreenPoint.y - minHeight) {
+            vert += vertDist - (topOfScreenPoint.y - minHeight);
+        }
 
-
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(cameraCentrePointX, vert + offset.y, hori + offset.x), ref smoothVector, smoothTime);
+        transform.position = new Vector3(cameraCentrePointX, vert + offset.y, hori + offset.x);
+        screenPointCamera.transform.position = new Vector3(cameraCentrePointX, vert + offset.y - (vert - oldvert), hori + offset.x);
     }
 
     public void AssignObjects(Transform transform) {

@@ -23,10 +23,11 @@ public class ResetState : CharacterBaseState {
         animator.SetInteger("Stance", 0);
         animator.SetTrigger("reset");
         character.OnStartUp();
-        SetAttackPhase(AttackPhase.ready);
+        SetAttackPhase(AttackPhase.recovery);
     }
 
     public override void OnExit() {
+        SetAttackPhase(AttackPhase.ready);
         base.OnExit();
     }
 

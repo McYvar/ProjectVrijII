@@ -22,32 +22,43 @@ public class AttackState : CharacterBaseState {
 
     [SerializeField] LayerMask hitLayerMask;
 
+    private bool canJump = false;
+    private bool didJump = false;
+
     protected override void Awake() {
         base.Awake();
     }
 
     public override void OnEnter() {
-        inputHandler.northFirst += CheckForJumpInput;
-        inputHandler.UpFirst += CheckForJumpInput;
-        doJump = false;
+        inputHandler.northFirst += CanJump;
 
         base.OnEnter();
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
-        ReadyInputBuffer = null; // in air and on ground buffered attacks/actions can't be buffered once we switched states
-        RecoveryInputBuffer = null;
         SetAttackPhase(AttackPhase.ready);
+
+        canJump = false;
+        didJump = false;
     }
 
     public override void OnExit() {
+        inputHandler.northFirst -= CanJump;
+
         base.OnExit();
-        inputHandler.northFirst -= CheckForJumpInput;
-        inputHandler.UpFirst -= CheckForJumpInput;
     }
 
     public override void OnUpdate() {
         base.OnUpdate();
         LeftInputComboHandler(inputHandler.leftDirection);
+        if (character.lastInputDirection != LeftInputDirection.top &&
+            character.lastInputDirection != LeftInputDirection.topRight &&
+            character.lastInputDirection != LeftInputDirection.topLeft)
+                canJump = true;
+
+
+        if (character.lastInputDirection == LeftInputDirection.top ||
+            character.lastInputDirection == LeftInputDirection.topRight ||
+            character.lastInputDirection == LeftInputDirection.topLeft) CanJump();
     }
 
     public override void OnFixedUpdate() {
@@ -64,7 +75,8 @@ public class AttackState : CharacterBaseState {
             } else if (CanBufferRecovery()) {
                 Debug.Log("buffered recovery attack!");
                 RecoveryInputBuffer = () => {
-                    character.rbInput = true; DoAttack(character.currentAttack);
+                    character.rbInput = true; 
+                    DoAttack(character.currentAttack);
                 };
             } else if (CanAttackInRecovery()) {
                 Debug.Log("instant recovery attack!");
@@ -119,13 +131,15 @@ public class AttackState : CharacterBaseState {
     public void StartRecoveryInputBuffer() {
         if (!activeState) return;
         RecoveryInputBuffer = null;
-        character.currentAttack = null;
     }
 
     public void StartReadyInputBuffer() {
         if (!activeState) return;
         ReadyInputBuffer = null;
-        character.currentAttack = null;
+    }
+
+    public void SetGravityScale(float scale) {
+        rb.gravityScale = scale;
     }
 
     public void LeftInputComboHandler(Vector2 direction) {
@@ -279,17 +293,32 @@ public class AttackState : CharacterBaseState {
     }
     #endregion
 
-    protected virtual void Movement() {
-    }
+    protected virtual void Movement() { }
 
-    protected virtual void Jump(float jumpStrength) {
-        doJump = false;
+    protected void DoJump(float jumpStrength) {
+        if (!canJump || didJump) return;
+        didJump = true;
+        canJump = false;
         animator.SetTrigger("jump");
         float nearVectorLenght = rb.velocity.magnitude *
             Mathf.Cos(Vector2.Angle(Vector2.down, rb.velocity) * Mathf.Deg2Rad);
         rb.velocity += Vector2.up * nearVectorLenght;
-        rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
+
+        float direction = 0;
+        if (character.lastInputDirection == LeftInputDirection.left ||
+            character.lastInputDirection == LeftInputDirection.bottomLeft ||
+            character.lastInputDirection == LeftInputDirection.topLeft) {
+            direction = -1;
+        } else if (character.lastInputDirection == LeftInputDirection.right ||
+            character.lastInputDirection == LeftInputDirection.topRight ||
+            character.lastInputDirection == LeftInputDirection.bottomRight) {
+            direction = 1;
+        }
+        rb.AddForce(new Vector2(rb.velocity.x, jumpStrength), ForceMode2D.Impulse);
+        rb.velocity = new Vector2(direction * character.groundMovementSpeed, rb.velocity.y);
     }
+
+    protected virtual void CanJump() { }
 }
 
 public enum CharacterFacingDirection {

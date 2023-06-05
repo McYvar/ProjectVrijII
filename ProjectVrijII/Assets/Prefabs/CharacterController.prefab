@@ -791,6 +791,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputOrders:
+  - name: dragon punch left (4121)
+    attackType: 3
+    characterFacingDirection: 0
+    numpadOrder: 0400010002000100
+  - name: dragon punch right (6323)
+    attackType: 3
+    characterFacingDirection: 1
+    numpadOrder: 0600030002000300
   - name: quarter backward circle left
     attackType: 5
     characterFacingDirection: 0
@@ -846,6 +854,9 @@ MonoBehaviour:
   hitLayer:
     serializedVersion: 2
     m_Bits: 64
+  hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &2548445269591056923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -882,6 +893,9 @@ MonoBehaviour:
   hitLayer:
     serializedVersion: 2
     m_Bits: 64
+  hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &-5803093217204815572
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,54 +26,43 @@ public class OnGroundMovement : AttackState {
         base.OnUpdate();
 
         if (!isGrounded) stateManager.SwitchState(typeof(InAirMovement));
+    }
+
+    protected override void CanJump() {
+        base.CanJump();
 
         if (character.attackPhase == AttackPhase.ready) {
-            if (character.lastInputDirection == LeftInputDirection.bottom ||
-                character.lastInputDirection == LeftInputDirection.bottomLeft ||
-                character.lastInputDirection == LeftInputDirection.bottomRight)
-                animator.SetInteger("Stance", 1);
-            else if (character.lastInputDirection == LeftInputDirection.centre ||
-                character.lastInputDirection == LeftInputDirection.left ||
-                character.lastInputDirection == LeftInputDirection.right)
-                animator.SetInteger("Stance", 0);
-
-            if (doJump) {
-                character.rbInput = true;
-                Jump(character.groundJumpStrength);
-                stateManager.SwitchState(typeof(InAirMovement));
-            }
+            DoJump(character.groundJumpStrength);
         } else {
-            if (doJump) {
-                if (character.lastAttack.canceledByJump) {
-                    RecoveryInputBuffer = () => {
-                        character.rbInput = true;
-                        Jump(character.groundJumpStrength);
-                        stateManager.SwitchState(typeof(InAirMovement));
-                    };
-                } else {
-                    ReadyInputBuffer = () => {
-                        character.rbInput = true;
-                        Jump(character.groundJumpStrength);
-                        stateManager.SwitchState(typeof(InAirMovement));
-                    };
-                }
+            if (character.lastAttack.canceledByJump) {
+                RecoveryInputBuffer = () => {
+                    DoJump(character.groundJumpStrength);
+                };
+            } else {
+                ReadyInputBuffer = () => {
+                    DoJump(character.groundJumpStrength);
+                };
             }
         }
     }
-
     protected override void Movement() {
         if (!character.rbInput) return;
         if (character.lastInputDirection == LeftInputDirection.bottomLeft || // crouching movement
             character.lastInputDirection == LeftInputDirection.bottom ||
             character.lastInputDirection == LeftInputDirection.bottomRight) {
 
+            animator.SetInteger("Stance", 1);
+
             Vector2 horizonal = new Vector2(inputHandler.leftDirection.x, 0);
             rb.velocity = new Vector2(horizonal.normalized.x * character.crouchMovementSpeed *
                 character.attackMovementReductionScalar, rb.velocity.y);
 
-            animator.SetInteger("Move", 0);
+            if (rb.velocity.x == 0) animator.SetInteger("Move", 0);
 
         } else { // walking/running movement
+
+            animator.SetInteger("Stance", 0);
+
             if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
             else {
                 OnDoublePress -= SetVariableSpeedToRunning;

@@ -7,6 +7,7 @@ public class CharacterAssignment : CombatBase {
     [SerializeField] private Vector3[] spawns;
     [SerializeField] private CameraBehaviour cameraBehaviour;
     [SerializeField] UIHealthBar[] healtbar; // quick solution for playtest
+    [SerializeField] InputVisualizer[] inputVisualizers;
 
     private GameObject[] activeCharacters = new GameObject[2];
 
@@ -59,6 +60,7 @@ public class CharacterAssignment : CombatBase {
                     characterState.SetPlayerId(i);
                     characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
                     PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
+                    inputVisualizers[i].AssignPlayer(PlayerDistribution.Instance.GetPlayerInputHandler(i));
                 }
                 catch {
                     Debug.LogWarning("Not enough players are connected!");

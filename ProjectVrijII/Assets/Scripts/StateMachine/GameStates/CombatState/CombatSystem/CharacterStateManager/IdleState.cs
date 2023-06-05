@@ -9,6 +9,9 @@ public class IdleState : CharacterBaseState, IHitable {
     /// </summary>
     private Health health;
 
+    private float hitstunTimer = 0;
+    private bool isStunned;
+
     protected override void Awake() {
         base.Awake();
         health = GetComponent<Health>();
@@ -25,16 +28,29 @@ public class IdleState : CharacterBaseState, IHitable {
     }
 
     public void Launch(Vector2 force, float freezeTime) {
+        if (!activeState) return;
         rb.AddForce(force, ForceMode2D.Impulse);
         if (force.x > 0) transform.localEulerAngles = new Vector3(0, 0, 0);
         else if (force.x < 0) transform.localEulerAngles = new Vector3(0, 180, 0);
-        animator.SetTrigger("stunned");
 
         // hit freeze
         Time.timeScale = 0; // maybe later use a variable timescale ...
         StartCoroutine(ResumeTime(freezeTime));
 
         // take damage...
+    }
+
+    public override void OnUpdate() {
+        base.OnUpdate();
+
+        if (hitstunTimer > 0) {
+            hitstunTimer -= Time.deltaTime;
+            isStunned = true;
+        } else if (isStunned) {
+            isStunned = false;
+            TurnSystem.Instance.OnReset.Invoke();
+            animator.SetBool("isStunned", false);
+        }
     }
 
     private IEnumerator ResumeTime(float time) {
@@ -46,16 +62,10 @@ public class IdleState : CharacterBaseState, IHitable {
         health.GetDamaged((int)damage);
     }
 
-    IEnumerator RecoverFromHitStun(float stunTime) {
-        yield return new WaitForSeconds(stunTime);
-        TurnSystem.Instance.OnReset.Invoke();
-        animator.SetBool("isStunned", false);
-    }
-
     public void SetHitstun(float time) {
+        if (!activeState) return;
         animator.SetBool("isStunned", true);
         TurnSystem.Instance.OnHit.Invoke(time);
-        StopCoroutine(RecoverFromHitStun(time));
-        StartCoroutine(RecoverFromHitStun(time));
+        hitstunTimer = time;
     }
 }
