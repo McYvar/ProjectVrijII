@@ -21,7 +21,8 @@ MonoBehaviour:
   - 0
   onHitPushBack:
   - {x: 0, y: 0}
-  movementReduction: 1
-  fallReduction: 0
+  onHitHitstun: []
+  movementReduction: 0
+  fallReduction: 1
   isSpecial: 0
   canceledByJump: 0

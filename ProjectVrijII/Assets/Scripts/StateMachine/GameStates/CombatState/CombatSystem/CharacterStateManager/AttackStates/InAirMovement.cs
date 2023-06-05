@@ -40,6 +40,7 @@ public class InAirMovement : AttackState {
         inputHandler.leftShoulderFirst -= Dash;
 
         animator.SetTrigger("landing");
+        EndDash();
     }
 
     public override void OnUpdate() {
@@ -51,52 +52,48 @@ public class InAirMovement : AttackState {
             inAirTimer += Time.deltaTime;
         }
 
-        if (character.attackPhase == AttackPhase.ready) {
-            if (!didDoubleJump && doJump) {
-                Jump(character.doubleJumpStrength);
-                didDoubleJump = true;
-            }
-        } else {
-            if (!didDoubleJump && doJump) {
-                if (character.lastAttack.canceledByJump) {
-                    RecoveryInputBuffer = () => {
-                        Jump(character.doubleJumpStrength);
-                        didDoubleJump = true;
-                    };
-                } else {
-                    ReadyInputBuffer = () => {
-                        Jump(character.doubleJumpStrength);
-                        didDoubleJump = true;
-                    };
-                }
 
+    }
+
+    protected override void CanJump() {
+        base.CanJump();
+        if (character.attackPhase == AttackPhase.ready) {
+            DoJump(character.doubleJumpStrength);
+        } else {
+            if (character.lastAttack.canceledByJump) {
+                RecoveryInputBuffer = () => {
+                    DoJump(character.doubleJumpStrength);
+                };
+            } else {
+                ReadyInputBuffer = () => {
+                    DoJump(character.doubleJumpStrength);
+                };
             }
         }
     }
 
     protected override void Movement() {
         if (character.lastInputDirection == LeftInputDirection.centre) character.variableMovementSpeed = 0;
-        else {
+        else if (character.lastInputDirection == LeftInputDirection.left || character.lastInputDirection == LeftInputDirection.right) {
             OnDoublePress -= Dash;
             OnDoublePress += Dash;
         }
-        Debug.Log(doDash);
+
         if (character.attackPhase == AttackPhase.ready || character.attackPhase == AttackPhase.recovery) {
             if (doDash && !didDash) {
                 if (Mathf.Abs(rb.velocity.x) < 1) {
-                    doDash = false;
-                    didDash = true;
+                    EndDash();
                 }
                 if (Vector2.Distance(transform.position, dashStartingPoint) >= character.airDashLength) {
                     EndDash();
-                    rb.velocity = new Vector2(rb.velocity.x * character.airDashStopScalar, rb.velocity.y);
                 }
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 return;
             }
         }
 
-        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) {
+        if ((character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) &&
+            character.rbInput) {
             rb.velocity = new Vector2(
                 rb.velocity.x * character.attackMovementReductionScalar,
                 rb.velocity.y > 0 ? rb.velocity.y : rb.velocity.y * character.fallReductionScalar);
@@ -104,6 +101,7 @@ public class InAirMovement : AttackState {
     }
 
     private void EndDash() {
+        rb.velocity = new Vector2(rb.velocity.x * character.airDashStopScalar, rb.velocity.y);
         doDash = false;
         didDash = true;
         rb.gravityScale = 1;

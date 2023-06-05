@@ -28,8 +28,6 @@ public class CharacterBaseState : BaseState, INeedInput {
     protected Action RecoveryInputBuffer;
     protected Action ReadyInputBuffer;
 
-    protected bool doJump = false;
-
     protected virtual void Awake() {
         // Set up ground check layer mask, collider, animator, and rigidbody
         groundCheckLayers = LayerMask.GetMask("Ground");
@@ -69,15 +67,20 @@ public class CharacterBaseState : BaseState, INeedInput {
 
         // character should always face the current enemy
         if (character.attackPhase == AttackPhase.ready) {
-            if (currentEnemy != null) {
-                if (currentEnemy.position.x >= transform.position.x) // enemy is to our right
-                {
-                    characterFacingDirection = CharacterFacingDirection.RIGHT;
-                    transform.localEulerAngles = new Vector3(0, 0, 0);
-                } else {
-                    characterFacingDirection = CharacterFacingDirection.LEFT;
-                    transform.localEulerAngles = new Vector3(0, 180, 0);
-                }
+            FaceEnemy();
+        }
+    }
+
+    public void FaceEnemy() {
+        if (!activeState) return;
+        if (currentEnemy != null) {
+            if (currentEnemy.position.x >= transform.position.x) // enemy is to our right
+            {
+                characterFacingDirection = CharacterFacingDirection.RIGHT;
+                transform.localEulerAngles = new Vector3(0, 0, 0);
+            } else {
+                characterFacingDirection = CharacterFacingDirection.LEFT;
+                transform.localEulerAngles = new Vector3(0, 180, 0);
             }
         }
     }
@@ -95,10 +98,6 @@ public class CharacterBaseState : BaseState, INeedInput {
         return false;
     }
 
-    protected void CheckForJumpInput() {
-        doJump = true;
-    }
-
     public void SetAttackPhase(AttackPhase attackPhase) {
         if (!activeState) return;
 
@@ -113,6 +112,7 @@ public class CharacterBaseState : BaseState, INeedInput {
                     ReadyInputBuffer = null;
                     RecoveryInputBuffer = null;
                 }
+                rb.gravityScale = 1;
 
                 character.rbInput = true;
                 break;
@@ -126,6 +126,7 @@ public class CharacterBaseState : BaseState, INeedInput {
                     RecoveryInputBuffer = null;
                     ReadyInputBuffer = null;
                 }
+                rb.gravityScale = 1;
                 break;
         }
     }

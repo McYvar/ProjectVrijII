@@ -83,19 +83,43 @@ public class InputHandler : MonoBehaviour {
             else if (direction == Vector2.down) DownFirst?.Invoke();
             else if (direction == Vector2.left) LeftFirst?.Invoke();
             else if (direction == Vector2.right) RightFirst?.Invoke();
-            else if (direction.x > 0 && direction.y > 0) { UpFirst?.Invoke(); RightFirst?.Invoke(); } // upper right
-            else if (direction.x > 0 && direction.y < 0) { DownFirst?.Invoke(); RightFirst?.Invoke(); } // lower right
-            else if (direction.x < 0 && direction.y > 0) { UpFirst?.Invoke(); LeftFirst?.Invoke(); } // upper left
-            else if (direction.x < 0 && direction.y < 0) { DownFirst?.Invoke(); LeftFirst?.Invoke(); } // lower left
+            else if (direction.x > 0 && direction.y > 0) {
+                UpFirst?.Invoke();
+                RightFirst?.Invoke();
+            } // upper right
+            else if (direction.x > 0 && direction.y < 0) {
+                DownFirst?.Invoke();
+                RightFirst?.Invoke();
+            } // lower right
+            else if (direction.x < 0 && direction.y > 0) {
+                UpFirst?.Invoke();
+                LeftFirst?.Invoke();
+            } // upper left
+            else if (direction.x < 0 && direction.y < 0) {
+                DownFirst?.Invoke();
+                LeftFirst?.Invoke();
+            } // lower left
         } else if (cc.canceled) {
             if (direction == Vector2.up) UpLast?.Invoke();
             else if (direction == Vector2.down) DownLast?.Invoke();
             else if (direction == Vector2.left) LeftLast?.Invoke();
             else if (direction == Vector2.right) RightLast?.Invoke();
-            else if (direction.x > 0 && direction.y > 0) { UpLast?.Invoke(); RightLast?.Invoke(); } // upper right
-            else if (direction.x > 0 && direction.y < 0) { DownLast?.Invoke(); RightLast?.Invoke(); } // lower right
-            else if (direction.x < 0 && direction.y > 0) { UpLast?.Invoke(); LeftLast?.Invoke(); } // upper left
-            else if (direction.x < 0 && direction.y < 0) { DownLast?.Invoke(); LeftLast?.Invoke(); } // lower left
+            else if (direction.x > 0 && direction.y > 0) {
+                UpLast?.Invoke();
+                RightLast?.Invoke();
+            } // upper right
+            else if (direction.x > 0 && direction.y < 0) {
+                DownLast?.Invoke();
+                RightLast?.Invoke();
+            } // lower right
+            else if (direction.x < 0 && direction.y > 0) {
+                UpLast?.Invoke();
+                LeftLast?.Invoke();
+            } // upper left
+            else if (direction.x < 0 && direction.y < 0) {
+                DownLast?.Invoke();
+                LeftLast?.Invoke();
+            } // lower left
         }
     }
 

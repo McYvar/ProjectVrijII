@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf65454ca7454ad458bb27b44f7b94ff, type: 3}
-  m_Name: Half Circle Punch
+  m_Name: Quarter Backward Circle Punch
   m_EditorClassIdentifier: 
-  attackName: Half Circle Punch
+  attackName: Quarter Backward Circle Punch
   strength:
   - 30
   enemyLaunchStrength:

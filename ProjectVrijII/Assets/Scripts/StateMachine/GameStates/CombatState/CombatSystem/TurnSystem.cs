@@ -76,6 +76,7 @@ public class TurnSystem : CombatBase {
     }
 
     private void NextTurn() {
+        readyCharacters = 0;
         // to do, write a condition check if team has no healt left
         for (int i = 0; i < teams.Count; i++) {
             int dead = 0;
@@ -112,9 +113,8 @@ public class TurnSystem : CombatBase {
                 foreach (var character in team.Value) {
                     character.SwitchState(typeof(IdleState));
                 }
-
-                readyCharacters = 0;
             }
+
             NextTurn();
         }
     }
