@@ -21,6 +21,8 @@ public class ResetState : CharacterBaseState {
         base.OnEnter();
         hasResetted = false;
         animator.SetInteger("Stance", 0);
+        animator.SetTrigger("reset");
+        character.OnStartUp();
         SetAttackPhase(AttackPhase.ready);
     }
 

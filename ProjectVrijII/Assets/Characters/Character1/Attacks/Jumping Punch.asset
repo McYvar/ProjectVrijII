@@ -29,6 +29,10 @@ MonoBehaviour:
   - {x: -5, y: 0}
   - {x: -5, y: 0}
   - {x: -5, y: 0}
+  onHitHitstun:
+  - 0.5
+  - 0.5
+  - 0.5
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

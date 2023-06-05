@@ -42,15 +42,20 @@ public class IdleState : CharacterBaseState, IHitable {
         Time.timeScale = 1;
     }
 
-    public void StartHitStun() {
-        TurnSystem.Instance.OnHit.Invoke();
-    }
-
-    public void RecoverFromHitstun() {
-        TurnSystem.Instance.OnReset.Invoke();
-    }
-
     public void TakeDamage(float damage) {
         health.GetDamaged((int)damage);
+    }
+
+    IEnumerator RecoverFromHitStun(float stunTime) {
+        yield return new WaitForSeconds(stunTime);
+        TurnSystem.Instance.OnReset.Invoke();
+        animator.SetBool("isStunned", false);
+    }
+
+    public void SetHitstun(float time) {
+        animator.SetBool("isStunned", true);
+        TurnSystem.Instance.OnHit.Invoke(time);
+        StopCoroutine(RecoverFromHitStun(time));
+        StartCoroutine(RecoverFromHitStun(time));
     }
 }

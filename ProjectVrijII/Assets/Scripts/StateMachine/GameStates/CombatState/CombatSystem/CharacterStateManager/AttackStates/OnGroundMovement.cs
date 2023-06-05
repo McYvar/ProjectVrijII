@@ -5,14 +5,12 @@ public class OnGroundMovement : AttackState {
     /// <summary>
     /// On ground movement handler
     /// </summary>
-    private bool canJump;
 
     public override void OnEnter() {
         base.OnEnter();
         inputHandler.eastFirst += OnGroundStrong;
         inputHandler.southFirst += OnGroundKick;
         inputHandler.westFirst += OnGroundPunch;
-        canJump = false;
 
         animator.SetBool("isGrounded", true);
     }
@@ -29,10 +27,6 @@ public class OnGroundMovement : AttackState {
 
         if (!isGrounded) stateManager.SwitchState(typeof(InAirMovement));
 
-        if (character.lastInputDirection == LeftInputDirection.left ||
-                character.lastInputDirection == LeftInputDirection.centre ||
-                character.lastInputDirection == LeftInputDirection.right) canJump = true;
-
         if (character.attackPhase == AttackPhase.ready) {
             if (character.lastInputDirection == LeftInputDirection.bottom ||
                 character.lastInputDirection == LeftInputDirection.bottomLeft ||
@@ -43,33 +37,25 @@ public class OnGroundMovement : AttackState {
                 character.lastInputDirection == LeftInputDirection.right)
                 animator.SetInteger("Stance", 0);
 
-            if (canJump) {
-                if (character.lastInputDirection == LeftInputDirection.top ||
-                               character.lastInputDirection == LeftInputDirection.topLeft ||
-                               character.lastInputDirection == LeftInputDirection.topRight) {
-                    character.rbInput = true;
-                    Jump(character.groundJumpStrength);
-                    stateManager.SwitchState(typeof(InAirMovement));
-                }
+            if (doJump) {
+                character.rbInput = true;
+                Jump(character.groundJumpStrength);
+                stateManager.SwitchState(typeof(InAirMovement));
             }
         } else {
-            if (canJump) {
-                if (character.lastInputDirection == LeftInputDirection.top ||
-                    character.lastInputDirection == LeftInputDirection.topLeft ||
-                    character.lastInputDirection == LeftInputDirection.topRight) {
-                    if (character.lastAttack.canceledByJump) {
-                        RecoveryInputBuffer = () => {
-                            character.rbInput = true;
-                            Jump(character.groundJumpStrength);
-                            stateManager.SwitchState(typeof(InAirMovement));
-                        };
-                    } else {
-                        ReadyInputBuffer = () => {
-                            character.rbInput = true;
-                            Jump(character.groundJumpStrength);
-                            stateManager.SwitchState(typeof(InAirMovement));
-                        };
-                    }
+            if (doJump) {
+                if (character.lastAttack.canceledByJump) {
+                    RecoveryInputBuffer = () => {
+                        character.rbInput = true;
+                        Jump(character.groundJumpStrength);
+                        stateManager.SwitchState(typeof(InAirMovement));
+                    };
+                } else {
+                    ReadyInputBuffer = () => {
+                        character.rbInput = true;
+                        Jump(character.groundJumpStrength);
+                        stateManager.SwitchState(typeof(InAirMovement));
+                    };
                 }
             }
         }
