@@ -20,9 +20,9 @@ MonoBehaviour:
   attackFreezeTime:
   - 0.1
   onHitPushBack:
-  - {x: -10, y: 0}
+  - {x: -20, y: 0}
   onHitHitstun:
-  - 0.5
+  - 0.3
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

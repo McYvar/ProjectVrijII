@@ -117,6 +117,7 @@ public class CharacterBaseState : BaseState, INeedInput {
                 character.rbInput = true;
                 break;
             case AttackPhase.startup:
+                character.attackMovementReductionScalar = 0; // SOLUTION LATER
                 break;
             case AttackPhase.active:
                 break;

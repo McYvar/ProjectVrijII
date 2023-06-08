@@ -204,17 +204,18 @@ MonoBehaviour:
   textString: Hits!!
   counterEffects:
   - startEffect: 0
-    textSize: 40
+    textSize: 100
     textInBold: 0
     textColor: {r: 1, g: 1, b: 1, a: 1}
     gradient: {fileID: 0}
   - startEffect: 5
-    textSize: 40
+    textSize: 100
     textInBold: 0
     textColor: {r: 1, g: 0.8734767, b: 0.514151, a: 1}
     gradient: {fileID: 0}
   - startEffect: 10
-    textSize: 50
+    textSize: 130
     textInBold: 1
     textColor: {r: 1, g: 0.8734767, b: 0.514151, a: 1}
     gradient: {fileID: 11400000, guid: 69a525efa7e6472eab268f6ea605f06e, type: 2}
+  comboDisplayTime: 0

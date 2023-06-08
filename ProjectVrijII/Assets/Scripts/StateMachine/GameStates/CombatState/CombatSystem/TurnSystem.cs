@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TurnSystem : CombatBase {
     /// <summary>
@@ -104,6 +105,7 @@ public class TurnSystem : CombatBase {
 
     private void EndGame(int loser) {
         gameOverText.text = $"Game over! Player {loser} died!";
+        Invoke("ReloadSceneOnGameOver", 5);
     }
 
     public void ReadyForNextTurn() {
@@ -132,5 +134,9 @@ public class TurnSystem : CombatBase {
     public void ResetTurnSystem() {
         teams.Clear();
         totalCharacters = 0;
+    }
+
+    public void ReloadSceneOnGameOver() {
+        SceneManager.LoadScene(1);
     }
 }

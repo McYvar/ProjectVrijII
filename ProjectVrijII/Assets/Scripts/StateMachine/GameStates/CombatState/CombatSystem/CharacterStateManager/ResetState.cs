@@ -11,7 +11,7 @@ public class ResetState : CharacterBaseState {
 
     private Vector3 startPos = Vector3.zero;
     private bool hasResetted = false;
-    private float minmumResetDistance = 0.2f;
+    private float minmumResetDistance = 0.3f;
 
     private void Start() {
         startPos = transform.position;

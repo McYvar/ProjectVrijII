@@ -887,7 +887,7 @@ GameObject:
   - component: {fileID: 6330919336306990449}
   - component: {fileID: 3365747435032341812}
   - component: {fileID: 1732301582}
-  m_Layer: 5
+  m_Layer: 22
   m_Name: InputInfoPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1136,5 +1136,5 @@ MonoBehaviour:
   - {fileID: 137360776}
   - {fileID: 1330308542}
   - {fileID: 1818235877}
-  glowOnKeyInput: 0
+  glowOnKeyInput: 1
   glowSpeed: 0.8

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd3e142b3ddac046ba675a794c8a6b0, type: 3}
   m_Name: Character1
   m_EditorClassIdentifier: 
-  characterName: Mac
+  characterName: Vayou
   groundMovementSpeed: 14
   runningMovementSpeed: 14
   crouchMovementSpeed: 0
-  groundJumpStrength: 60
+  groundJumpStrength: 40
   airDashStrength: 60
   airDashStopScalar: 0.28
-  doubleJumpStrength: 50
+  doubleJumpStrength: 40
   airDashLength: 5
   availableItems: []
   usingItems: []
@@ -45,11 +45,11 @@ MonoBehaviour:
   quaterBackwardCircleStrong: {fileID: 11400000, guid: 5cf703e6c6dd59149a0aeee2f25e54db,
     type: 2}
   lastInputDirection: 5
-  variableMovementSpeed: 0
+  variableMovementSpeed: 1
   attackMovementReductionScalar: 1
   fallReductionScalar: 1
-  currentAttackName: 2K
+  currentAttackName: 5P
   currentAttack: {fileID: 0}
-  lastAttack: {fileID: 11400000, guid: d52ca24231d46164aa3c6b11fdcaae55, type: 2}
+  lastAttack: {fileID: 0}
   rbInput: 1
   overrideController: {fileID: 22100000, guid: 573de15c8d8687749ad236ceaeb10552, type: 2}
