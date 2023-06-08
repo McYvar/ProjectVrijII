@@ -22,7 +22,7 @@ MonoBehaviour:
   onHitPushBack:
   - {x: -10, y: 0}
   onHitHitstun:
-  - 1.2
+  - 0.7
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
