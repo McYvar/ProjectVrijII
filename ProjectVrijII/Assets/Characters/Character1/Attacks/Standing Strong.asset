@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Standing Strong
   strength:
-  - 30
+  - 25
   enemyLaunchStrength:
   - {x: 5, y: 50}
   attackFreezeTime:

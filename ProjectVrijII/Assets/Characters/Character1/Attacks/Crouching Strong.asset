@@ -15,7 +15,7 @@ MonoBehaviour:
   attackName: Crouching Strong
   strength:
   - 5
-  - 25
+  - 20
   enemyLaunchStrength:
   - {x: 0, y: 0}
   - {x: 5, y: 50}
