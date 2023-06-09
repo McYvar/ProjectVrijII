@@ -16,8 +16,10 @@ MonoBehaviour:
   strength:
   - 2
   - 2
+  - 2
   - 5
   enemyLaunchStrength:
+  - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 20, y: 20}
@@ -25,11 +27,14 @@ MonoBehaviour:
   - 0.04
   - 0.04
   - 0.04
+  - 0.04
   onHitPushBack:
   - {x: -5, y: 0}
   - {x: -5, y: 0}
   - {x: -5, y: 0}
+  - {x: -5, y: 0}
   onHitHitstun:
+  - 1
   - 1
   - 1
   - 1

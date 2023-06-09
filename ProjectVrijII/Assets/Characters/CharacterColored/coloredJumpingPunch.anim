@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sketch_JP
+  m_Name: coloredJumpingPunch
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -168,21 +168,27 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: c8d9fb8ad916fda439987c97c5cdf778, type: 3}
+      value: {fileID: 21300000, guid: d4361b9d179f78540965b8177106df45, type: 3}
     - time: 0.071428575
-      value: {fileID: 21300000, guid: bff4354bc49900242972a281a77125de, type: 3}
+      value: {fileID: 21300000, guid: 4c9778a4a6194104399a79f751ed3ac1, type: 3}
     - time: 0.14285715
-      value: {fileID: 21300000, guid: fd755d1dae306734e8aa52a44764b8e7, type: 3}
+      value: {fileID: 21300000, guid: 058b27e98d86e594cb3a10b6d2819f2a, type: 3}
     - time: 0.21428572
-      value: {fileID: 21300000, guid: bff4354bc49900242972a281a77125de, type: 3}
+      value: {fileID: 21300000, guid: c81121de65b7ce3469dc179b8c7598ad, type: 3}
     - time: 0.2857143
-      value: {fileID: 21300000, guid: fd755d1dae306734e8aa52a44764b8e7, type: 3}
+      value: {fileID: 21300000, guid: af72cc401ba94b34aa1eb3eda44b8090, type: 3}
     - time: 0.35714287
-      value: {fileID: 21300000, guid: bff4354bc49900242972a281a77125de, type: 3}
+      value: {fileID: 21300000, guid: 6bd5970de7427aa4987a6f0633d9c155, type: 3}
     - time: 0.42857143
-      value: {fileID: 21300000, guid: fd755d1dae306734e8aa52a44764b8e7, type: 3}
+      value: {fileID: 21300000, guid: 7c55cfb7215b3ef498474f21aa8f8e4a, type: 3}
     - time: 0.5
-      value: {fileID: 21300000, guid: 7b3af40778ecb944091563280d89cffc, type: 3}
+      value: {fileID: 21300000, guid: ca4a65aebcf6ad64ab29da70d99b3e55, type: 3}
+    - time: 0.5714286
+      value: {fileID: 21300000, guid: cada34578687765468a1fd7a953f0e3f, type: 3}
+    - time: 0.64285713
+      value: {fileID: 21300000, guid: 42ceb709b2b8d6c448aeb2cada817ee9, type: 3}
+    - time: 0.71428573
+      value: {fileID: 21300000, guid: 2adc40634b88fb64bb5520abc758a593, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -230,20 +236,23 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: c8d9fb8ad916fda439987c97c5cdf778, type: 3}
-    - {fileID: 21300000, guid: bff4354bc49900242972a281a77125de, type: 3}
-    - {fileID: 21300000, guid: fd755d1dae306734e8aa52a44764b8e7, type: 3}
-    - {fileID: 21300000, guid: bff4354bc49900242972a281a77125de, type: 3}
-    - {fileID: 21300000, guid: fd755d1dae306734e8aa52a44764b8e7, type: 3}
-    - {fileID: 21300000, guid: bff4354bc49900242972a281a77125de, type: 3}
-    - {fileID: 21300000, guid: fd755d1dae306734e8aa52a44764b8e7, type: 3}
-    - {fileID: 21300000, guid: 7b3af40778ecb944091563280d89cffc, type: 3}
+    - {fileID: 21300000, guid: d4361b9d179f78540965b8177106df45, type: 3}
+    - {fileID: 21300000, guid: 4c9778a4a6194104399a79f751ed3ac1, type: 3}
+    - {fileID: 21300000, guid: 058b27e98d86e594cb3a10b6d2819f2a, type: 3}
+    - {fileID: 21300000, guid: c81121de65b7ce3469dc179b8c7598ad, type: 3}
+    - {fileID: 21300000, guid: af72cc401ba94b34aa1eb3eda44b8090, type: 3}
+    - {fileID: 21300000, guid: 6bd5970de7427aa4987a6f0633d9c155, type: 3}
+    - {fileID: 21300000, guid: 7c55cfb7215b3ef498474f21aa8f8e4a, type: 3}
+    - {fileID: 21300000, guid: ca4a65aebcf6ad64ab29da70d99b3e55, type: 3}
+    - {fileID: 21300000, guid: cada34578687765468a1fd7a953f0e3f, type: 3}
+    - {fileID: 21300000, guid: 42ceb709b2b8d6c448aeb2cada817ee9, type: 3}
+    - {fileID: 21300000, guid: 2adc40634b88fb64bb5520abc758a593, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5714286
+    m_StopTime: 0.7857143
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -419,20 +428,13 @@ AnimationClip:
     intParameter: 1
     messageOptions: 0
   - time: 0.14285715
-    functionName: TriggerHit
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.14285715
     functionName: StartRecoveryInputBuffer
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.14285715
+  - time: 0.21428572
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -440,7 +442,7 @@ AnimationClip:
     intParameter: 2
     messageOptions: 0
   - time: 0.21428572
-    functionName: StartReadyInputBuffer
+    functionName: TriggerHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -453,12 +455,26 @@ AnimationClip:
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
-  - time: 0.42857143
+  - time: 0.35714287
+    functionName: StartReadyInputBuffer
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.35714287
     functionName: TriggerHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 2
+    messageOptions: 0
+  - time: 0.42857143
+    functionName: TriggerHit
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 3
     messageOptions: 0
   - time: 0.5
     functionName: SetAttackPhase
@@ -467,7 +483,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 3
     messageOptions: 0
-  - time: 0.5714286
+  - time: 0.71428573
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
