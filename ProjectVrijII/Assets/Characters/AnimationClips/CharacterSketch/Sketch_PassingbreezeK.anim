@@ -415,7 +415,7 @@ AnimationClip:
     functionName: LaunchHorizontal
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 70
+    floatParameter: 50
     intParameter: 0
     messageOptions: 0
   - time: 0.42857143

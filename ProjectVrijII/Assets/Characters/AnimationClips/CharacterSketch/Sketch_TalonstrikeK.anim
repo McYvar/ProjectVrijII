@@ -22,7 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.14285715
-        value: 1.5191615
+        value: 3
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -60,7 +60,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.14285715
-        value: 4.3065104
+        value: 6.5
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -183,7 +183,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.14285715
-        value: 1.5191615
+        value: 3
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -221,7 +221,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.14285715
-        value: 4.3065104
+        value: 6.5
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -299,6 +299,13 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 3
+    messageOptions: 0
+  - time: 0.21428572
+    functionName: LaunchHorizontal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 10
+    intParameter: 0
     messageOptions: 0
   - time: 0.2857143
     functionName: StartReadyInputBuffer

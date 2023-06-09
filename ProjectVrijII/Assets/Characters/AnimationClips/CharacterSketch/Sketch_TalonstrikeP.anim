@@ -21,8 +21,17 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
+        time: 0
+        value: 3
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.14285715
-        value: 1.5191615
+        value: 3
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -59,8 +68,17 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
+        time: 0
+        value: 6.5
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.14285715
-        value: 4.3065104
+        value: 6.5
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -182,8 +200,17 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
+        time: 0
+        value: 3
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.14285715
-        value: 1.5191615
+        value: 3
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -220,8 +247,17 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
+        time: 0
+        value: 6.5
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.14285715
-        value: 4.3065104
+        value: 6.5
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -300,6 +336,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 3
     messageOptions: 0
+  - time: 0.21428572
+    functionName: LaunchHorizontal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 5
+    intParameter: 0
+    messageOptions: 0
   - time: 0.2857143
     functionName: StartReadyInputBuffer
     data: 
@@ -308,7 +351,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.64285713
-    functionName: ResetAfterAttack
+    functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

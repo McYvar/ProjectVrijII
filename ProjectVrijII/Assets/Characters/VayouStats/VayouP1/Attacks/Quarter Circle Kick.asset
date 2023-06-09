@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Quarter Circle Kick
   strength:
-  - 23
+  - 30
   enemyLaunchStrength:
   - {x: 0, y: 0}
   attackFreezeTime:

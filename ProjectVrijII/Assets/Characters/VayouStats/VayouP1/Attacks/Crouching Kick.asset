@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Crouching Kick
   strength:
-  - 21
+  - 10
   enemyLaunchStrength:
   - {x: 10, y: 25}
   attackFreezeTime:
@@ -22,7 +22,7 @@ MonoBehaviour:
   onHitPushBack:
   - {x: -10, y: 0}
   onHitHitstun:
-  - 1.2
+  - 0.7
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

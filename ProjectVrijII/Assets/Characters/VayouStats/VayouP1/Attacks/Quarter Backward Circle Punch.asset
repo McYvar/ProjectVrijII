@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Quarter Backward Circle Punch
   strength:
-  - 30
+  - 25
   enemyLaunchStrength:
   - {x: 20, y: 0}
   attackFreezeTime:

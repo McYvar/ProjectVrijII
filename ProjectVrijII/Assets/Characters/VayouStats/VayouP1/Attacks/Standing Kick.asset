@@ -23,11 +23,11 @@ MonoBehaviour:
   - 0.1
   - 0.1
   onHitPushBack:
-  - {x: -5, y: 0}
+  - {x: -10, y: 0}
   - {x: -15, y: 0}
   onHitHitstun:
   - 1
-  - 1
+  - 0.5
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

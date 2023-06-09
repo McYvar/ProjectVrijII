@@ -24,15 +24,15 @@ MonoBehaviour:
   attackFreezeTime:
   - 0.04
   - 0.04
-  - 0.04
+  - 0.1
   onHitPushBack:
-  - {x: -5, y: 0}
-  - {x: -5, y: 0}
-  - {x: -5, y: 0}
+  - {x: -1, y: 15}
+  - {x: -1, y: 15}
+  - {x: -5, y: 15}
   onHitHitstun:
-  - 1
-  - 1
-  - 1
+  - 0.5
+  - 0.5
+  - 0.7
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
