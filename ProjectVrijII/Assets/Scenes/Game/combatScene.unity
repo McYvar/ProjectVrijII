@@ -2615,7 +2615,7 @@ MonoBehaviour:
   offset: {x: 0, y: 1.53}
   min: {x: -12.18, y: -0.77}
   max: {x: -30.4, y: 5.57}
-  minHeight: 3.15
+  minHeight: 5.93
   leftBound: {fileID: 2045377119}
   rightBound: {fileID: 2007506793}
   screenPointCamera: {fileID: 97477357}
