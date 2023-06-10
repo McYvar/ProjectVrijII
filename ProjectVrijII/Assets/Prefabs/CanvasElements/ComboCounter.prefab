@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 115.6
+  m_fontSizeBase: 115.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -201,21 +201,25 @@ MonoBehaviour:
   comboText: {fileID: 6794227472550528836}
   counterObject: {fileID: 6794227473392181975}
   textSize: 20
-  textString: Hits!!
   counterEffects:
   - startEffect: 0
     textSize: 100
     textInBold: 0
     textColor: {r: 1, g: 1, b: 1, a: 1}
     gradient: {fileID: 0}
-  - startEffect: 5
-    textSize: 100
+  - startEffect: 3
+    textSize: 110
     textInBold: 0
-    textColor: {r: 1, g: 0.8734767, b: 0.514151, a: 1}
-    gradient: {fileID: 0}
-  - startEffect: 10
-    textSize: 130
-    textInBold: 1
-    textColor: {r: 1, g: 0.8734767, b: 0.514151, a: 1}
+    textColor: {r: 1, g: 0.8240065, b: 0.26100624, a: 1}
     gradient: {fileID: 11400000, guid: 69a525efa7e6472eab268f6ea605f06e, type: 2}
-  comboDisplayTime: 0
+  - startEffect: 5
+    textSize: 125
+    textInBold: 1
+    textColor: {r: 0.98039216, g: 0.6931963, b: 0.06274511, a: 1}
+    gradient: {fileID: 11400000, guid: 55c4e60f240b7c2428053418f71ba6b3, type: 2}
+  - startEffect: 10
+    textSize: 145
+    textInBold: 1
+    textColor: {r: 0.98039216, g: 0.4446635, b: 0.06274511, a: 1}
+    gradient: {fileID: 11400000, guid: 55c4e60f240b7c2428053418f71ba6b3, type: 2}
+  comboDisplayTime: 1

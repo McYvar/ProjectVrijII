@@ -16,8 +16,8 @@ public class ComboCounter : CombatBase {
 	[Header("CounterText")]
 	[SerializeField]
 	private int textSize = 20;
-	[SerializeField]
-	private string textString = "Hits!!";
+	/*[SerializeField]
+	private string textString = "Hits!!";*/
 
 	[Header("CounterNumbers")]
 	[SerializeField]
@@ -52,10 +52,12 @@ public class ComboCounter : CombatBase {
 	}
 
 	//sets the text and checks for change in effects
-	private void SetComboText() {	
-		comboText.text = $"{comboCounter}<size={textSize}>{textString}</size>";
-		
-		if(effectId < counterEffects.Length - 1) {
+	private void SetComboText() {
+		/*comboText.text = $"{comboCounter}<size={textSize}>{textString}</size>";*/
+
+		comboText.text = $"{comboCounter}<size={textSize}></size>";
+
+		if (effectId < counterEffects.Length - 1) {
 			if(comboCounter >= counterEffects[effectId + 1].StartEffect) {
 				effectId++;
 				SetEffects();
