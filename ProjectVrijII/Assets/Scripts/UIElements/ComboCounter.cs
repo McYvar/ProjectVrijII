@@ -30,10 +30,33 @@ public class ComboCounter : CombatBase {
 	[SerializeField]
 	private float comboDisplayTime;
 
+	[Header("ComboTimer")]
+	[SerializeField]
+	private RectTransform timerFill;
+	[SerializeField]
+	private float emptyPosition = 92f;
+	[SerializeField]
+	private float fullPosition = 0;
+	private Vector2 timerStartPosition;
+	private Coroutine timerCoroutine;
+
 	private float timeUntilEndingCombo = 0;
 
-	private void Start() {
+	private void Start() {		
+		timerStartPosition = timerFill.localPosition;
 		ResetCombo();
+	}
+
+	private void Update() {
+		//~~debugging purpose
+			if(Input.GetKeyUp(KeyCode.Space)) {
+				IncreaseCombo(1);
+			}
+
+			if(Input.GetKeyUp(KeyCode.Escape)) {
+				ResetCombo();
+			}
+		//~~
 	}
 
 	//Call this to reset and remove the combo
@@ -41,6 +64,8 @@ public class ComboCounter : CombatBase {
 		comboCounter = 0;
 		effectId = -1;
 		counterObject.alpha = 0;
+
+		ResetComboTimer();
 	}
 
 	//Call this to increase the combo and make it visible
@@ -49,12 +74,15 @@ public class ComboCounter : CombatBase {
 		SetComboText();
 		counterObject.alpha = 1;
 		timeUntilEndingCombo = time;
+
+		if(timerCoroutine == null) {
+			timerCoroutine = StartCoroutine(ComboTimer());
+		}
 	}
 
 	//sets the text and checks for change in effects
 	private void SetComboText() {
 		/*comboText.text = $"{comboCounter}<size={textSize}>{textString}</size>";*/
-
 		comboText.text = $"{comboCounter}<size={textSize}></size>";
 
 		if (effectId < counterEffects.Length - 1) {
@@ -75,4 +103,26 @@ public class ComboCounter : CombatBase {
 	public void EndCombo() {
 		Invoke("ResetCombo", comboDisplayTime);
     }
+
+	private IEnumerator ComboTimer() {
+		float time = timeUntilEndingCombo;
+		Vector2 fillerPosition = Vector2.zero;
+		fillerPosition.x = timerStartPosition.x;
+
+		while(time > 0) {
+			fillerPosition.y = Mathf.Lerp(fullPosition, emptyPosition, time);
+			timerFill.localPosition = fillerPosition;	
+			
+			time -= Time.deltaTime;
+			yield return new WaitForSeconds(0);
+		}
+	}
+
+	private void ResetComboTimer() {
+		if(timerCoroutine != null) {
+			StopCoroutine(timerCoroutine);
+			timerFill.localPosition = new Vector2(timerStartPosition.x, emptyPosition);
+			timerCoroutine = null;
+		}
+	}
 }
