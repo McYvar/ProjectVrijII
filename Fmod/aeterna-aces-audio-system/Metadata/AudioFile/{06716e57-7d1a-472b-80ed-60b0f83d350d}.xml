@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{06716e57-7d1a-472b-80ed-60b0f83d350d}">
+		<property name="assetPath">
+			<value>attack_effects/sfx_gale_canon.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>4</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f89f2e0-2d3d-4136-95cd-4a47d8e1385d}</destination>
+		</relationship>
+	</object>
+</objects>
