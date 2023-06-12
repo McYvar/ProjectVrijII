@@ -30,7 +30,7 @@ MonoBehaviour:
   crouchingPunch: {fileID: 11400000, guid: 2fe287c165a97074ba706400c5f22e4a, type: 2}
   crouchingStrong: {fileID: 11400000, guid: da2be82186783184b856ecedbf050a01, type: 2}
   jumpingKick: {fileID: 11400000, guid: 4683e015428de684786783f9e11976f3, type: 2}
-  jumpingPunch: {fileID: 11400000, guid: 67dce4fc3e470c949a0cf9d7f863ea5a, type: 2}
+  jumpingPunch: {fileID: 11400000, guid: fa2246da62abf5f42966dfbf636d11e3, type: 2}
   jumpingStrong: {fileID: 11400000, guid: ec0b99b3784a9c14286bcf8480aded47, type: 2}
   dragonpunchKick: {fileID: 11400000, guid: efb124e6aa38dd64d88d7d2758a4fa08, type: 2}
   dragonpunchPunch: {fileID: 11400000, guid: 0458392cc94810048b5e83927e9c90ee, type: 2}
@@ -48,7 +48,7 @@ MonoBehaviour:
   variableMovementSpeed: 1
   attackMovementReductionScalar: 1
   fallReductionScalar: 1
-  currentAttackName: 5P
+  currentAttackName: jP
   currentAttack: {fileID: 0}
   lastAttack: {fileID: 0}
   rbInput: 1
