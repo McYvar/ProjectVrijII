@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{c1669b63-07b7-4619-b7a7-f73e4306f786}">
+		<property name="assetPath">
+			<value>music/combat_buildup_150bpm.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>25.600000000000001</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f89f2e0-2d3d-4136-95cd-4a47d8e1385d}</destination>
+		</relationship>
+	</object>
+</objects>
