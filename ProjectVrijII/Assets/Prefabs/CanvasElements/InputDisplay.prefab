@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 142173399}
   - component: {fileID: 142173401}
   m_Layer: 5
-  m_Name: Key 3
+  m_Name: strongButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 197301430}
   - component: {fileID: 197301432}
   m_Layer: 5
-  m_Name: Key 1
+  m_Name: punchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -643,7 +643,7 @@ GameObject:
   - component: {fileID: 1342132690}
   - component: {fileID: 1342132692}
   m_Layer: 5
-  m_Name: Key 2
+  m_Name: kickButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
