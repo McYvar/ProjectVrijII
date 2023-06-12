@@ -10,29 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf65454ca7454ad458bb27b44f7b94ff, type: 3}
-  m_Name: Jumping Punch
+  m_Name: Jumping Punch 1
   m_EditorClassIdentifier: 
   attackName: Jumping Punch
   strength:
+  - 2
   - 2
   - 2
   - 5
   enemyLaunchStrength:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: 20, y: 20}
+  - {x: 0, y: 0}
+  - {x: 5, y: 40}
   attackFreezeTime:
-  - 0.04
-  - 0.04
+  - 0.1
+  - 0.1
+  - 0.1
   - 0.1
   onHitPushBack:
-  - {x: -1, y: 15}
-  - {x: -1, y: 15}
-  - {x: -5, y: 15}
+  - {x: 0, y: 10}
+  - {x: 0, y: 10}
+  - {x: 0, y: 10}
+  - {x: 0, y: 20}
   onHitHitstun:
-  - 0.5
-  - 0.5
-  - 0.7
+  - 1
+  - 1
+  - 1
+  - 1
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
