@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{e826b0ef-369e-4dc3-b24a-23e31634b764}">
+	<object class="AudioFile" id="{74d21425-32cb-48c4-8857-88e716ca11fc}">
 		<property name="assetPath">
-			<value>attack_swings/sfx_standingpush_swoosh:kick.wav</value>
+			<value>attack_swings/sfx_standingpush_swoosh-kick.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

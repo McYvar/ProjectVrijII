@@ -197,7 +197,7 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: PlayFMODEvent
-    data: event:/heavy-blunt-impact
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

@@ -15,10 +15,30 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638221675060377270
+  lastModified: 638222734603811485
   FileSizes:
   - Name: Desktop
-    Value: 814
+    Value: 804
+  Exists: 1
+--- !u!114 &-7153850842932538063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: 
+  Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/Music.bank
+  Name: Music
+  StudioPath: bank:/Music
+  lastModified: 638222734603829204
+  FileSizes:
+  - Name: Desktop
+    Value: 494
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -36,42 +56,15 @@ MonoBehaviour:
   - {fileID: -7351126430909627143}
   - {fileID: 3634221109289391517}
   - {fileID: 7505079329611506570}
-  EditorEvents:
-  - {fileID: 1069415942290908326}
+  - {fileID: -7153850842932538063}
+  EditorEvents: []
   EditorParameters: []
   MasterBanks:
   - {fileID: 3634221109289391517}
   StringsBanks:
   - {fileID: -7351126430909627143}
-  cacheTime: 638221675060387293
+  cacheTime: 638222734603829204
   cacheVersion: 131603
---- !u!114 &1069415942290908326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/heavy-blunt-impact
-  m_EditorClassIdentifier: 
-  Path: event:/heavy-blunt-impact
-  Guid:
-    Data1: 1550983619
-    Data2: 1341437572
-    Data3: -1262211448
-    Data4: 360895963
-  Banks:
-  - {fileID: 7505079329611506570}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &3634221109289391517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,7 +80,7 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638221675060377270
+  lastModified: 638222734603802935
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -107,8 +100,8 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638221675060387293
+  lastModified: 638222734294629682
   FileSizes:
   - Name: Desktop
-    Value: 12416
+    Value: 494
   Exists: 1
