@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu :CombatBase {
 	[SerializeField]
 	private CanvasGroup pauseUI;
 
@@ -17,6 +17,7 @@ public class PauseMenu : MonoBehaviour {
 
 	private EventSystem eventSystem;
 	private CanvasGroup currentSubMenu;
+	private InputHandler playerInput;
 
 	private void Start() {
 		eventSystem = EventSystem.current;
@@ -28,12 +29,17 @@ public class PauseMenu : MonoBehaviour {
 		ToggleMenu(false);
 	}
 
-	private void Update() {
-		//TESTING PURPOSE~~ remove later
-			if(Input.GetKeyUp(KeyCode.Escape)) {
+	//CALL after player select
+	public void AssignPlayer(InputHandler playerInput) {
+		this.playerInput = playerInput;
+	}
+
+	public override void OnUpdate() {
+		if(playerInput != null) {
+			if(playerInput.options && pauseUI.alpha < 1) {
 				OnPauseKey();
-			}		
-		//~~
+			}
+		}		
 	}
 
 	//CALL when pause key is pressed
