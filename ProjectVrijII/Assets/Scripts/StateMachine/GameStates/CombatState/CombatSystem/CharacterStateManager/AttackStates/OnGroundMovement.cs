@@ -8,9 +8,11 @@ public class OnGroundMovement : AttackState {
 
     public override void OnEnter() {
         base.OnEnter();
+        SetAttackPhase(AttackPhase.ready);
         inputHandler.eastFirst += OnGroundStrong;
         inputHandler.southFirst += OnGroundKick;
         inputHandler.westFirst += OnGroundPunch;
+        inputHandler.leftShoulderLast += SetVariableSpeedToWalking;
 
         animator.SetBool("isGrounded", true);
     }
@@ -20,6 +22,7 @@ public class OnGroundMovement : AttackState {
         inputHandler.eastFirst -= OnGroundStrong;
         inputHandler.southFirst -= OnGroundKick;
         inputHandler.westFirst -= OnGroundPunch;
+        inputHandler.leftShoulderLast -= SetVariableSpeedToWalking;
     }
 
     public override void OnUpdate() {
@@ -69,6 +72,8 @@ public class OnGroundMovement : AttackState {
                 OnDoublePress += SetVariableSpeedToRunning;
             }
 
+            if (inputHandler.leftShoulder) SetVariableSpeedToRunning();
+
             Vector2 horizonal = new Vector2(inputHandler.leftDirection.x, 0);
             float resultMovementSpeed =
                 (character.groundMovementSpeed + character.variableMovementSpeed) *
@@ -102,6 +107,11 @@ public class OnGroundMovement : AttackState {
         character.variableMovementSpeed = character.runningMovementSpeed;
     }
 
+    private void SetVariableSpeedToWalking()
+    {
+        character.variableMovementSpeed = 0;
+    }
+
     #region ground attacks
     private void OnGroundPunch() {
         switch (InputCompare()) {
@@ -131,56 +141,74 @@ public class OnGroundMovement : AttackState {
     }
 
     private void OnGroundKick() {
-        switch (InputCompare()) {
-            case AttackTypes.STANDING:
-                character.currentAttack = character.standingKick;
-                character.currentAttackName = "5K";
-                break;
-            case AttackTypes.CROUCHING:
-                character.currentAttack = character.crouchingKick;
-                character.currentAttackName = "2K";
-                break;
-            case AttackTypes.DRAGON_PUNCH:
-                character.currentAttack = character.dragonpunchKick;
-                character.currentAttackName = "623K";
-                break;
-            case AttackTypes.QUARTER_CIRCLE:
-                character.currentAttack = character.quaterCircleKick;
-                character.currentAttackName = "236K";
-                break;
-            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
-                character.currentAttack = character.quaterBackwardCircleKick;
-                character.currentAttackName = "41236K";
-                break;
+        if (inputHandler.rightTrigger > 0.7f)
+        {
+            character.currentAttack = character.quaterBackwardCircleKick;
+            character.currentAttackName = "41236K";
+        }
+        else
+        {
+            switch (InputCompare())
+            {
+                case AttackTypes.STANDING:
+                    character.currentAttack = character.standingKick;
+                    character.currentAttackName = "5K";
+                    break;
+                case AttackTypes.CROUCHING:
+                    character.currentAttack = character.crouchingKick;
+                    character.currentAttackName = "2K";
+                    break;
+                case AttackTypes.DRAGON_PUNCH:
+                    character.currentAttack = character.dragonpunchKick;
+                    character.currentAttackName = "623K";
+                    break;
+                case AttackTypes.QUARTER_CIRCLE:
+                    character.currentAttack = character.quaterCircleKick;
+                    character.currentAttackName = "236K";
+                    break;
+                case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                    character.currentAttack = character.quaterBackwardCircleKick;
+                    character.currentAttackName = "41236K";
+                    break;
+            }
         }
 
         OnAttack();
     }
 
-    private void OnGroundStrong() {
-        switch (InputCompare()) {
-            case AttackTypes.STANDING:
-                character.currentAttack = character.standingStrong;
-                character.currentAttackName = "5S";
-                break;
-            case AttackTypes.CROUCHING:
-                character.currentAttack = character.crouchingStrong;
-                character.currentAttackName = "2S";
-                break;
-            case AttackTypes.DRAGON_PUNCH:
-                character.currentAttack = character.dragonpunchStrong;
-                character.currentAttackName = "623S";
-                break;
-            case AttackTypes.QUARTER_CIRCLE:
-                character.currentAttack = character.quaterCircleStrong;
-                character.currentAttackName = "236S";
-                break;
-            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
-                character.currentAttack = character.quaterBackwardCircleStrong;
-                character.currentAttackName = "41236S";
-                break;
+    private void OnGroundStrong()
+    {
+        if (inputHandler.rightTrigger > 0.7f)
+        {
+            character.currentAttack = character.dragonpunchKick;
+            character.currentAttackName = "623K";
         }
-
+        else
+        {
+            switch (InputCompare())
+            {
+                case AttackTypes.STANDING:
+                    character.currentAttack = character.standingStrong;
+                    character.currentAttackName = "5S";
+                    break;
+                case AttackTypes.CROUCHING:
+                    character.currentAttack = character.crouchingStrong;
+                    character.currentAttackName = "2S";
+                    break;
+                case AttackTypes.DRAGON_PUNCH:
+                    character.currentAttack = character.dragonpunchStrong;
+                    character.currentAttackName = "623S";
+                    break;
+                case AttackTypes.QUARTER_CIRCLE:
+                    character.currentAttack = character.quaterCircleStrong;
+                    character.currentAttackName = "236S";
+                    break;
+                case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                    character.currentAttack = character.quaterBackwardCircleStrong;
+                    character.currentAttackName = "41236S";
+                    break;
+            }
+        }
         OnAttack();
     }
 

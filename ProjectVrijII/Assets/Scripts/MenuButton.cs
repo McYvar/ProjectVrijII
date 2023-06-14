@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class MenuButton : MonoBehaviour
 {
     [SerializeField] private UnityEvent onButtonClick;
     [SerializeField] private float floatingDist;
     [SerializeField, Range(0f, 1f)] private float smoothTime;
+    [SerializeField] private RawImage selectionIndicator;
     private float velocity;
     private float startPos;
     private bool isFloating;
@@ -13,6 +15,7 @@ public class MenuButton : MonoBehaviour
     private void Start()
     {
         startPos = transform.position.x;
+        if (selectionIndicator != null) selectionIndicator.enabled = false;
     }
 
     private void Update()
@@ -34,10 +37,12 @@ public class MenuButton : MonoBehaviour
     public void EnableFloat()
     {
         isFloating = true;
+        if (selectionIndicator != null) selectionIndicator.enabled = true;
     }
 
     public void DisableFloat()
     {
         isFloating = false;
+        if (selectionIndicator != null) selectionIndicator.enabled = false;
     }
 }
