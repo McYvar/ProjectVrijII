@@ -184,7 +184,6 @@ public class PlayerDistribution : MonoBehaviour {
             InputHandler inputHandler = dummy.GetComponent<InputHandler>();
             playerInputHandlers.Add(playerId, inputHandler);
             assignedPlayersColors.Add(playerId, new Color(150, 150, 150));
-            Debug.Log("spawned dummy");
             return inputHandler;
         }
     }

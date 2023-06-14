@@ -41,6 +41,7 @@ public class ComboCounter:CombatBase {
 	private Vector2 timerStartPosition;
 	private Coroutine timerCoroutine;
 
+	private float fullTime;
 
 	private float timeUntilEndingCombo = 0;
 
@@ -66,8 +67,9 @@ public class ComboCounter:CombatBase {
 		SetComboText();
 		counterObject.alpha = 1;
 		timeUntilEndingCombo = time;
+		fullTime = time;
 
-		if(timerCoroutine == null) {
+		if (timerCoroutine == null) {
 			timerCoroutine = StartCoroutine(ComboTimer());
 		}
 	}
@@ -75,6 +77,7 @@ public class ComboCounter:CombatBase {
 	public void SetCombotTimer(float time)
 	{
 		timeUntilEndingCombo = time;
+		fullTime = time;
 
 		if (timerCoroutine == null)
 		{
@@ -110,12 +113,11 @@ public class ComboCounter:CombatBase {
 
 	#region ComboTimer
 	private IEnumerator ComboTimer() {
-		float time = timeUntilEndingCombo;
 		float filling;
 		Vector2 fillerPosition = timerStartPosition;
 
 		while(timeUntilEndingCombo > 0) {
-			filling = timeUntilEndingCombo;
+			filling = Mathf.InverseLerp(0, fullTime, timeUntilEndingCombo);
 			fillerPosition.y = Mathf.Lerp(emptyPosition, fullPosition, filling);
 			timerFill.localPosition = fillerPosition;
 

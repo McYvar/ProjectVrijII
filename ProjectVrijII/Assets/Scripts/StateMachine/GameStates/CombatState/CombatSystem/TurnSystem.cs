@@ -21,6 +21,7 @@ public class TurnSystem : CombatBase {
     private int totalCharacters = 0;
 
     [SerializeField] private TMP_Text turnTimeText;
+    [SerializeField] private GameObject GameOverScreen;
 
     public Action<float> OnHit = null;
     public Action OnReset = null;
@@ -110,8 +111,8 @@ public class TurnSystem : CombatBase {
                 if (player.GetComponent<Health>().died) dead++; // also temp solution?
             }
             if (dead == teams[i].Length) {
-                if (i == 0) EndGame(1);
-                if (i == 1) EndGame(2);
+                if (i == 0) EndGame(2);
+                if (i == 1) EndGame(1);
                 return;
             }
         }
@@ -132,6 +133,7 @@ public class TurnSystem : CombatBase {
     }
 
     private void EndGame(int winner) {
+        GameOverScreen.SetActive(true);
         gameOverText.text = $"Game over! Player {winner} wins!";
         Invoke("ReloadSceneOnGameOver", 5);
     }

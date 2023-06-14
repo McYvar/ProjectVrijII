@@ -18,7 +18,6 @@ public class SubMenusBase : BaseState
     [SerializeField] private Color unhighlightColor;
 
     private static List<PlayerIndicator> playerIndicators = new List<PlayerIndicator>();
-    [SerializeField] bool onlyAllowFirstPlayer = false;
     [SerializeField] TMPro.TMP_Text playerCountText;
     [SerializeField] private Image[] buttons;
 
