@@ -64,7 +64,6 @@ public class TurnSystem : CombatBase {
         OnHit += (t) =>
         {
             initialAttack = true;
-            Debug.Log("hit");
         };
         OnReset += comboCounter.EndCombo;
     }
