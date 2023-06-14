@@ -20,8 +20,6 @@ public class AttackState : CharacterBaseState {
     private float maxDoublePressTime = 0.5f;
     protected Action OnDoublePress;
 
-    [SerializeField] LayerMask hitLayerMask;
-
     private bool canJump = false;
     private bool didJump = false;
 

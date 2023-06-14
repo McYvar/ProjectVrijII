@@ -20,7 +20,8 @@ public class SubMenusBase : BaseState {
     [SerializeField] TMPro.TMP_Text playerCountText;
     [SerializeField] private Image[] buttons;
 
-    private GameObject selectedButton = null;
+    private MenuButton lastSelectedButton = null;
+    private MenuButton selectedButton = null;
 
     private bool activeState = false;
 
@@ -90,7 +91,13 @@ public class SubMenusBase : BaseState {
             }
         }
 
-        selectedButton = selected?.gameObject;
+        selectedButton = selected?.GetComponent<MenuButton>();
+        if (lastSelectedButton != selectedButton)
+        {
+            lastSelectedButton?.DisableFloat();
+            lastSelectedButton = selectedButton;
+            lastSelectedButton?.EnableFloat();
+        }
     }
 
     private Vector2 GetBottomLeftCorner(Image image) {
@@ -121,7 +128,7 @@ public class SubMenusBase : BaseState {
     }
 
     private void ConfirmChoice() {
-        selectedButton?.GetComponent<MenuButton>().OnButtonClick();
+        selectedButton.OnButtonClick();
     }
 
     public override void OnFixedUpdate() {
@@ -144,5 +151,7 @@ public class SubMenusBase : BaseState {
 #endif
     }
 }
+
+
 
 

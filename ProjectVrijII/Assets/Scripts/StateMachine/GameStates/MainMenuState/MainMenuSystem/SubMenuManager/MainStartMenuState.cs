@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class MainStartMenuState : SubMenusBase
@@ -10,7 +11,21 @@ public class MainStartMenuState : SubMenusBase
         SceneManager.LoadScene(scenenumber);
     }
 
-    public void PressSettingsButton() {
-        stateManager.SwitchState(typeof(MainSettingsMenuState));
+    public void PressControlsButton() {
+        stateManager.SwitchState(typeof(MainControlsMenuState));
+    }
+
+    public void PressCreditsButton()
+    {
+        stateManager.SwitchState(typeof(MainCreditsMenuState));
+    }
+
+    public void PressQuitButton()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
