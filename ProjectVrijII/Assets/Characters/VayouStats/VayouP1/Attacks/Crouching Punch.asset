@@ -28,6 +28,9 @@ MonoBehaviour:
   onHitHitstun:
   - 1
   - 1
+  onHitSoundEventName:
+  - event:/SfxLightSliceImpact
+  - event:/SfxLightSliceImpact
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

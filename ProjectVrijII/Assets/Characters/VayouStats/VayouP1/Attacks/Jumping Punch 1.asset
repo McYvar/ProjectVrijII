@@ -38,7 +38,11 @@ MonoBehaviour:
   - 1
   - 1
   - 1
-  onHitSoundEventName: []
+  onHitSoundEventName:
+  - event:/SfxLightBluntImpact
+  - event:/SfxLightBluntImpact
+  - event:/SfxLightBluntImpact
+  - event:/SfxHeavyBluntImpact
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

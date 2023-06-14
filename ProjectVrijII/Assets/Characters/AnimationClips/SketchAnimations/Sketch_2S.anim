@@ -336,7 +336,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.14285715
     functionName: PlayFMODEvent
-    data: event:/SfxCrouchingLegSweep
+    data: event:/SfxCrouchingStrong
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
@@ -364,7 +364,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.42857143
     functionName: PlayFMODEvent
-    data: event:/SfxCrouchingStrong
+    data: event:/SfxCrouchingLegSweep
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

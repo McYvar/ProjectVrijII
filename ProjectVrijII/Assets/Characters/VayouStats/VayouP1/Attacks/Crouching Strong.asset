@@ -28,6 +28,9 @@ MonoBehaviour:
   onHitHitstun:
   - 0.5
   - 1.5
+  onHitSoundEventName:
+  - event:/SfxCrouchingLegSweep
+  - event:/SfxStandingStrong
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

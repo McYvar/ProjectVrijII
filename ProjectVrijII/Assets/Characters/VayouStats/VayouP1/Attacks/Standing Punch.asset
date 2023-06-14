@@ -23,6 +23,8 @@ MonoBehaviour:
   - {x: -20, y: 0}
   onHitHitstun:
   - 0.3
+  onHitSoundEventName:
+  - event:/SfxLightBluntImpact
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0

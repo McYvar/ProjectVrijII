@@ -42,7 +42,11 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
+<<<<<<< HEAD
   lastModified: 638223354951184799
+=======
+  lastModified: 638223423980765062
+>>>>>>> SFXandAnimations
   FileSizes:
   - Name: Desktop
     Value: 2148
@@ -62,7 +66,11 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
+<<<<<<< HEAD
   lastModified: 638223354951449913
+=======
+  lastModified: 638223423980864807
+>>>>>>> SFXandAnimations
   FileSizes:
   - Name: Desktop
     Value: 3777824
@@ -416,7 +424,11 @@ MonoBehaviour:
   - {fileID: 3634221109289391517}
   StringsBanks:
   - {fileID: -7351126430909627143}
+<<<<<<< HEAD
   cacheTime: 638223354951449913
+=======
+  cacheTime: 638223423980884736
+>>>>>>> SFXandAnimations
   cacheVersion: 131603
 --- !u!114 &1503005717354037129
 MonoBehaviour:
@@ -595,7 +607,11 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
+<<<<<<< HEAD
   lastModified: 638223354951174799
+=======
+  lastModified: 638223423980755087
+>>>>>>> SFXandAnimations
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -777,7 +793,11 @@ MonoBehaviour:
   Path: ../Fmod/aeterna-aces-audio-system/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
+<<<<<<< HEAD
   lastModified: 638223354951194808
+=======
+  lastModified: 638223423980884736
+>>>>>>> SFXandAnimations
   FileSizes:
   - Name: Desktop
     Value: 287488
