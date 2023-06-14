@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sketch_2P
+  m_Name: coloredStandingPunch
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -22,16 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 1.78
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 1.09
+        value: 2.2537508
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -50,16 +41,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 2.85
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 2.84
+        value: 4.9300356
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -78,16 +60,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 4.0912795
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 5.6029363
+        value: 3.0532246
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -106,16 +79,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 2.7646048
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 2.7646048
+        value: 1.1672611
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -132,15 +96,15 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: e3239ab8200c9994f9c68dd2d4668610, type: 3}
+      value: {fileID: 21300000, guid: 7d23e90bb9b7052438ec989cb46c60ba, type: 3}
     - time: 0.071428575
-      value: {fileID: 21300000, guid: 431fd832d0cd87a40b7c2f4814b76044, type: 3}
+      value: {fileID: 21300000, guid: 5280fc5b0def7a547a01ba1e5c6e251c, type: 3}
+    - time: 0.14285715
+      value: {fileID: 21300000, guid: 707561bf4f71f4e428f2f61da9bf6006, type: 3}
+    - time: 0.21428572
+      value: {fileID: 21300000, guid: e0604822c222e2f468dbf94096cfe56c, type: 3}
     - time: 0.2857143
-      value: {fileID: 21300000, guid: 1455106a9f5b52847823a313ba28f8ca, type: 3}
-    - time: 0.35714287
-      value: {fileID: 21300000, guid: 96699118826acd44bb0780a81a7a2b5a, type: 3}
-    - time: 0.64285713
-      value: {fileID: 21300000, guid: 96699118826acd44bb0780a81a7a2b5a, type: 3}
+      value: {fileID: 21300000, guid: 9d213ed1cbd00f14a8976bc42563e204, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -152,6 +116,13 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
     - serializedVersion: 2
       path: 2679206002
       attribute: 413499720
@@ -174,13 +145,6 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 0
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-    - serializedVersion: 2
       path: 2679206002
       attribute: 2368279999
       script: {fileID: 0}
@@ -188,17 +152,17 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: e3239ab8200c9994f9c68dd2d4668610, type: 3}
-    - {fileID: 21300000, guid: 431fd832d0cd87a40b7c2f4814b76044, type: 3}
-    - {fileID: 21300000, guid: 1455106a9f5b52847823a313ba28f8ca, type: 3}
-    - {fileID: 21300000, guid: 96699118826acd44bb0780a81a7a2b5a, type: 3}
-    - {fileID: 21300000, guid: 96699118826acd44bb0780a81a7a2b5a, type: 3}
+    - {fileID: 21300000, guid: 7d23e90bb9b7052438ec989cb46c60ba, type: 3}
+    - {fileID: 21300000, guid: 5280fc5b0def7a547a01ba1e5c6e251c, type: 3}
+    - {fileID: 21300000, guid: 707561bf4f71f4e428f2f61da9bf6006, type: 3}
+    - {fileID: 21300000, guid: e0604822c222e2f468dbf94096cfe56c, type: 3}
+    - {fileID: 21300000, guid: 9d213ed1cbd00f14a8976bc42563e204, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.71428573
+    m_StopTime: 0.35714287
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -219,16 +183,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 1.78
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 1.09
+        value: 2.2537508
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -247,16 +202,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 2.85
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 2.84
+        value: 4.9300356
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -275,16 +221,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 4.0912795
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 5.6029363
+        value: 3.0532246
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -303,16 +240,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0.071428575
-        value: 2.7646048
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.2857143
-        value: 2.7646048
+        value: 1.1672611
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -332,7 +260,14 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: PlayFMODEvent
-    data: event:/SfxCrouchingKnife
+    data: event:/SfxCrouchingLegSweep
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: StartRecoveryInputBuffer
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
@@ -343,13 +278,6 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
-    messageOptions: 0
-  - time: 0
-    functionName: StartRecoveryInputBuffer
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
     messageOptions: 0
   - time: 0.071428575
     functionName: SetAttackPhase
@@ -365,35 +293,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.21428572
-    functionName: PlayFMODEvent
-    data: event:/SfxCrouchingKnife
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.2857143
-    functionName: TriggerHit
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 1
-    messageOptions: 0
-  - time: 0.35714287
+  - time: 0.071428575
     functionName: StartReadyInputBuffer
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.35714287
+  - time: 0.14285715
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 3
     messageOptions: 0
-  - time: 0.71428573
+  - time: 0.35714287
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
