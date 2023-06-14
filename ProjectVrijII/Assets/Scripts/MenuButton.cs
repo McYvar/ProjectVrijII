@@ -22,7 +22,7 @@ public class MenuButton : MonoBehaviour
     {
         startPos = transform.position.x;
 
-        rawImageStartPos = selectionIndicator.transform.position.x;
+        if (selectionIndicator != null) rawImageStartPos = selectionIndicator.transform.position.x;
     }
 
     private void Update()
@@ -30,6 +30,7 @@ public class MenuButton : MonoBehaviour
         if (isFloating) transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x, startPos + floatingDist, ref velocity, smoothTime), transform.position.y, transform.position.z);
         else transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x, startPos, ref velocity, smoothTime), transform.position.y, transform.position.z);
 
+        if (selectionIndicator == null) return;
         if (rawImageFloating) selectionIndicator.transform.position = new Vector3(Mathf.SmoothDamp(selectionIndicator.transform.position.x, rawImageStartPos + floatingDist, ref rawImageVelocity, smoothTime), selectionIndicator.transform.position.y, selectionIndicator.transform.position.z);
         else selectionIndicator.transform.position = new Vector3(Mathf.SmoothDamp(selectionIndicator.transform.position.x, rawImageStartPos, ref rawImageVelocity, smoothTime), selectionIndicator.transform.position.y, selectionIndicator.transform.position.z);
 

@@ -141,7 +141,7 @@ public class OnGroundMovement : AttackState {
     }
 
     private void OnGroundKick() {
-        if (inputHandler.rightTrigger > 0.7f)
+        if (inputHandler.leftTrigger > 0.7f)
         {
             character.currentAttack = character.quaterBackwardCircleKick;
             character.currentAttackName = "41236K";
@@ -178,7 +178,7 @@ public class OnGroundMovement : AttackState {
 
     private void OnGroundStrong()
     {
-        if (inputHandler.rightTrigger > 0.7f)
+        if (inputHandler.leftTrigger > 0.7f)
         {
             character.currentAttack = character.dragonpunchKick;
             character.currentAttackName = "623K";

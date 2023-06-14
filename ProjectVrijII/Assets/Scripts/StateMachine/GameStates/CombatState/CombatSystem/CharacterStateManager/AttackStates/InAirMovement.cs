@@ -152,7 +152,7 @@ public class InAirMovement : AttackState {
 
     private void InAirKick()
     {
-        if (inputHandler.rightTrigger > 0.7f)
+        if (inputHandler.leftTrigger > 0.7f)
         {
             character.currentAttack = character.quaterBackwardCircleKick;
             character.currentAttackName = "j41236K";

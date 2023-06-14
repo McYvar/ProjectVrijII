@@ -7,8 +7,11 @@ using UnityEngine.SceneManagement;
 public class MainStartMenuState : SubMenusBase
 {
     public void PressStartButton(int scenenumber) {
-        PlayerDistribution.Instance.ResetInputHandlers();
-        SceneManager.LoadScene(scenenumber);
+        if (PlayerDistribution.Instance.GetAssignedPlayersCount() >= 2)
+        {
+            PlayerDistribution.Instance.ResetInputHandlers();
+            SceneManager.LoadScene(scenenumber);
+        }
     }
 
     public void PressControlsButton() {

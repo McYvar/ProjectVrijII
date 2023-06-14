@@ -17,6 +17,14 @@ public class PlayerIndicator : MonoBehaviour
         indicatorImage = GetComponent<Image>();
     }
 
+    private void OnDisable()
+    {
+        if (inputHandler != null)
+        {
+
+        }
+    }
+
     private void Update() {
         if (isHidden || inputHandler == null) return;
         float scalar = CanvasSingleton.Instance.GetScaleFactor();
@@ -26,7 +34,7 @@ public class PlayerIndicator : MonoBehaviour
             transform.position.z
             );
 
-        MoveIndicator();
+        //MoveIndicator();
     }
 
     private void MoveIndicator() {
@@ -73,6 +81,24 @@ public class PlayerIndicator : MonoBehaviour
 
     public void UnsubscribeFromConfirm(Action callback) {
         inputHandler.southFirst -= callback;
+    }
+
+
+    public void SubscribeToUp(Action callback)
+    {
+        inputHandler.UpFirst += callback;
+    }
+    public void UnsubscribeFromUp(Action callback)
+    {
+        inputHandler.UpFirst -= callback;
+    }
+    public void SubscribeToDown(Action callback)
+    {
+        inputHandler.DownFirst += callback;
+    }
+    public void UnsubscribeFromDown(Action callback)
+    {
+        inputHandler.DownFirst -= callback;
     }
 }
  
