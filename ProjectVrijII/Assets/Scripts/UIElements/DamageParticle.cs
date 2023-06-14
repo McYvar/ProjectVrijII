@@ -10,12 +10,11 @@ public class DamageParticle : MonoBehaviour {
 	private TMP_Text numbersText;
 
 	[Header("Spawning")]
-	[SerializeField]
-	private Vector2 positonOffset;
-	[SerializeField]
-	private bool autoDisable = true;
-	[SerializeField]
-	private float autoDisableDelay = 1f;
+	[SerializeField] private Vector3 spawnPositionOffset;
+	[SerializeField] private float targetDistance;
+	[SerializeField, Range(0, 1f)] private float spawnAngle;
+	[SerializeField, Range(0f, 1f)] private float lerpSpeed;
+	[SerializeField] private float life;
 
 	private RectTransform particleRect;
 	private Coroutine visualTimerCoroutine;
@@ -43,21 +42,9 @@ public class DamageParticle : MonoBehaviour {
 		}
 	}
 
-	//CALL to disable visuals
-	public void DisableVisual() {
-		damageParticle.alpha = 0;
-
-		if(autoDisable) {
-			if(visualTimerCoroutine != null) {
-				StopCoroutine(visualTimerCoroutine);
-				visualTimerCoroutine = null;
-			}
-		}
-	}
-
-	private IEnumerator Timer() {
-		yield return new WaitForSeconds(autoDisableDelay);
-		DisableVisual();
-	}
-
+    private void Update()
+    {
+		transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, lerpSpeed);
+		if (Vector3.Distance(transform.localPosition, targetPosition) < life) Destroy(gameObject);
+    }
 }
