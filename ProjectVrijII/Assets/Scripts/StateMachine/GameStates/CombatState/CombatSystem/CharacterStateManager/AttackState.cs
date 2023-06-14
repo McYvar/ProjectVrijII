@@ -319,8 +319,8 @@ public class AttackState : CharacterBaseState
 
             attack.DoAttack(entity, hitNumber);
             attack.LaunchEnemey(entity, hitNumber, characterFacingDirection);
-            attack.PlaySound(caller, hitNumber);
             if (attack.DoPushBack(rb, hitNumber, characterFacingDirection)) character.rbInput = false;
+            attack.PlaySound(caller, hitNumber);
 
             Destroy(attack);
         }

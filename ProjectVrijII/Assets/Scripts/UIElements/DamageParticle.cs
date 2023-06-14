@@ -14,18 +14,12 @@ public class DamageParticle : MonoBehaviour {
 
 	private Vector3 targetPosition;
 
-    private void Start()
-    {
-		Spawn(5);
-    }
-
     //CALL when getting hurt
     public void Spawn(int damage) {
 		numbersText.text = $"{damage}";
 		transform.localPosition += spawnPositionOffset;
 
-		targetPosition = new Vector2(Random.Range(-spawnAngle, spawnAngle), 1) * targetDistance;
-		Debug.Log(targetPosition);
+		targetPosition = transform.localPosition + new Vector3(Random.Range(-spawnAngle, spawnAngle), 1) * targetDistance;
 	}
 
     private void Update()
