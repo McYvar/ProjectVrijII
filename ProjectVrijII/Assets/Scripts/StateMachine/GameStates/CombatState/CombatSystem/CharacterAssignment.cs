@@ -62,7 +62,7 @@ public class CharacterAssignment : CombatBase {
                     characterState.SetInputHandler(PlayerDistribution.Instance.GetPlayerInputHandler(i));
                     PlayerDistribution.Instance.SubscribeToPlayerInputHandler(i, characterState.SetInputHandler);
                     inputVisualizers[i].AssignPlayer(PlayerDistribution.Instance.GetPlayerInputHandler(i));
-                    if(pauseMenus.Length > i && pauseMenus[i]!=null) pauseMenus[i].AssignPlayer(PlayerDistribution.Instance.GetPlayerInputHandler(i));
+                    pauseMenus[i].AssignPlayer(PlayerDistribution.Instance.GetPlayerInputHandler(i));
 				}
                 catch {
                     Debug.LogWarning("Not enough players are connected!");
