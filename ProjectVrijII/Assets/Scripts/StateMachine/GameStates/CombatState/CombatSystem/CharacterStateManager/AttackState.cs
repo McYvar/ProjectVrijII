@@ -37,7 +37,6 @@ public class AttackState : CharacterBaseState {
         base.OnEnter();
         //numpadInputOrder.Clear(); // if this is enabled, then you can't input buffer mid air
         OnDoublePress = null;
-        SetAttackPhase(AttackPhase.ready);
 
         canJump = false;
         didJump = false;

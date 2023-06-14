@@ -75,18 +75,16 @@ public class SubMenusBase : BaseState {
             if (playerIndicators.Count > 0) {
                 foreach (var button in buttons) {
                     if (CheckWithinBounds(playerIndicators[0], button)) {
-                        button.color = PlayerDistribution.Instance.GetPlayerColor(playerIndicators[0].GetPlayerId());
                         selected = button;
-                    } else button.color = unhighlightColor;
+                    }
                 }
             }
         } else {
             foreach (var indicator in playerIndicators) {
                 foreach (var button in buttons) {
                     if (CheckWithinBounds(indicator, button)) {
-                        button.color = PlayerDistribution.Instance.GetPlayerColor(indicator.GetPlayerId());
                         selected = button;
-                    } else button.color = unhighlightColor;
+                    }
                 }
             }
         }

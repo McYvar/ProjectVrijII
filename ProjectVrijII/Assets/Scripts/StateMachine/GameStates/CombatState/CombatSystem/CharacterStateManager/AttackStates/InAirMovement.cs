@@ -150,22 +150,31 @@ public class InAirMovement : AttackState {
         OnAttack();
     }
 
-    private void InAirKick() {
-        switch (InputCompare()) {
-            case AttackTypes.JUMPING:
-                character.currentAttack = character.jumpingKick;
-                character.currentAttackName = "jK";
-                break;
-            case AttackTypes.QUARTER_CIRCLE:
-                character.currentAttack = character.quaterCircleKick;
-                character.currentAttackName = "j236K";
-                break;
-            case AttackTypes.QUARTER_CIRCLE_BACKWARD:
-                character.currentAttack = character.quaterBackwardCircleKick;
-                character.currentAttackName = "j41236K";
-                break;
+    private void InAirKick()
+    {
+        if (inputHandler.rightTrigger > 0.7f)
+        {
+            character.currentAttack = character.quaterBackwardCircleKick;
+            character.currentAttackName = "j41236K";
         }
-
+        else
+        {
+            switch (InputCompare())
+            {
+                case AttackTypes.JUMPING:
+                    character.currentAttack = character.jumpingKick;
+                    character.currentAttackName = "jK";
+                    break;
+                case AttackTypes.QUARTER_CIRCLE:
+                    character.currentAttack = character.quaterCircleKick;
+                    character.currentAttackName = "j236K";
+                    break;
+                case AttackTypes.QUARTER_CIRCLE_BACKWARD:
+                    character.currentAttack = character.quaterBackwardCircleKick;
+                    character.currentAttackName = "j41236K";
+                    break;
+            }
+        }
         OnAttack();
     }
 
