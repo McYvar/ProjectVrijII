@@ -198,7 +198,6 @@ public class PlayerDistribution : MonoBehaviour {
     }
 
     public void SetPlayerColor(int playerId, Color color) {
-        Debug.Log(playerId);
         int deviceId = playerToDeviceMapping[playerId];
         assignedPlayersColors.Add(playerId, color);
 

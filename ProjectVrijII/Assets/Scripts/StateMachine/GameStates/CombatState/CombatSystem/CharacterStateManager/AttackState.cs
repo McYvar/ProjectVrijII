@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : CharacterBaseState {
+public class AttackState : CharacterBaseState
+{
 
     /// Date: 4/24/2023, by: Yvar
     /// <summary>
@@ -25,13 +26,15 @@ public class AttackState : CharacterBaseState {
 
     FModEventCaller caller;
 
-    protected override void Awake() {
+    protected override void Awake()
+    {
         base.Awake();
         caller = GetComponent<FModEventCaller>();
         Debug.Log(caller == null);
     }
 
-    public override void OnEnter() {
+    public override void OnEnter()
+    {
         inputHandler.northFirst += CanJump;
 
         base.OnEnter();
@@ -42,19 +45,21 @@ public class AttackState : CharacterBaseState {
         didJump = false;
     }
 
-    public override void OnExit() {
+    public override void OnExit()
+    {
         inputHandler.northFirst -= CanJump;
 
         base.OnExit();
     }
 
-    public override void OnUpdate() {
+    public override void OnUpdate()
+    {
         base.OnUpdate();
         LeftInputComboHandler(inputHandler.leftDirection);
         if (character.lastInputDirection != LeftInputDirection.top &&
             character.lastInputDirection != LeftInputDirection.topRight &&
             character.lastInputDirection != LeftInputDirection.topLeft)
-                canJump = true;
+            canJump = true;
 
 
         if (character.lastInputDirection == LeftInputDirection.top ||
@@ -62,35 +67,55 @@ public class AttackState : CharacterBaseState {
             character.lastInputDirection == LeftInputDirection.topLeft) CanJump();
     }
 
-    public override void OnFixedUpdate() {
+    public override void OnFixedUpdate()
+    {
         Movement();
     }
 
     #region attacks
-    public void OnAttack() {
-        if (character.currentAttack != null) {
+    public void OnAttack()
+    {
+        if (character.currentAttack != null)
+        {
+            if (rb.velocity.x > 0)
+            {
+                rb.velocity = new Vector2(character.groundMovementSpeed, rb.velocity.y);
+            }
+            else if (rb.velocity.x < 0)
+            {
+                rb.velocity = new Vector2(-character.groundMovementSpeed, rb.velocity.y);
+            }
             Debug.Log(character.attackPhase.ToString());
-            if (CanAttackInstant()) {
+            if (CanAttackInstant())
+            {
                 Debug.Log("instant attack!");
                 DoAttack(character.currentAttack);
-            } else if (CanBufferRecovery()) {
+            }
+            else if (CanBufferRecovery())
+            {
                 Debug.Log("buffered recovery attack!");
-                RecoveryInputBuffer = () => {
-                    character.rbInput = true; 
+                RecoveryInputBuffer = () =>
+                {
+                    character.rbInput = true;
                     DoAttack(character.currentAttack);
                 };
-            } else if (CanAttackInRecovery()) {
+            }
+            else if (CanAttackInRecovery())
+            {
                 Debug.Log("instant recovery attack!");
                 character.rbInput = true;
                 DoAttack(character.currentAttack);
-            } else {
+            }
+            else
+            {
                 Debug.Log("buffered ready attack!");
                 ReadyInputBuffer = () => { DoAttack(character.currentAttack); };
             }
         }
     }
 
-    private void DoAttack(SO_Attack newAttack) {
+    private void DoAttack(SO_Attack newAttack)
+    {
         // if the player does an attack...
         if (newAttack == null) return;
         animator.SetTrigger(character.currentAttackName);
@@ -104,13 +129,16 @@ public class AttackState : CharacterBaseState {
         character.numpadInputOrder.Clear();
     }
 
-    private bool CanAttackInstant() {
+    private bool CanAttackInstant()
+    {
         if (character.lastAttack == null || character.attackPhase == AttackPhase.ready) return true; // no last attack/delay means can attack
         return false;
     }
 
-    private bool CanBufferRecovery() {
-        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) { // these phases can only be canceled by specials
+    private bool CanBufferRecovery()
+    {
+        if (character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active)
+        { // these phases can only be canceled by specials
             if (character.lastAttack.isSpecial) return false; // specials can't be canceld
             if (!character.lastAttack.isSpecial && character.currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
             if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
@@ -119,8 +147,10 @@ public class AttackState : CharacterBaseState {
         return false;
     }
 
-    private bool CanAttackInRecovery() {
-        if (character.attackPhase == AttackPhase.recovery) {
+    private bool CanAttackInRecovery()
+    {
+        if (character.attackPhase == AttackPhase.recovery)
+        {
             if (!character.lastAttack.isSpecial && character.currentAttack.isSpecial) return true; // last attack non special, gets canceled by any special
             if (character.lastAttack.isSpecial) return false; // specials can't be canceld
             if (character.lastAttack as SO_Punch && (character.currentAttack as SO_Kick || character.currentAttack as SO_Strong)) return true; // non special punch can be canceled by kick/strong
@@ -129,27 +159,35 @@ public class AttackState : CharacterBaseState {
         return false;
     }
 
-    public void StartRecoveryInputBuffer() {
+    public void StartRecoveryInputBuffer()
+    {
         if (!activeState) return;
         RecoveryInputBuffer = null;
     }
 
-    public void StartReadyInputBuffer() {
+    public void StartReadyInputBuffer()
+    {
         if (!activeState) return;
         ReadyInputBuffer = null;
     }
 
-    public void SetGravityScale(float scale) {
+    public void SetGravityScale(float scale)
+    {
         rb.gravityScale = scale;
     }
 
-    public void LeftInputComboHandler(Vector2 direction) {
+    public void LeftInputComboHandler(Vector2 direction)
+    {
         LeftInputDirection currentInputDirection = character.lastInputDirection;
-        if (direction.magnitude < joyThreshold) {
+        if (direction.magnitude < joyThreshold)
+        {
             currentInputDirection = LeftInputDirection.centre;
-        } else {
+        }
+        else
+        {
             // if the max amount of combo buttons is pressed, remove the one at the bottom
-            if (character.numpadInputOrder.Count > 10) {
+            if (character.numpadInputOrder.Count > 10)
+            {
                 character.numpadInputOrder.RemoveFirst();
             }
 
@@ -166,18 +204,22 @@ public class AttackState : CharacterBaseState {
             else if (angle >= 292.5f && angle < 337.5f) currentInputDirection = LeftInputDirection.bottomRight;
         }
 
-        if (character.lastInputDirection != currentInputDirection) {
+        if (character.lastInputDirection != currentInputDirection)
+        {
             character.lastInputDirection = currentInputDirection;
 
             character.numpadInputOrder.AddLast(DirectionKeyValue(currentInputDirection));
             //Debug.Log(character.lastInputDirection.ToString());
             if (character.numpadInputOrder.Count > 2 && character.numpadInputOrder.Last.Previous.Value == 5) // system to check if a button was pressed twice in fast succesion
                 if (character.numpadInputOrder.Last.Previous.Previous.Value == character.numpadInputOrder.Last.Value &&
-                    canDoublePress) {
+                    canDoublePress)
+                {
                     OnDoublePress?.Invoke();
                     OnDoublePress = null;
                     canDoublePress = false;
-                } else {
+                }
+                else
+                {
                     canDoublePress = true;
                     CancelInvoke("CancelDoublePress");
                     Invoke("CancelDoublePress", maxDoublePressTime);
@@ -185,12 +227,15 @@ public class AttackState : CharacterBaseState {
         }
     }
 
-    private void CancelDoublePress() {
+    private void CancelDoublePress()
+    {
         canDoublePress = false;
     }
 
-    public int DirectionKeyValue(LeftInputDirection inputDirection) {
-        switch (inputDirection) {
+    public int DirectionKeyValue(LeftInputDirection inputDirection)
+    {
+        switch (inputDirection)
+        {
             case LeftInputDirection.bottomLeft:
                 return 1;
             case LeftInputDirection.bottom:
@@ -212,8 +257,10 @@ public class AttackState : CharacterBaseState {
         }
     }
 
-    protected virtual AttackTypes InputCompare() {
-        foreach (InputOrder requiredOrder in inputOrders) {
+    protected virtual AttackTypes InputCompare()
+    {
+        foreach (InputOrder requiredOrder in inputOrders)
+        {
             // first we seek for the right combination
             if (character.numpadInputOrder.Count < 3 || character.numpadInputOrder.Count < requiredOrder.numpadOrder.Length) continue; // go to next combination if not right lenght
             if (requiredOrder.characterFacingDirection != characterFacingDirection) continue; // or if combination is not facing the same direction
@@ -222,7 +269,8 @@ public class AttackState : CharacterBaseState {
             int getLastValues = inputOrder.Length - requiredOrder.numpadOrder.Length;
             character.numpadInputOrder.CopyTo(inputOrder, 0);
             bool doBreak = false;
-            for (int i = 0; i < requiredOrder.numpadOrder.Length; i++) {
+            for (int i = 0; i < requiredOrder.numpadOrder.Length; i++)
+            {
                 if (inputOrder[i + getLastValues] != requiredOrder.numpadOrder[i]) { doBreak = true; break; }
             }
 
@@ -235,17 +283,21 @@ public class AttackState : CharacterBaseState {
         return AttackTypes.UNASSIGNED;
     }
 
-    public void TriggerHit(int hitNumber) {
+    public void TriggerHit(int hitNumber)
+    {
         if (!activeState) return;
         List<IHitable> hitableEntities = new List<IHitable>();
 
-        for (int i = 0; i < hitboxes.Length; i++) {
+        for (int i = 0; i < hitboxes.Length; i++)
+        {
             Collider2D[] collisions = Physics2D.OverlapBoxAll(hitboxes[i].bounds.center, hitboxes[i].bounds.size, 0, hitLayer);
 
             // first we check for each hitbox if there are hitable entities in there and add them to a list
-            foreach (var hit in collisions) {
+            foreach (var hit in collisions)
+            {
                 if (hit.transform == transform) continue;
-                if (hit.GetComponent<IHitable>() != null) {
+                if (hit.GetComponent<IHitable>() != null)
+                {
                     //Debug.Log(hit + " was hit in collision zone " + i);
                     if (!hitableEntities.Contains(hit.GetComponent<IHitable>()))
                         hitableEntities.Add(hit.GetComponent<IHitable>());
@@ -254,11 +306,14 @@ public class AttackState : CharacterBaseState {
         }
 
         // then foreach hitable entity we call upon their function
-        foreach (var entity in hitableEntities) {
+        foreach (var entity in hitableEntities)
+        {
             SO_Attack attack = ScriptableObject.CreateInstance<SO_Attack>();
             character.lastAttack.CopyTo(attack);
-            foreach (var item in character.usingItems) { // attempt at a attack decorator, which is maybe not going too well...
-                if (item.attackDecorator != null) {
+            foreach (var item in character.usingItems)
+            { // attempt at a attack decorator, which is maybe not going too well...
+                if (item.attackDecorator != null)
+                {
                     attack = item.attackDecorator.Decorate(attack, hitNumber);
                 }
             }
@@ -297,7 +352,8 @@ public class AttackState : CharacterBaseState {
 
     protected virtual void Movement() { }
 
-    protected void DoJump(float jumpStrength) {
+    protected void DoJump(float jumpStrength)
+    {
         if (!canJump || didJump) return;
         didJump = true;
         canJump = false;
@@ -309,11 +365,14 @@ public class AttackState : CharacterBaseState {
         float direction = 0;
         if (character.lastInputDirection == LeftInputDirection.left ||
             character.lastInputDirection == LeftInputDirection.bottomLeft ||
-            character.lastInputDirection == LeftInputDirection.topLeft) {
+            character.lastInputDirection == LeftInputDirection.topLeft)
+        {
             direction = -1;
-        } else if (character.lastInputDirection == LeftInputDirection.right ||
-            character.lastInputDirection == LeftInputDirection.topRight ||
-            character.lastInputDirection == LeftInputDirection.bottomRight) {
+        }
+        else if (character.lastInputDirection == LeftInputDirection.right ||
+          character.lastInputDirection == LeftInputDirection.topRight ||
+          character.lastInputDirection == LeftInputDirection.bottomRight)
+        {
             direction = 1;
         }
         rb.AddForce(new Vector2(rb.velocity.x, jumpStrength), ForceMode2D.Impulse);
@@ -323,20 +382,23 @@ public class AttackState : CharacterBaseState {
     protected virtual void CanJump() { }
 }
 
-public enum CharacterFacingDirection {
+public enum CharacterFacingDirection
+{
     LEFT = 0,
     RIGHT = 1
 }
 
 [System.Serializable]
-public struct InputOrder {
+public struct InputOrder
+{
     public string name;
     public AttackTypes attackType;
     public CharacterFacingDirection characterFacingDirection;
     public ushort[] numpadOrder;
 }
 
-public enum AttackTypes {
+public enum AttackTypes
+{
     UNASSIGNED = -1,
     STANDING = 0,
     CROUCHING = 1,
@@ -346,7 +408,8 @@ public enum AttackTypes {
     QUARTER_CIRCLE_BACKWARD = 5
 }
 
-public enum LeftInputDirection {
+public enum LeftInputDirection
+{
     bottomLeft = 1,
     bottom = 2,
     bottomRight = 3,
@@ -358,7 +421,8 @@ public enum LeftInputDirection {
     topRight = 9
 }
 
-public enum AttackPhase {
+public enum AttackPhase
+{
     ready = 0,
     startup = 1,
     active = 2,
