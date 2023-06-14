@@ -8,7 +8,6 @@ public class InAirMovement : AttackState {
 
     private float minInAirTime = 0.1f;
     private float inAirTimer;
-    private bool didDoubleJump;
 
     private bool doDash;
     private bool didDash;
@@ -23,7 +22,6 @@ public class InAirMovement : AttackState {
         inputHandler.leftShoulderFirst += Dash;
 
         inAirTimer = 0;
-        didDoubleJump = false;
 
         doDash = false;
         didDash = false;
