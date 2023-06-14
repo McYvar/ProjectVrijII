@@ -14,8 +14,13 @@ public class TurnSystem : CombatBase {
     [SerializeField] private bool testmodus;
     [SerializeField] private ComboCounter comboCounter;
     [SerializeField] private TMP_Text gameOverText;
+    [SerializeField, Range(0f, 60f)] private float timeToStartAttack;
+    private float timer;
+    private bool initialAttack = true;
     private CharacterStateManager currentCharacterTurn;
     private int totalCharacters = 0;
+
+    [SerializeField] private TMP_Text turnTimeText;
 
     public Action<float> OnHit = null;
     public Action OnReset = null;
@@ -56,11 +61,32 @@ public class TurnSystem : CombatBase {
 
     private void Start() {
         OnHit += comboCounter.IncreaseCombo;
+        OnHit += (t) =>
+        {
+            initialAttack = true;
+            Debug.Log("hit");
+        };
         OnReset += comboCounter.EndCombo;
     }
 
     public override void OnUpdate() {
         base.OnUpdate();
+
+        if (!initialAttack)
+        {
+            turnTimeText.gameObject.SetActive(true);
+            turnTimeText.text = $"Time to start attack: {Math.Round(timer, 2)}";
+            if (timer > 0) timer -= Time.deltaTime;
+            else
+            {
+                OnReset.Invoke();
+                initialAttack = true;
+            }
+        }
+        else
+        {
+            turnTimeText.gameObject.SetActive(false);
+        }
     }
 
     public void StartCombat() {
@@ -77,7 +103,6 @@ public class TurnSystem : CombatBase {
     }
 
     private void NextTurn() {
-        readyCharacters = 0;
         // to do, write a condition check if team has no healt left
         for (int i = 0; i < teams.Count; i++) {
             int dead = 0;
@@ -85,7 +110,8 @@ public class TurnSystem : CombatBase {
                 if (player.GetComponent<Health>().died) dead++; // also temp solution?
             }
             if (dead == teams[i].Length) {
-                EndGame(i);
+                if (i == 0) EndGame(1);
+                if (i == 1) EndGame(2);
                 return;
             }
         }
@@ -97,14 +123,16 @@ public class TurnSystem : CombatBase {
             if (teamTurn >= teams.Count) teamTurn = 0;
         }
 
+        timer = timeToStartAttack;
+        readyCharacters = 0;
         currentCharacterTurn = teams[teamTurn][playerTurn];
-        if (!testmodus) currentCharacterTurn.SwitchState(typeof(SelectionState));
-        else currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
+        //if (!testmodus) currentCharacterTurn.SwitchState(typeof(SelectionState));
+        StartCoroutine(DoTransition());
 
     }
 
-    private void EndGame(int loser) {
-        gameOverText.text = $"Game over! Player {loser} died!";
+    private void EndGame(int winner) {
+        gameOverText.text = $"Game over! Player {winner} wins!";
         Invoke("ReloadSceneOnGameOver", 5);
     }
 
@@ -134,9 +162,18 @@ public class TurnSystem : CombatBase {
     public void ResetTurnSystem() {
         teams.Clear();
         totalCharacters = 0;
+        timer = timeToStartAttack;
+        initialAttack = false;
     }
 
     public void ReloadSceneOnGameOver() {
         SceneManager.LoadScene(1);
+    }
+
+    private IEnumerator DoTransition()
+    {
+        yield return new WaitForSeconds(1);
+        initialAttack = false;
+        currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
     }
 }
