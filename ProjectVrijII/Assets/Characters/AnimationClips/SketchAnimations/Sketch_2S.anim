@@ -334,6 +334,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
+  - time: 0.14285715
+    functionName: PlayFMODEvent
+    data: event:/SfxCrouchingLegSweep
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.21428572
     functionName: StartRecoveryInputBuffer
     data: 
@@ -351,6 +358,13 @@ AnimationClip:
   - time: 0.2857143
     functionName: TriggerHit
     data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.42857143
+    functionName: PlayFMODEvent
+    data: event:/SfxCrouchingStrong
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

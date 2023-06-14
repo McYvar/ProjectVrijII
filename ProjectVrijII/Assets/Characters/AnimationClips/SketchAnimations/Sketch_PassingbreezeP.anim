@@ -391,6 +391,13 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
+    functionName: PlayFMODEvent
+    data: event:/SfxPassingBreeze
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -419,18 +426,18 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.42857143
-    functionName: SetAttackPhase
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 2
-    messageOptions: 0
-  - time: 0.42857143
     functionName: TriggerHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 0.42857143
+    functionName: SetAttackPhase
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 2
     messageOptions: 0
   - time: 0.5
     functionName: SetAttackPhase

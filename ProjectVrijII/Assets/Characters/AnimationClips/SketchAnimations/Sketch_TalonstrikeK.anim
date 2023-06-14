@@ -273,13 +273,6 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.14285715
-    functionName: SetAttackPhase
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 2
-    messageOptions: 0
-  - time: 0.14285715
     functionName: TriggerHit
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -292,6 +285,13 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 55
     intParameter: 0
+    messageOptions: 0
+  - time: 0.14285715
+    functionName: SetAttackPhase
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 2
     messageOptions: 0
   - time: 0.21428572
     functionName: SetAttackPhase

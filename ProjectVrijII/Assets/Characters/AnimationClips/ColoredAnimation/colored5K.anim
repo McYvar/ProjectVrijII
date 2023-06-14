@@ -370,6 +370,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
+  - time: 0
+    functionName: PlayFMODEvent
+    data: event:/SfxStandingPushSwooshKIck
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.14285715
     functionName: SetAttackPhase
     data: 
@@ -387,6 +394,13 @@ AnimationClip:
   - time: 0.2857143
     functionName: StartRecoveryInputBuffer
     data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.42857143
+    functionName: PlayFMODEvent
+    data: event:/SfxCrouchingLegSweep
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
