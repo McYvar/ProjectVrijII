@@ -30,7 +30,6 @@ public class AttackState : CharacterBaseState
     {
         base.Awake();
         caller = GetComponent<FModEventCaller>();
-        Debug.Log(caller == null);
     }
 
     public override void OnEnter()
