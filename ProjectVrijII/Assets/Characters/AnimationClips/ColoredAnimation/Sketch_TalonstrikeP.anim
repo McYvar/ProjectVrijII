@@ -162,7 +162,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6428572
+    m_StopTime: 0.85714287
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -300,14 +300,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 3
     messageOptions: 0
-  - time: 0.2857143
+  - time: 0.5
     functionName: StartReadyInputBuffer
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.64285713
+  - time: 0.85714287
     functionName: ResetAfterAttack
     data: 
     objectReferenceParameter: {fileID: 0}

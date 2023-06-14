@@ -668,7 +668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &227982903
 Transform:
   m_ObjectHideFlags: 0
@@ -3400,18 +3400,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1179201329}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1179201331 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2578000154747051655, guid: 32075fb7738ee234da2e812d6af98a18,
-    type: 3}
-  m_PrefabInstance: {fileID: 1179201329}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ce88e24dc097ce4198dc181eacab017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1198153328
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,7 +3588,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1272800516
 Transform:
   m_ObjectHideFlags: 0
@@ -4840,7 +4828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1689529333
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5350,6 +5338,7 @@ MonoBehaviour:
   gameOverText: {fileID: 1078045180}
   timeToStartAttack: 15
   turnTimeText: {fileID: 464063645}
+  GameOverScreen: {fileID: 1689529332}
 --- !u!4 &1997295839
 Transform:
   m_ObjectHideFlags: 0
@@ -5504,6 +5493,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 762550936}
+  - {fileID: 2126854149}
+  - {fileID: 1179201330}
   m_Father: {fileID: 1936386351}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

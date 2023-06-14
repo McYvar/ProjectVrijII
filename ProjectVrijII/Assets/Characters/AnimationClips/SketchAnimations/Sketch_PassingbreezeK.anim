@@ -238,7 +238,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1
+    m_StopTime: 1.2142857
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -440,27 +440,27 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.5
-    functionName: FaceEnemy
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 3
     messageOptions: 0
-  - time: 0.64285713
+  - time: 0.5
+    functionName: FaceEnemy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.85714287
     functionName: StartReadyInputBuffer
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1
+  - time: 1.2142857
     functionName: SetAttackPhase
     data: 
     objectReferenceParameter: {fileID: 0}

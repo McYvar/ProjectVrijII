@@ -134,7 +134,7 @@ public class TurnSystem : CombatBase {
 
     private void EndGame(int winner) {
         GameOverScreen.SetActive(true);
-        gameOverText.text = $"Game over! Player {winner} wins!";
+        gameOverText.text = $"Player {winner} wins!";
         Invoke("ReloadSceneOnGameOver", 5);
     }
 
@@ -169,7 +169,7 @@ public class TurnSystem : CombatBase {
     }
 
     public void ReloadSceneOnGameOver() {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     private IEnumerator DoTransition()
