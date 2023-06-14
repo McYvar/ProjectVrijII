@@ -16,8 +16,9 @@ public class DamageParticle : MonoBehaviour {
 	private Vector3 targetPosition;
 
     //CALL when getting hurt
-    public void Spawn(int damage) {
+    public void Spawn(Vector3 spawnpos, int damage) {
 		numbersText.text = $"{damage}";
+		transform.position = spawnpos;
 		transform.localPosition += spawnPositionOffset;
 
 		targetPosition = transform.localPosition + new Vector3(Random.Range(-spawnAngle, spawnAngle), 1) * targetDistance;

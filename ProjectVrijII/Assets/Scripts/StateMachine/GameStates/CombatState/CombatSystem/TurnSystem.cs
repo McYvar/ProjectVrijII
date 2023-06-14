@@ -173,6 +173,7 @@ public class TurnSystem : CombatBase {
     private IEnumerator DoTransition()
     {
         yield return new WaitForSeconds(1);
+        comboCounter.SetCombotTimer(timer);
         initialAttack = false;
         currentCharacterTurn.SwitchState(typeof(OnGroundMovement));
     }

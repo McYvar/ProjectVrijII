@@ -32,7 +32,7 @@ public class Health : MonoBehaviour {
             }
             Debug.Log($"{name} took {damage} damage!");
 
-            Instantiate(dmgParticlePrefab, transform).GetComponent<DamageParticle>().Spawn(damage);
+            Instantiate(dmgParticlePrefab).GetComponent<DamageParticle>().Spawn(transform.position, damage);
 			OnHealthChanged?.Invoke(currentHealth, maxHealth);
         }
     }

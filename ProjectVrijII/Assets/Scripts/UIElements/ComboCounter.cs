@@ -72,6 +72,16 @@ public class ComboCounter:CombatBase {
 		}
 	}
 
+	public void SetCombotTimer(float time)
+	{
+		timeUntilEndingCombo = time;
+
+		if (timerCoroutine == null)
+		{
+			timerCoroutine = StartCoroutine(ComboTimer());
+		}
+	}
+
 	//sets the text and checks for change in effects
 	private void SetComboText() {
 		/*comboText.text = $"{comboCounter}<size={textSize}>{textString}</size>";*/
