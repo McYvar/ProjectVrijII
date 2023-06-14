@@ -10,6 +10,7 @@ public class SubMenusBase : BaseState
     /// By: Yvar, Date: 6/1/2023
     /// Class that describes the main menu behaviour. Only controller by player 1.
     /// </summary>
+    /// 
     [SerializeField] private Canvas parentCanvas;
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject playerIndicator;

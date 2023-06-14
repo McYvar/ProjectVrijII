@@ -38,6 +38,7 @@ public class InAirMovement : AttackState {
         inputHandler.leftShoulderFirst -= Dash;
 
         animator.SetTrigger("landing");
+        myFModEventCaller.PlayFMODEvent("event:/SfxLand");
         EndDash();
     }
 
@@ -107,6 +108,7 @@ public class InAirMovement : AttackState {
 
     private void Dash() {
         if (didDash || !character.rbInput) return;
+        myFModEventCaller.PlayFMODEvent("event:/SfxDash");
         int direction = 0;
         if (character.lastInputDirection == LeftInputDirection.left) direction = -1;
         else if (character.lastInputDirection == LeftInputDirection.right) direction = 1;

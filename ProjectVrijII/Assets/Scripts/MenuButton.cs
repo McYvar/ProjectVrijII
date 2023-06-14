@@ -18,6 +18,8 @@ public class MenuButton : MonoBehaviour
     private float rawImageStartPos;
     private bool rawImageFloating;
 
+    [SerializeField] private FModEventCaller caller;
+
     private void Start()
     {
         startPos = transform.position.x;
@@ -51,6 +53,7 @@ public class MenuButton : MonoBehaviour
     public void EnableFloat()
     {
         isFloating = true;
+        caller.PlayFMODEvent("event:/SfxSwitch");
         StartCoroutine(EnableRawFloat());
     }
 

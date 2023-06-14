@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainStartMenuState : SubMenusBase
 {
     public void PressStartButton(int scenenumber) {
+        StaticFmodCaller.staticCaller.PlayFMODEvent("event:/SfxSelection");
         if (PlayerDistribution.Instance.GetAssignedPlayersCount() >= 2)
         {
             PlayerDistribution.Instance.ResetInputHandlers();
@@ -14,12 +15,15 @@ public class MainStartMenuState : SubMenusBase
         }
     }
 
-    public void PressControlsButton() {
+    public void PressControlsButton()
+    {
+        StaticFmodCaller.staticCaller.PlayFMODEvent("event:/SfxSelection");
         stateManager.SwitchState(typeof(MainControlsMenuState));
     }
 
     public void PressCreditsButton()
     {
+        StaticFmodCaller.staticCaller.PlayFMODEvent("event:/SfxSelection");
         stateManager.SwitchState(typeof(MainCreditsMenuState));
     }
 

@@ -198,11 +198,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-<<<<<<< HEAD:ProjectVrijII/Assets/Characters/AnimationClips/ColoredAnimation/Sketch_TalonstrikeP.anim
-    m_StopTime: 0.85714287
-=======
     m_StopTime: 1.2142857
->>>>>>> SFXandAnimations:ProjectVrijII/Assets/Characters/AnimationClips/ColoredAnimation/coloredStandingStrong.anim
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -347,24 +343,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 3
     messageOptions: 0
-<<<<<<< HEAD:ProjectVrijII/Assets/Characters/AnimationClips/ColoredAnimation/Sketch_TalonstrikeP.anim
-  - time: 0.5
-=======
   - time: 0.78571427
->>>>>>> SFXandAnimations:ProjectVrijII/Assets/Characters/AnimationClips/ColoredAnimation/coloredStandingStrong.anim
     functionName: StartReadyInputBuffer
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
-<<<<<<< HEAD:ProjectVrijII/Assets/Characters/AnimationClips/ColoredAnimation/Sketch_TalonstrikeP.anim
-  - time: 0.85714287
-    functionName: ResetAfterAttack
-=======
   - time: 1.1428572
     functionName: SetAttackPhase
->>>>>>> SFXandAnimations:ProjectVrijII/Assets/Characters/AnimationClips/ColoredAnimation/coloredStandingStrong.anim
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

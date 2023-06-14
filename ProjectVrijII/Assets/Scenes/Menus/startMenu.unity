@@ -264,6 +264,7 @@ MonoBehaviour:
   smoothTime: 0.125
   selectionIndicator: {fileID: 1847880890}
   delayTime: 0.042
+  caller: {fileID: 1339949026}
 --- !u!114 &113960553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,6 +932,7 @@ MonoBehaviour:
   smoothTime: 0.125
   selectionIndicator: {fileID: 653296600}
   delayTime: 0.042
+  caller: {fileID: 1339949026}
 --- !u!114 &907374814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,6 +1114,7 @@ MonoBehaviour:
   smoothTime: 0.125
   selectionIndicator: {fileID: 1266704845}
   delayTime: 0.042
+  caller: {fileID: 1339949026}
 --- !u!114 &994926206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,6 +1223,7 @@ MonoBehaviour:
   smoothTime: 0.125
   selectionIndicator: {fileID: 1071096469}
   delayTime: 0.042
+  caller: {fileID: 1339949026}
 --- !u!114 &1001416970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1561,6 +1565,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1266704843}
   m_CullTransparentMesh: 1
+--- !u!1 &1339949025
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1339949027}
+  - component: {fileID: 1339949026}
+  - component: {fileID: 1339949028}
+  m_Layer: 0
+  m_Name: FMODEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1339949026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339949025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87fdbdd6ff87234d8ac56f531d6e9d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1339949027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339949025}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -48.819363, y: -101.397644, z: 113.96316}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1339949028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339949025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d46dc8649fac7045942549748453ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caller: {fileID: 1339949026}
 --- !u!1 &1340050453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1887,6 +1949,7 @@ MonoBehaviour:
   smoothTime: 0.125
   selectionIndicator: {fileID: 1782994425}
   delayTime: 0.042
+  caller: {fileID: 1339949026}
 --- !u!1 &1638106578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,7 +2003,6 @@ MonoBehaviour:
     type: 3}
   highlightColor: {r: 1, g: 0, b: 0, a: 0.5019608}
   unhighlightColor: {r: 1, g: 1, b: 1, a: 0}
-  onlyAllowFirstPlayer: 0
   playerCountText: {fileID: 406231258}
   buttons:
   - {fileID: 1754814620}
@@ -1978,7 +2040,6 @@ MonoBehaviour:
     type: 3}
   highlightColor: {r: 1, g: 0, b: 0, a: 0.5019608}
   unhighlightColor: {r: 1, g: 1, b: 1, a: 0}
-  onlyAllowFirstPlayer: 0
   playerCountText: {fileID: 406231258}
   buttons:
   - {fileID: 907374814}
@@ -2000,7 +2061,6 @@ MonoBehaviour:
     type: 3}
   highlightColor: {r: 1, g: 0, b: 0, a: 0.5019608}
   unhighlightColor: {r: 1, g: 1, b: 1, a: 0}
-  onlyAllowFirstPlayer: 0
   playerCountText: {fileID: 406231258}
   buttons:
   - {fileID: 113960553}
@@ -2241,6 +2301,7 @@ MonoBehaviour:
   smoothTime: 0.125
   selectionIndicator: {fileID: 1873945275}
   delayTime: 0.042
+  caller: {fileID: 1339949026}
 --- !u!1 &1782994423
 GameObject:
   m_ObjectHideFlags: 0

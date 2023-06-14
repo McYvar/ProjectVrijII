@@ -20,11 +20,15 @@ public class IdleState : CharacterBaseState, IHitable {
     public override void OnEnter() {
         base.OnEnter();
         rb.velocity = Vector2.zero;
+
+        //inputHandler.southFirst += Parry;
     }
 
     public override void OnExit() {
         base.OnExit();
         SetAttackPhase(AttackPhase.ready);
+
+        //inputHandler.southFirst -= Parry;
     }
 
     public void Launch(Vector2 force, float freezeTime) {
@@ -67,5 +71,10 @@ public class IdleState : CharacterBaseState, IHitable {
         animator.SetBool("isStunned", true);
         TurnSystem.Instance.OnHit.Invoke(time);
         hitstunTimer = time;
+    }
+
+    public void Parry()
+    {
+        Debug.Log("do parry");
     }
 }

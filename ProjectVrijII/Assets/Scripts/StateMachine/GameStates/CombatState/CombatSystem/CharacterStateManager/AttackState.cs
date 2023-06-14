@@ -354,6 +354,7 @@ public class AttackState : CharacterBaseState
     protected void DoJump(float jumpStrength)
     {
         if (!canJump || didJump) return;
+        myFModEventCaller.PlayFMODEvent("event:/SfxJump");
         didJump = true;
         canJump = false;
         animator.SetTrigger("jump");

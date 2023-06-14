@@ -28,12 +28,15 @@ public class CharacterBaseState : BaseState, INeedInput {
     protected Action RecoveryInputBuffer;
     protected Action ReadyInputBuffer;
 
+    protected FModEventCaller myFModEventCaller;
+
     protected virtual void Awake() {
         // Set up ground check layer mask, collider, animator, and rigidbody
         groundCheckLayers = LayerMask.GetMask("Ground");
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        myFModEventCaller = GetComponent<FModEventCaller>();
     }
 
     public void SetPlayerId(int playerId) {
