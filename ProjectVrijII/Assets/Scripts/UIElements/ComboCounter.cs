@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.Rendering;
+using Unity.VisualScripting;
 
-public class ComboCounter : CombatBase {
+public class ComboCounter:CombatBase {
 	[Header("CanvasElements")]
 	[SerializeField]
 	private TMP_Text comboText;
@@ -36,34 +37,25 @@ public class ComboCounter : CombatBase {
 	[SerializeField]
 	private float emptyPosition = 92f;
 	[SerializeField]
-	private float fullPosition = 0;
+	private float fullPosition = 0f;
 	private Vector2 timerStartPosition;
 	private Coroutine timerCoroutine;
 
+
 	private float timeUntilEndingCombo = 0;
 
-	private void Start() {		
+	private void Start() {
 		timerStartPosition = timerFill.localPosition;
 		ResetCombo();
 	}
 
-	private void Update() {
-		//~~debugging purpose
-			if(Input.GetKeyUp(KeyCode.Space)) {
-				IncreaseCombo(1);
-			}
-
-			if(Input.GetKeyUp(KeyCode.Escape)) {
-				ResetCombo();
-			}
-		//~~
-	}
-
+	#region ComboCounter
 	//Call this to reset and remove the combo
 	public void ResetCombo() {
 		comboCounter = 0;
 		effectId = -1;
-		counterObject.alpha = 0;
+		SetComboText();
+		//counterObject.alpha = 0;
 
 		ResetComboTimer();
 	}
@@ -85,7 +77,7 @@ public class ComboCounter : CombatBase {
 		/*comboText.text = $"{comboCounter}<size={textSize}>{textString}</size>";*/
 		comboText.text = $"{comboCounter}<size={textSize}></size>";
 
-		if (effectId < counterEffects.Length - 1) {
+		if(effectId < counterEffects.Length - 1) {
 			if(comboCounter >= counterEffects[effectId + 1].StartEffect) {
 				effectId++;
 				SetEffects();
@@ -102,18 +94,22 @@ public class ComboCounter : CombatBase {
 
 	public void EndCombo() {
 		Invoke("ResetCombo", comboDisplayTime);
-    }
+	}
 
+	#endregion
+
+	#region ComboTimer
 	private IEnumerator ComboTimer() {
 		float time = timeUntilEndingCombo;
-		Vector2 fillerPosition = Vector2.zero;
-		fillerPosition.x = timerStartPosition.x;
+		float filling;
+		Vector2 fillerPosition = timerStartPosition;
 
-		while(time > 0) {
-			fillerPosition.y = Mathf.Lerp(fullPosition, emptyPosition, time);
-			timerFill.localPosition = fillerPosition;	
-			
-			time -= Time.deltaTime;
+		while(timeUntilEndingCombo > 0) {
+			filling = timeUntilEndingCombo;
+			fillerPosition.y = Mathf.Lerp(emptyPosition, fullPosition, filling);
+			timerFill.localPosition = fillerPosition;
+
+			timeUntilEndingCombo -= Time.deltaTime;
 			yield return new WaitForSeconds(0);
 		}
 	}
@@ -121,8 +117,11 @@ public class ComboCounter : CombatBase {
 	private void ResetComboTimer() {
 		if(timerCoroutine != null) {
 			StopCoroutine(timerCoroutine);
-			timerFill.localPosition = new Vector2(timerStartPosition.x, emptyPosition);
 			timerCoroutine = null;
+
+			timerFill.localPosition = new Vector2(timerStartPosition.x, emptyPosition);
 		}
 	}
+
+	#endregion
 }

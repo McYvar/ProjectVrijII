@@ -11,10 +11,13 @@ public class Health : MonoBehaviour {
     private int currentHealth;
     public bool died;
 
+    private DamageParticle dmgParticle;
+
     private void Start() {
         GetHealed(maxHealth);
         died = false;
-    }
+        dmgParticle = FindObjectOfType<DamageParticle>();
+	}
 
 	//Decrease current hp
 	public void GetDamaged(int damage) {
@@ -27,7 +30,9 @@ public class Health : MonoBehaviour {
                 died = true;
             }
             Debug.Log($"{name} took {damage} damage!");
-            OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
+			dmgParticle.EnableVisual(transform, damage);
+			OnHealthChanged?.Invoke(currentHealth, maxHealth);
         }
     }
 
