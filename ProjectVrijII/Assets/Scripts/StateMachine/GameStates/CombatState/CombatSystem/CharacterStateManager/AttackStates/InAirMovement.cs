@@ -93,7 +93,7 @@ public class InAirMovement : AttackState {
         if ((character.attackPhase == AttackPhase.startup || character.attackPhase == AttackPhase.active) &&
             character.rbInput) {
             rb.velocity = new Vector2(
-                rb.velocity.x * character.attackMovementReductionScalar,
+                rb.velocity.x,
                 rb.velocity.y > 0 ? rb.velocity.y : rb.velocity.y * character.fallReductionScalar);
         }
     }

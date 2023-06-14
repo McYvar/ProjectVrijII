@@ -38,6 +38,7 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  onHitSoundEventName: []
   movementReduction: 0
   fallReduction: 0
   isSpecial: 0
