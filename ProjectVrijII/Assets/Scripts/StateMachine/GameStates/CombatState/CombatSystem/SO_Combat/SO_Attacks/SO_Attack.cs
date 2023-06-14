@@ -14,6 +14,7 @@ public class SO_Attack : ScriptableObject {
     public float[] attackFreezeTime;
     public Vector2[] onHitPushBack;
     public float[] onHitHitstun;
+    public string[] onHitSoundEventName;
     [Range(0f, 1f)] public float movementReduction;
     [Range(0f, 1f)] public float fallReduction;
     public bool isSpecial;
@@ -35,6 +36,9 @@ public class SO_Attack : ScriptableObject {
 
         copy.onHitHitstun = new float[onHitHitstun.Length];
         onHitHitstun.CopyTo(copy.onHitHitstun, 0);
+
+        copy.onHitSoundEventName = new string[onHitSoundEventName.Length];
+        onHitSoundEventName.CopyTo(copy.onHitSoundEventName, 0);
 
         copy.movementReduction = movementReduction;
         copy.fallReduction = fallReduction;
@@ -91,6 +95,20 @@ public class SO_Attack : ScriptableObject {
             Debug.LogWarning($"There are too few elements ({onHitPushBack.Length}) in onHitPushBack from attack {attackName}." +
                 $" Make sure the onHitPushBack list from attack {attackName} has at least {hitNumber} elements!");
             return false;
+        }
+    }
+
+    public void PlaySound(FModEventCaller caller, int hitNumber)
+    {
+        try
+        {
+            string eventName = onHitSoundEventName[hitNumber];
+            if (eventName.Length > 0) caller.PlayFMODEvent(eventName);
+        }
+        catch
+        {
+            Debug.LogWarning($"There are too few elements ({onHitSoundEventName.Length}) in onHitSoundEventName from attack {attackName}." +
+                $" Make sure the onHitSoundEventName list from attack {attackName} has at least {hitNumber} elements!");
         }
     }
 }
