@@ -29,10 +29,6 @@ public class SubMenusBase : BaseState {
         menu.SetActive(true);
         activeState = true;
 
-        foreach (var button in buttons) {
-            button.color = unhighlightColor;
-        }
-
         foreach (var indicator in playerIndicators) {
             indicator.SubscribeToConfirm(ConfirmChoice);
         }
