@@ -332,7 +332,7 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: PlayFMODEvent
-    data: event:/SfxCrouchingKnife
+    data: event:/SfxCrouchingStrong
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
@@ -367,7 +367,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.21428572
     functionName: PlayFMODEvent
-    data: event:/SfxCrouchingKnife
+    data: event:/SfxCrouchingStrong
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
