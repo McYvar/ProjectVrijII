@@ -978,8 +978,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 300
   died: 0
-  dmgParticlePrefab: {fileID: 4299954305241539542, guid: 05e92fe7af5548c41a6925ef2e6a67a8,
-    type: 3}
 --- !u!114 &4589072853003203575
 MonoBehaviour:
   m_ObjectHideFlags: 0
