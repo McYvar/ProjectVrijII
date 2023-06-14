@@ -11,6 +11,7 @@ public class DamageParticle : MonoBehaviour {
 	[SerializeField] private float targetDistance;
 	[SerializeField, Range(0, 1f)] private float spawnAngle;
 	[SerializeField, Range(0f, 1f)] private float lerpSpeed;
+	[SerializeField] private float life;
 
 	private Vector3 targetPosition;
 
@@ -25,6 +26,6 @@ public class DamageParticle : MonoBehaviour {
     private void Update()
     {
 		transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, lerpSpeed);
-		if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f) Destroy(gameObject);
+		if (Vector3.Distance(transform.localPosition, targetPosition) < life) Destroy(gameObject);
     }
 }
