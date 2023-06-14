@@ -12,14 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/endScreen.unity
     guid: 797176dcb188d8347bdaf448e1b2d211
   - enabled: 0
-    path: Assets/Scenes/testScenes/environmentBlockoutScene.unity
-    guid: b6d145f3283d0ef438d7d65bd8ea92e6
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/testScenes/mechanicsBlockoutScene.unity
-    guid: 4e0d26281128b7e408f3b858d13fa256
-  - enabled: 1
-    path: Assets/Scenes/Test/uiImplementation.unity
-    guid: ce57d0e7c2b25a54fb95d5308bab7b47
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 07075788d40a27f489d0201dd729932b,
       type: 2}

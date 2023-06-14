@@ -269,12 +269,12 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.21428572
-    functionName: SetAttackPhase
-    data: 
+  - time: 0.071428575
+    functionName: PlayFMODEvent
+    data: event:/SfxJumpingKick
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
-    intParameter: 2
+    intParameter: 0
     messageOptions: 0
   - time: 0.21428572
     functionName: TriggerHit
@@ -282,6 +282,13 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 0.21428572
+    functionName: SetAttackPhase
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 2
     messageOptions: 0
   - time: 0.2857143
     functionName: StartReadyInputBuffer
