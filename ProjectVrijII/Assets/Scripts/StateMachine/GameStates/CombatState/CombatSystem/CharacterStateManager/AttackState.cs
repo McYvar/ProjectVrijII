@@ -23,8 +23,12 @@ public class AttackState : CharacterBaseState {
     private bool canJump = false;
     private bool didJump = false;
 
+    FModEventCaller caller;
+
     protected override void Awake() {
         base.Awake();
+        caller = GetComponent<FModEventCaller>();
+        Debug.Log(caller == null);
     }
 
     public override void OnEnter() {
@@ -262,6 +266,7 @@ public class AttackState : CharacterBaseState {
 
             attack.DoAttack(entity, hitNumber);
             attack.LaunchEnemey(entity, hitNumber, characterFacingDirection);
+            attack.PlaySound(caller, hitNumber);
             if (attack.DoPushBack(rb, hitNumber, characterFacingDirection)) character.rbInput = false;
 
             Destroy(attack);
