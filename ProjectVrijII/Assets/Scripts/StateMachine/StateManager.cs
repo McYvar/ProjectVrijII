@@ -10,8 +10,6 @@ public class StateManager : MonoBehaviour {
     [SerializeField] protected BaseState startState;
 
     private void Start() {
-        DontDestroyOnLoad(this);
-
         // on start we search for all attached BattleBaseState classes to this game object
         BaseState[] states = GetComponents<BaseState>();
 
